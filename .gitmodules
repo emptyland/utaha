@@ -1,0 +1,3 @@
+[submodule "cdep"]
+	path = cdep
+	url = https://github.com/emptyland/cdep.git
