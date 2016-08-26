@@ -1,0 +1,18 @@
+name: utaha
+os: posix
+repository:
+deps:
+    - gtest:
+        version: 1.7.0
+    - glog:
+        version: '0.3.4'
+    - gflags:
+        version: '2.1.2'
+    - freetype:
+        version: '2.6'
+    - luajit:
+        version: '2.0.4'
+    - glew:
+        version: '2.0.0'
+    - glfw:
+        version: '3.2'
