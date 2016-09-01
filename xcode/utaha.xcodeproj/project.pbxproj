@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		23B83F621D7585B400DBC418 /* lodepng_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23B83F5F1D7585B400DBC418 /* lodepng_util.cpp */; };
+		23B83F631D7585B400DBC418 /* lodepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23B83F601D7585B400DBC418 /* lodepng.cpp */; };
 		23C9A3FB1D70238000DAA480 /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C9A3FA1D70238000DAA480 /* main.cc */; };
 		23C9A4021D70241E00DAA480 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C9A3FC1D70241E00DAA480 /* libfreetype.a */; };
 		23C9A4031D70241E00DAA480 /* libgflags.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C9A3FD1D70241E00DAA480 /* libgflags.a */; };
@@ -35,6 +37,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		23B83F5D1D7585B400DBC418 /* lodepng_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lodepng_util.h; path = ../src/lodepng/lodepng_util.h; sourceTree = "<group>"; };
+		23B83F5E1D7585B400DBC418 /* lodepng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lodepng.h; path = ../src/lodepng/lodepng.h; sourceTree = "<group>"; };
+		23B83F5F1D7585B400DBC418 /* lodepng_util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lodepng_util.cpp; path = ../src/lodepng/lodepng_util.cpp; sourceTree = "<group>"; };
+		23B83F601D7585B400DBC418 /* lodepng.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lodepng.cpp; path = ../src/lodepng/lodepng.cpp; sourceTree = "<group>"; };
+		23B83F6B1D78524800DBC418 /* datatype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = datatype.h; sourceTree = "<group>"; };
 		23C9A3EF1D7022EE00DAA480 /* utaha */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = utaha; sourceTree = BUILT_PRODUCTS_DIR; };
 		23C9A3FA1D70238000DAA480 /* main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cc; sourceTree = "<group>"; };
 		23C9A3FC1D70241E00DAA480 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = "../third-party/libs/libfreetype.a"; sourceTree = "<group>"; };
@@ -74,6 +81,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		23B83F5C1D757F9200DBC418 /* Third-party */ = {
+			isa = PBXGroup;
+			children = (
+				23B83F5D1D7585B400DBC418 /* lodepng_util.h */,
+				23B83F5E1D7585B400DBC418 /* lodepng.h */,
+				23B83F5F1D7585B400DBC418 /* lodepng_util.cpp */,
+				23B83F601D7585B400DBC418 /* lodepng.cpp */,
+			);
+			name = "Third-party";
+			sourceTree = "<group>";
+		};
 		23C9A3E61D7022EE00DAA480 = {
 			isa = PBXGroup;
 			children = (
@@ -89,6 +107,7 @@
 				23C9A3FF1D70241E00DAA480 /* libglfw3.a */,
 				23C9A4001D70241E00DAA480 /* libglog.a */,
 				23C9A4011D70241E00DAA480 /* libluajit.a */,
+				23B83F5C1D757F9200DBC418 /* Third-party */,
 				23C9A3F91D70230C00DAA480 /* Include */,
 				23C9A3F11D7022EE00DAA480 /* Sources */,
 				23C9A3F01D7022EE00DAA480 /* Products */,
@@ -115,6 +134,7 @@
 		23C9A3F91D70230C00DAA480 /* Include */ = {
 			isa = PBXGroup;
 			children = (
+				23B83F6B1D78524800DBC418 /* datatype.h */,
 			);
 			name = Include;
 			path = ../src;
@@ -176,7 +196,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23B83F631D7585B400DBC418 /* lodepng.cpp in Sources */,
 				23C9A3FB1D70238000DAA480 /* main.cc in Sources */,
+				23B83F621D7585B400DBC418 /* lodepng_util.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
