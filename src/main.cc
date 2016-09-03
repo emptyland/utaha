@@ -1,3 +1,4 @@
+#include "character.h"
 #include "datatype.h"
 #include "GLFW/glfw3.h"
 #include "lodepng.h"
@@ -19,7 +20,7 @@ void RefreshCallback(GLFWwindow *window) {
     glLoadIdentity();
 }
 
-static void DrawClub(const utaha::Float3 &pos, int tex_id) {
+static void DrawClub(const utaha::Float3 &pos, float size, int tex_id) {
 
 
     glEnable(GL_TEXTURE_2D);
@@ -39,10 +40,10 @@ static void DrawClub(const utaha::Float3 &pos, int tex_id) {
     // top
     glColor3f(1.0, 1.0, 1.0);
     // -1, 1, -1
-    glTexCoord2f(0.0, 0.0);     glVertex3f(pos.x,     pos.y, pos.z);
-    glTexCoord2f(1.0/8, 0.0);   glVertex3f(pos.x + 2, pos.y, pos.z);
-    glTexCoord2f(1.0/8, 1.0/4); glVertex3f(pos.x + 2, pos.y, pos.z + 2);
-    glTexCoord2f(0.0, 1.0/4);   glVertex3f(pos.x,     pos.y, pos.z + 2);
+    glTexCoord2f(0.0, 0.0);     glVertex3f(pos.x, pos.y, pos.z);
+    glTexCoord2f(1.0/8, 0.0);   glVertex3f(pos.x + size, pos.y, pos.z);
+    glTexCoord2f(1.0/8, 1.0/4); glVertex3f(pos.x + size, pos.y, pos.z + size);
+    glTexCoord2f(0.0, 1.0/4);   glVertex3f(pos.x, pos.y, pos.z + size);
 //    glTexCoord2f(0.0, 0.0);  glVertex3f(-1, 1, -1);
 //    glTexCoord2f(1.0/8, 0.0);  glVertex3f(1, 1, -1);
 //    glTexCoord2f(1.0/8, 1.0/4);  glVertex3f(1, 1, 1);
@@ -50,10 +51,10 @@ static void DrawClub(const utaha::Float3 &pos, int tex_id) {
 
     // right
     glColor3f(1.0, 1.0, 1.0);
-    glTexCoord2f(0.0, 0.0);  glVertex3f(pos.x + 2, pos.y, pos.z);
-    glTexCoord2f(1.0/8, 0.0);  glVertex3f(pos.x + 2, pos.y, pos.z + 2);
-    glTexCoord2f(1.0/8, 1.0/4);  glVertex3f(pos.x + 2, pos.y - 2, pos.z + 2);
-    glTexCoord2f(0.0, 1.0/4);  glVertex3f(pos.x + 2, pos.y - 2, pos.z);
+    glTexCoord2f(0.0, 0.0);  glVertex3f(pos.x + size, pos.y, pos.z);
+    glTexCoord2f(1.0/8, 0.0);  glVertex3f(pos.x + size, pos.y, pos.z + size);
+    glTexCoord2f(1.0/8, 1.0/4);  glVertex3f(pos.x + size, pos.y - size, pos.z + size);
+    glTexCoord2f(0.0, 1.0/4);  glVertex3f(pos.x + size, pos.y - size, pos.z);
 //    glTexCoord2f(0.0, 0.0);  glVertex3f(1, 1, -1);
 //    glTexCoord2f(1.0/8, 0.0);  glVertex3f(1, 1, 1);
 //    glTexCoord2f(1.0/8, 1.0/4);  glVertex3f(1, -1, 1);
@@ -61,9 +62,9 @@ static void DrawClub(const utaha::Float3 &pos, int tex_id) {
 
     // front
     glColor3f(1.0, 1.0, 1.0);
-    glTexCoord2f(0.0, 0.0);  glVertex3f(pos.x, pos.y - 2, pos.z);
-    glTexCoord2f(1.0/8, 0.0);  glVertex3f(pos.x + 2, pos.y - 2, pos.z);
-    glTexCoord2f(1.0/8, 1.0/4);  glVertex3f(pos.x + 2, pos.y, pos.z);
+    glTexCoord2f(0.0, 0.0);  glVertex3f(pos.x, pos.y - size, pos.z);
+    glTexCoord2f(1.0/8, 0.0);  glVertex3f(pos.x + size, pos.y - size, pos.z);
+    glTexCoord2f(1.0/8, 1.0/4);  glVertex3f(pos.x + size, pos.y, pos.z);
     glTexCoord2f(0.0, 1.0/4);  glVertex3f(pos.x, pos.y, pos.z);
 
 //    glTexCoord2f(0.0, 0.0);  glVertex3f(-1, -1, -1);
@@ -77,30 +78,6 @@ static void DrawClub(const utaha::Float3 &pos, int tex_id) {
 
 
     //
-}
-
-void DrawFont(int font_tex_id) {
-    //glDisable(GL_LIGHTING);
-    //glDisable(GL_DEPTH_TEST);
-    glEnable(GL_TEXTURE_2D);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    glBindTexture(GL_TEXTURE_2D, font_tex_id);
-    glColor3f(0, 1, 1);
-    glBegin(GL_QUADS);
-    {
-        glTexCoord2f(0.0, 0.0); glVertex3f(0, 0, -1);
-        glTexCoord2f(0.0, 1.0); glVertex3f(0, 1, -1);
-        glTexCoord2f(1.0, 1.0); glVertex3f(1, 1, -1);
-        glTexCoord2f(1.0, 0.0); glVertex3f(1, 0, -1);
-    }
-    glEnd();
-
-    glDisable(GL_BLEND);
-    glDisable(GL_TEXTURE_2D);
-//    glEnable(GL_DEPTH_TEST);
-//    glEnable(GL_LIGHTING);
 }
 
 int LoadNormal2DTexture(const char *file_name) {
@@ -127,7 +104,7 @@ int LoadNormal2DTexture(const char *file_name) {
 int main(int argc, char *argv[]) {
     glfwInit();
 
-    auto window = glfwCreateWindow(400, 400, "demo", nullptr, nullptr);
+    auto window = glfwCreateWindow(700, 700, "demo", nullptr, nullptr);
     if (!window) {
         return 1;
     }
@@ -150,7 +127,13 @@ int main(int argc, char *argv[]) {
         return 255;
     }
 
+    auto character = utaha::CreateASCIICharacter(txt_tex_id);
+    character->set_size({0.05, 0.05});
+
+    auto club_size = 1.0;
     while (!glfwWindowShouldClose(window)) {
+        auto last_ts = glfwGetTime();
+
         glClear(GL_COLOR_BUFFER_BIT);
         glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -161,7 +144,7 @@ int main(int argc, char *argv[]) {
         glRotated(20, 0.0, 1.0, 0.0);
 
         glPushMatrix();
-        glScaled(0.2, 0.2, 0.2);
+        glScaled(0.1, 0.1, 0.1);
 
         DrawClub({-1, 1, -1}, club_tex_id);
         DrawClub({1, 1, -1}, club_tex_id);
@@ -173,7 +156,11 @@ int main(int argc, char *argv[]) {
         glPopMatrix();
         glPopMatrix();
 
-        DrawFont(txt_tex_id);
+        character->set_color({1, 1, 0});
+        character->set_position({-1, 0.95, -1});
+        character->Printf("fps:%0.2f", 0.001/(glfwGetTime() - last_ts));
+        character->set_position({-1, 0.9, -1});
+        character->Printf("demo v0.1");
 
         glfwSwapBuffers(window);
         glfwPollEvents();
