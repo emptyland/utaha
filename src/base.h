@@ -5,17 +5,20 @@
 
 namespace utaha {
 
+#define DISALLOW_IMPLICIT_CONSTRUCTORS(clazz_name) \
+    clazz_name (const clazz_name &) = delete;      \
+    clazz_name (clazz_name &&) = delete;           \
+    void operator = (const clazz_name &) = delete;
+
 /**
  * disable copy constructor, assign operator function.
  *
  */
-class DisableCopyAndAssign {
+class DisallowImplicitConstructors {
 public:
-    DisableCopyAndAssign() = default;
+    DisallowImplicitConstructors() = default;
 
-    DisableCopyAndAssign(const DisableCopyAndAssign &) = delete;
-    DisableCopyAndAssign(DisableCopyAndAssign &&) = delete;
-    void operator = (const DisableCopyAndAssign &) = delete;
+    DISALLOW_IMPLICIT_CONSTRUCTORS(DisallowImplicitConstructors)
 };
 
 /**

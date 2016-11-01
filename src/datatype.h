@@ -30,6 +30,14 @@ typedef Vector3<int>    Int3;
 typedef Vector3<float>  Float3;
 typedef Vector3<double> Double3;
 
+struct Texture2DBinder {
+    int tex_id;
+    Float2 _1;
+    Float2 _2;
+    Float2 _3;
+    Float2 _4;
+};
+
 
 } // namespace utaha
 

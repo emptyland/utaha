@@ -7,7 +7,7 @@
 
 namespace utaha {
 
-class Character8 : public DisableCopyAndAssign {
+class Character8 : public DisallowImplicitConstructors {
 public:
     Character8();
     virtual ~Character8();
