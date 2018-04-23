@@ -9,4 +9,8 @@ UICommandList::UICommandList(int id)
 UICommandList::~UICommandList() {
 }
 
+int UICommandList::RegisterTo(lua_State *L) {
+    return 0;
+}
+
 } // namespace utaha

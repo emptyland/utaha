@@ -11,7 +11,8 @@
 		23B83F631D7585B400DBC418 /* lodepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23B83F601D7585B400DBC418 /* lodepng.cpp */; };
 		23B83F6F1D791A6700DBC418 /* character_ascii.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23B83F6E1D791A6700DBC418 /* character_ascii.cc */; };
 		23B83F711D79213700DBC418 /* character.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23B83F701D79213700DBC418 /* character.cc */; };
-		23C9A3FB1D70238000DAA480 /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C9A3FA1D70238000DAA480 /* main.cc */; };
+		23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785B208DB72E00A8EA4F /* render-entity.cc */; };
+		23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785F208DBB3600A8EA4F /* root-render-entity.cc */; };
 		23C9A4021D70241E00DAA480 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C9A3FC1D70241E00DAA480 /* libfreetype.a */; };
 		23C9A4031D70241E00DAA480 /* libgflags.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C9A3FD1D70241E00DAA480 /* libgflags.a */; };
 		23C9A4041D70241E00DAA480 /* libGLEW.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C9A3FE1D70241E00DAA480 /* libGLEW.a */; };
@@ -29,6 +30,11 @@
 		23D14F8E1DC83B8E001E4EFC /* ui_layout.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23D14F8D1DC83B8E001E4EFC /* ui_layout.cc */; };
 		23D14F901DC83C51001E4EFC /* ui_command_list.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23D14F8F1DC83C51001E4EFC /* ui_command_list.cc */; };
 		23D14F921DC83F2C001E4EFC /* script_bootstrap.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23D14F911DC83F2C001E4EFC /* script_bootstrap.cc */; };
+		23E1D75E208889CB00F9EF96 /* editor-main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23E1D75D208889CB00F9EF96 /* editor-main.cc */; };
+		23FD3C8020888C7800975CBB /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23FD3C7F20888C7800975CBB /* SDL2.framework */; };
+		23FD3C8220888C7B00975CBB /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23FD3C8120888C7B00975CBB /* SDL2_image.framework */; };
+		23FD3C8420888D3600975CBB /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23FD3C8320888D3600975CBB /* SDL2_ttf.framework */; };
+		23FD3C8620888D3900975CBB /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23FD3C8520888D3900975CBB /* SDL2_mixer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -53,8 +59,11 @@
 		23B83F6D1D79177200DBC418 /* base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base.h; sourceTree = "<group>"; };
 		23B83F6E1D791A6700DBC418 /* character_ascii.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = character_ascii.cc; sourceTree = "<group>"; };
 		23B83F701D79213700DBC418 /* character.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = character.cc; sourceTree = "<group>"; };
+		23C6785A208DB6BA00A8EA4F /* render-entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "render-entity.h"; sourceTree = "<group>"; };
+		23C6785B208DB72E00A8EA4F /* render-entity.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "render-entity.cc"; sourceTree = "<group>"; };
+		23C6785E208DBAE400A8EA4F /* root-render-entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "root-render-entity.h"; sourceTree = "<group>"; };
+		23C6785F208DBB3600A8EA4F /* root-render-entity.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "root-render-entity.cc"; sourceTree = "<group>"; };
 		23C9A3EF1D7022EE00DAA480 /* utaha */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = utaha; sourceTree = BUILT_PRODUCTS_DIR; };
-		23C9A3FA1D70238000DAA480 /* main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cc; sourceTree = "<group>"; };
 		23C9A3FC1D70241E00DAA480 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = "../third-party/libs/libfreetype.a"; sourceTree = "<group>"; };
 		23C9A3FD1D70241E00DAA480 /* libgflags.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgflags.a; path = "../third-party/libs/libgflags.a"; sourceTree = "<group>"; };
 		23C9A3FE1D70241E00DAA480 /* libGLEW.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGLEW.a; path = "../third-party/libs/libGLEW.a"; sourceTree = "<group>"; };
@@ -79,6 +88,11 @@
 		23D14F8D1DC83B8E001E4EFC /* ui_layout.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ui_layout.cc; sourceTree = "<group>"; };
 		23D14F8F1DC83C51001E4EFC /* ui_command_list.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ui_command_list.cc; sourceTree = "<group>"; };
 		23D14F911DC83F2C001E4EFC /* script_bootstrap.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = script_bootstrap.cc; sourceTree = "<group>"; };
+		23E1D75D208889CB00F9EF96 /* editor-main.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "editor-main.cc"; sourceTree = "<group>"; };
+		23FD3C7F20888C7800975CBB /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
+		23FD3C8120888C7B00975CBB /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
+		23FD3C8320888D3600975CBB /* SDL2_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_ttf.framework; path = ../../../../../Library/Frameworks/SDL2_ttf.framework; sourceTree = "<group>"; };
+		23FD3C8520888D3900975CBB /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = ../../../../../Library/Frameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +106,10 @@
 				23C9A4151D70249700DAA480 /* GLKit.framework in Frameworks */,
 				23C9A4131D70249000DAA480 /* CoreVideo.framework in Frameworks */,
 				23C9A4091D70243B00DAA480 /* OpenGL.framework in Frameworks */,
+				23FD3C8020888C7800975CBB /* SDL2.framework in Frameworks */,
+				23FD3C8220888C7B00975CBB /* SDL2_image.framework in Frameworks */,
+				23FD3C8420888D3600975CBB /* SDL2_ttf.framework in Frameworks */,
+				23FD3C8620888D3900975CBB /* SDL2_mixer.framework in Frameworks */,
 				23C9A4021D70241E00DAA480 /* libfreetype.a in Frameworks */,
 				23C9A4031D70241E00DAA480 /* libgflags.a in Frameworks */,
 				23C9A4041D70241E00DAA480 /* libGLEW.a in Frameworks */,
@@ -137,6 +155,7 @@
 				23C9A3F91D70230C00DAA480 /* Include */,
 				23C9A3F11D7022EE00DAA480 /* Sources */,
 				23C9A3F01D7022EE00DAA480 /* Products */,
+				23FD3C7E20888C7800975CBB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -152,13 +171,15 @@
 			isa = PBXGroup;
 			children = (
 				23C9E67A1D9CFB9B0078DFFF /* lua_utils.cc */,
-				23C9A3FA1D70238000DAA480 /* main.cc */,
 				23B83F701D79213700DBC418 /* character.cc */,
 				23B83F6E1D791A6700DBC418 /* character_ascii.cc */,
 				23C9E6721D9CFA820078DFFF /* texture2d_collection.cc */,
 				23D14F8D1DC83B8E001E4EFC /* ui_layout.cc */,
 				23D14F8F1DC83C51001E4EFC /* ui_command_list.cc */,
 				23D14F911DC83F2C001E4EFC /* script_bootstrap.cc */,
+				23E1D75D208889CB00F9EF96 /* editor-main.cc */,
+				23C6785B208DB72E00A8EA4F /* render-entity.cc */,
+				23C6785F208DBB3600A8EA4F /* root-render-entity.cc */,
 			);
 			name = Sources;
 			path = ../src;
@@ -174,9 +195,22 @@
 				23C9E6711D9CF8810078DFFF /* texture2d_collection.h */,
 				23D14F8B1DC8370E001E4EFC /* ui_command_list.h */,
 				23D14F8C1DC839F9001E4EFC /* ui_layout.h */,
+				23C6785A208DB6BA00A8EA4F /* render-entity.h */,
+				23C6785E208DBAE400A8EA4F /* root-render-entity.h */,
 			);
 			name = Include;
 			path = ../src;
+			sourceTree = "<group>";
+		};
+		23FD3C7E20888C7800975CBB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				23FD3C8520888D3900975CBB /* SDL2_mixer.framework */,
+				23FD3C8320888D3600975CBB /* SDL2_ttf.framework */,
+				23FD3C8120888C7B00975CBB /* SDL2_image.framework */,
+				23FD3C7F20888C7800975CBB /* SDL2.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,14 +269,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */,
 				23C9E6731D9CFA820078DFFF /* texture2d_collection.cc in Sources */,
 				23D14F921DC83F2C001E4EFC /* script_bootstrap.cc in Sources */,
 				23B83F631D7585B400DBC418 /* lodepng.cpp in Sources */,
+				23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */,
 				23C9E67C1D9CFB9B0078DFFF /* lua_utils.cc in Sources */,
 				23D14F8E1DC83B8E001E4EFC /* ui_layout.cc in Sources */,
+				23E1D75E208889CB00F9EF96 /* editor-main.cc in Sources */,
 				23B83F711D79213700DBC418 /* character.cc in Sources */,
 				23D14F901DC83C51001E4EFC /* ui_command_list.cc in Sources */,
-				23C9A3FB1D70238000DAA480 /* main.cc in Sources */,
 				23B83F621D7585B400DBC418 /* lodepng_util.cpp in Sources */,
 				23B83F6F1D791A6700DBC418 /* character_ascii.cc in Sources */,
 			);
@@ -339,6 +375,10 @@
 		23C9A3F71D7022EE00DAA480 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -346,6 +386,10 @@
 		23C9A3F81D7022EE00DAA480 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
