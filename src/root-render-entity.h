@@ -10,7 +10,7 @@ public:
     RootRenderEntity();
     virtual ~RootRenderEntity();
 
-    virtual void OnRender(SDL_Renderer *rederer) override;
+    virtual int OnRender(SDL_Renderer *rederer) override;
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(RootRenderEntity);
 

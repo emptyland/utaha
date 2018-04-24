@@ -7,12 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		239F4809208ED2EB00FD09AD /* interactive-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F4808208ED2EB00FD09AD /* interactive-entity.cc */; };
+		239F480D208ED5CF00FD09AD /* ui-component.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F480C208ED5CF00FD09AD /* ui-component.cc */; };
+		239F4810208EE17E00FD09AD /* ui-flat-button.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F480F208EE17E00FD09AD /* ui-flat-button.cc */; };
 		23B83F621D7585B400DBC418 /* lodepng_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23B83F5F1D7585B400DBC418 /* lodepng_util.cpp */; };
 		23B83F631D7585B400DBC418 /* lodepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23B83F601D7585B400DBC418 /* lodepng.cpp */; };
 		23B83F6F1D791A6700DBC418 /* character_ascii.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23B83F6E1D791A6700DBC418 /* character_ascii.cc */; };
 		23B83F711D79213700DBC418 /* character.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23B83F701D79213700DBC418 /* character.cc */; };
 		23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785B208DB72E00A8EA4F /* render-entity.cc */; };
 		23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785F208DBB3600A8EA4F /* root-render-entity.cc */; };
+		23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C67862208DC4FD00A8EA4F /* sample-render-entity.cc */; };
 		23C9A4021D70241E00DAA480 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C9A3FC1D70241E00DAA480 /* libfreetype.a */; };
 		23C9A4031D70241E00DAA480 /* libgflags.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C9A3FD1D70241E00DAA480 /* libgflags.a */; };
 		23C9A4041D70241E00DAA480 /* libGLEW.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C9A3FE1D70241E00DAA480 /* libGLEW.a */; };
@@ -50,6 +54,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		239F4807208EC88D00FD09AD /* interactive-entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "interactive-entity.h"; sourceTree = "<group>"; };
+		239F4808208ED2EB00FD09AD /* interactive-entity.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "interactive-entity.cc"; sourceTree = "<group>"; };
+		239F480A208ED43D00FD09AD /* interactive-listenner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "interactive-listenner.h"; sourceTree = "<group>"; };
+		239F480B208ED57F00FD09AD /* ui-component.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-component.h"; sourceTree = "<group>"; };
+		239F480C208ED5CF00FD09AD /* ui-component.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-component.cc"; sourceTree = "<group>"; };
+		239F480E208EE14000FD09AD /* ui-flat-button.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-flat-button.h"; sourceTree = "<group>"; };
+		239F480F208EE17E00FD09AD /* ui-flat-button.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-flat-button.cc"; sourceTree = "<group>"; };
+		239F4811208F226A00FD09AD /* ui-flat-input-box.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-flat-input-box.h"; sourceTree = "<group>"; };
 		23B83F5D1D7585B400DBC418 /* lodepng_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lodepng_util.h; path = ../src/lodepng/lodepng_util.h; sourceTree = "<group>"; };
 		23B83F5E1D7585B400DBC418 /* lodepng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lodepng.h; path = ../src/lodepng/lodepng.h; sourceTree = "<group>"; };
 		23B83F5F1D7585B400DBC418 /* lodepng_util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lodepng_util.cpp; path = ../src/lodepng/lodepng_util.cpp; sourceTree = "<group>"; };
@@ -63,6 +75,8 @@
 		23C6785B208DB72E00A8EA4F /* render-entity.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "render-entity.cc"; sourceTree = "<group>"; };
 		23C6785E208DBAE400A8EA4F /* root-render-entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "root-render-entity.h"; sourceTree = "<group>"; };
 		23C6785F208DBB3600A8EA4F /* root-render-entity.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "root-render-entity.cc"; sourceTree = "<group>"; };
+		23C67861208DC49000A8EA4F /* sample-render-entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "sample-render-entity.h"; sourceTree = "<group>"; };
+		23C67862208DC4FD00A8EA4F /* sample-render-entity.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "sample-render-entity.cc"; sourceTree = "<group>"; };
 		23C9A3EF1D7022EE00DAA480 /* utaha */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = utaha; sourceTree = BUILT_PRODUCTS_DIR; };
 		23C9A3FC1D70241E00DAA480 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = "../third-party/libs/libfreetype.a"; sourceTree = "<group>"; };
 		23C9A3FD1D70241E00DAA480 /* libgflags.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgflags.a; path = "../third-party/libs/libgflags.a"; sourceTree = "<group>"; };
@@ -180,6 +194,10 @@
 				23E1D75D208889CB00F9EF96 /* editor-main.cc */,
 				23C6785B208DB72E00A8EA4F /* render-entity.cc */,
 				23C6785F208DBB3600A8EA4F /* root-render-entity.cc */,
+				23C67862208DC4FD00A8EA4F /* sample-render-entity.cc */,
+				239F4808208ED2EB00FD09AD /* interactive-entity.cc */,
+				239F480C208ED5CF00FD09AD /* ui-component.cc */,
+				239F480F208EE17E00FD09AD /* ui-flat-button.cc */,
 			);
 			name = Sources;
 			path = ../src;
@@ -197,6 +215,12 @@
 				23D14F8C1DC839F9001E4EFC /* ui_layout.h */,
 				23C6785A208DB6BA00A8EA4F /* render-entity.h */,
 				23C6785E208DBAE400A8EA4F /* root-render-entity.h */,
+				239F480A208ED43D00FD09AD /* interactive-listenner.h */,
+				239F4807208EC88D00FD09AD /* interactive-entity.h */,
+				23C67861208DC49000A8EA4F /* sample-render-entity.h */,
+				239F480B208ED57F00FD09AD /* ui-component.h */,
+				239F480E208EE14000FD09AD /* ui-flat-button.h */,
+				239F4811208F226A00FD09AD /* ui-flat-input-box.h */,
 			);
 			name = Include;
 			path = ../src;
@@ -269,7 +293,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				239F4810208EE17E00FD09AD /* ui-flat-button.cc in Sources */,
+				239F480D208ED5CF00FD09AD /* ui-component.cc in Sources */,
 				23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */,
+				239F4809208ED2EB00FD09AD /* interactive-entity.cc in Sources */,
 				23C9E6731D9CFA820078DFFF /* texture2d_collection.cc in Sources */,
 				23D14F921DC83F2C001E4EFC /* script_bootstrap.cc in Sources */,
 				23B83F631D7585B400DBC418 /* lodepng.cpp in Sources */,
@@ -281,6 +308,7 @@
 				23D14F901DC83C51001E4EFC /* ui_command_list.cc in Sources */,
 				23B83F621D7585B400DBC418 /* lodepng_util.cpp in Sources */,
 				23B83F6F1D791A6700DBC418 /* character_ascii.cc in Sources */,
+				23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

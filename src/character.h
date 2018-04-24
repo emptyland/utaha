@@ -16,9 +16,9 @@ public:
 
     inline void Printf(const char *fmt, ...);
 
-    DEF_PROP_RMW(Float3, position)
-    DEF_PROP_RMW(Float3, color)
-    DEF_PROP_RMW(Float2, size)
+    DEF_VAL_PROP_RMW(Float3, position)
+    DEF_VAL_PROP_RMW(Float3, color)
+    DEF_VAL_PROP_RMW(Float2, size)
 private:
     Float3 position_;
     Float3 color_;

@@ -11,16 +11,13 @@ public:
     RenderEntity();
     virtual ~RenderEntity();
 
-    virtual void OnRender(SDL_Renderer *renderer);
+    virtual int OnRender(SDL_Renderer *renderer);
 
     DEF_PTR_PROP_RW(RenderEntity, lchild);
     DEF_PTR_PROP_RW(RenderEntity, rchild);
     DEF_PTR_PROP_RW(RenderEntity, parent);
 
-    void Remove() {
-        parent_->lchild_ = lchild_;
-        parent_->rchild_ = rchild_;
-    }
+    void Remove();
 
     void InsertRR(RenderEntity *node) {
         node->rchild_ = rchild_;
