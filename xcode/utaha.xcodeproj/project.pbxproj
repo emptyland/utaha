@@ -10,6 +10,7 @@
 		239F4809208ED2EB00FD09AD /* interactive-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F4808208ED2EB00FD09AD /* interactive-entity.cc */; };
 		239F480D208ED5CF00FD09AD /* ui-component.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F480C208ED5CF00FD09AD /* ui-component.cc */; };
 		239F4810208EE17E00FD09AD /* ui-flat-button.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F480F208EE17E00FD09AD /* ui-flat-button.cc */; };
+		239F4813208F233B00FD09AD /* ui-flat-input-box.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F4812208F233B00FD09AD /* ui-flat-input-box.cc */; };
 		23B83F621D7585B400DBC418 /* lodepng_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23B83F5F1D7585B400DBC418 /* lodepng_util.cpp */; };
 		23B83F631D7585B400DBC418 /* lodepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23B83F601D7585B400DBC418 /* lodepng.cpp */; };
 		23B83F6F1D791A6700DBC418 /* character_ascii.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23B83F6E1D791A6700DBC418 /* character_ascii.cc */; };
@@ -62,6 +63,7 @@
 		239F480E208EE14000FD09AD /* ui-flat-button.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-flat-button.h"; sourceTree = "<group>"; };
 		239F480F208EE17E00FD09AD /* ui-flat-button.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-flat-button.cc"; sourceTree = "<group>"; };
 		239F4811208F226A00FD09AD /* ui-flat-input-box.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-flat-input-box.h"; sourceTree = "<group>"; };
+		239F4812208F233B00FD09AD /* ui-flat-input-box.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-flat-input-box.cc"; sourceTree = "<group>"; };
 		23B83F5D1D7585B400DBC418 /* lodepng_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lodepng_util.h; path = ../src/lodepng/lodepng_util.h; sourceTree = "<group>"; };
 		23B83F5E1D7585B400DBC418 /* lodepng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lodepng.h; path = ../src/lodepng/lodepng.h; sourceTree = "<group>"; };
 		23B83F5F1D7585B400DBC418 /* lodepng_util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lodepng_util.cpp; path = ../src/lodepng/lodepng_util.cpp; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 				239F4808208ED2EB00FD09AD /* interactive-entity.cc */,
 				239F480C208ED5CF00FD09AD /* ui-component.cc */,
 				239F480F208EE17E00FD09AD /* ui-flat-button.cc */,
+				239F4812208F233B00FD09AD /* ui-flat-input-box.cc */,
 			);
 			name = Sources;
 			path = ../src;
@@ -296,6 +299,7 @@
 				239F4810208EE17E00FD09AD /* ui-flat-button.cc in Sources */,
 				239F480D208ED5CF00FD09AD /* ui-component.cc in Sources */,
 				23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */,
+				239F4813208F233B00FD09AD /* ui-flat-input-box.cc in Sources */,
 				239F4809208ED2EB00FD09AD /* interactive-entity.cc in Sources */,
 				23C9E6731D9CFA820078DFFF /* texture2d_collection.cc in Sources */,
 				23D14F921DC83F2C001E4EFC /* script_bootstrap.cc in Sources */,

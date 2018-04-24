@@ -1,6 +1,7 @@
 #include "sample-render-entity.h"
 #include "root-render-entity.h"
 #include "ui-flat-button.h"
+#include "ui-flat-input-box.h"
 #include "interactive-listenner.h"
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
@@ -67,11 +68,21 @@ int render_demo(int argc, char *argv[]) {
     btn1->SetPressedText("- -", {0, 0, 0}, font, renderer);
     btn1->AddListenner(listenner);
 
+    auto inb1 = new utaha::UIFlatInputBox(font);
+    inb1->set_rect({.x = 20, .y = 100, .w = 180, .h = 48});
+    inb1->set_id(2);
+    inb1->set_name("demo");
+    inb1->set_bg_color({0x80, 0x8b, 0xff});
+    inb1->set_text_color({0xff, 0xff, 0xff});
+    inb1->set_border_color({0xff, 0xff, 0xff});
+    inb1->AddListenner(listenner);
+
     //t1->InsertLL(t3);
     root.InsertLL(t1);
     root.InsertRL(t2);
     root.InsertRL(t3);
     root.InsertRL(btn1);
+    root.InsertRL(inb1);
 
     bool quit = false;
     bool is_break = false;
@@ -85,6 +96,7 @@ int render_demo(int argc, char *argv[]) {
             }
 
             btn1->OnEvent(&e, &is_break);
+            inb1->OnEvent(&e, &is_break);
         }
         //Clear screen
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
