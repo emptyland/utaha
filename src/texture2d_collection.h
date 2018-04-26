@@ -3,7 +3,7 @@
 
 #include "base.h"
 #include "datatype.h"
-#include "lua_utils.h"
+#include "lua-utils.h"
 #include <map>
 
 namespace utaha {

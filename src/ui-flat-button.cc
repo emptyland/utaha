@@ -30,11 +30,29 @@ UIFlatButton::UIFlatButton() {
     }
 
     if (is_pressed_) {
+        int dw = (rect().w - pressed_->surface()->w) / 2;
+        int dh = (rect().h - pressed_->surface()->h) / 2;
+
+        pressed_->set_rect({
+            .x = rect().x + dw,
+            .y = rect().y + dh,
+            .w = pressed_->surface()->w,
+            .h = pressed_->surface()->h,
+        });
         SDL_SetRenderDrawColor(renderer, pressed_color_.r,
                                pressed_color_.g,
                                pressed_color_.b,
                                pressed_color_.a);
     } else {
+        int dw = (rect().w - normal_->surface()->w) / 2;
+        int dh = (rect().h - normal_->surface()->h) / 2;
+
+        normal_->set_rect({
+            .x = rect().x + dw,
+            .y = rect().y + dh,
+            .w = normal_->surface()->w,
+            .h = normal_->surface()->h,
+        });
         SDL_SetRenderDrawColor(renderer, normal_color_.r,
                                normal_color_.g,
                                normal_color_.b,

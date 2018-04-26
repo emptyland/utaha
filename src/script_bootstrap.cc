@@ -1,5 +1,5 @@
 #include "ui_command_list.h"
-#include "lua_utils.h"
+#include "lua-utils.h"
 #include "glog/logging.h"
 
 namespace utaha {
@@ -13,7 +13,7 @@ RegisterEntry boot_entries[] = {
 
     // UI part
 
-    { "ui.CommandList", &UICommandList::RegisterTo },
+//    { "ui.CommandList", &UICommandList::RegisterTo },
 
     // EOF
     { .name = nullptr, .lua_callback = nullptr },

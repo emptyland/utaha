@@ -2,6 +2,8 @@
 #include "root-render-entity.h"
 #include "ui-flat-button.h"
 #include "ui-flat-input-box.h"
+#include "ui-layout.h"
+#include "ui-flat-menu.h"
 #include "interactive-listenner.h"
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
@@ -26,12 +28,122 @@ public:
 
 int texture_demo(int argc, char *argv[]);
 int render_demo(int argc, char *argv[]);
+int layout_demo(int argc, char *argv[]);
 
 int main(int argc, char *argv[]) {
     //return texture_demo(argc, argv);
-    return render_demo(argc, argv);
+    //return render_demo(argc, argv);
+    return layout_demo(argc, argv);
 }
 
+int layout_demo(int argc, char *argv[]) {
+    SDL_Init(SDL_INIT_VIDEO);
+    TTF_Init();
+    SDL_Window *main_window = SDL_CreateWindow("render", SDL_WINDOWPOS_UNDEFINED,
+                                               SDL_WINDOWPOS_UNDEFINED, 288 * 2, 512,
+                                               SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE);
+    SDL_Renderer *renderer = SDL_CreateRenderer(main_window, -1, SDL_RENDERER_ACCELERATED);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
+
+    TTF_Font *font = TTF_OpenFont("assets/fonts/default.ttf", 30);
+    utaha::RootRenderEntity root;
+
+    auto layout = new utaha::UILayout(main_window);
+    layout->set_debug_mode(true);
+    layout->set_padding_size(5);
+    layout->set_vertical_alignment(utaha::UILayout::ALIGN_LEFT_OR_TOP);
+    layout->set_horizontal_aligment(utaha::UILayout::ALIGN_CENTER);
+    auto row = layout->AddRow(utaha::UILayout::ALIGN_LEFT_OR_TOP);
+
+    auto btn1 = new utaha::UIFlatButton();
+    btn1->set_id(1);
+    btn1->set_name("demo");
+    btn1->set_normal_color({0x00, 0x7b, 0xff});
+    btn1->set_pressed_color({0x80, 0x8b, 0xff});
+    btn1->mutable_rect()->w = 80;
+    btn1->mutable_rect()->h = 40;
+    btn1->SetNormalText("OK", {0xff, 0xff, 0xff}, font, renderer);
+    btn1->SetPressedText("- -", {0, 0, 0}, font, renderer);
+    row->AddComponent(btn1);
+
+    btn1 = new utaha::UIFlatButton();
+    btn1->set_id(2);
+    btn1->set_name("demo");
+    btn1->set_normal_color({0x00, 0x7b, 0xff});
+    btn1->set_pressed_color({0x80, 0x8b, 0xff});
+    btn1->mutable_rect()->w = 80;
+    btn1->mutable_rect()->h = 40;
+    btn1->SetNormalText("NO", {0xff, 0xff, 0xff}, font, renderer);
+    btn1->SetPressedText("- -", {0, 0, 0}, font, renderer);
+    row->AddComponent(btn1);
+
+    btn1 = new utaha::UIFlatButton();
+    btn1->set_id(3);
+    btn1->set_name("demo");
+    btn1->set_normal_color({0x00, 0x7b, 0xff});
+    btn1->set_pressed_color({0x80, 0x8b, 0xff});
+    btn1->mutable_rect()->w = 80;
+    btn1->mutable_rect()->h = 40;
+    btn1->SetNormalText("DEMO", {0xff, 0xff, 0xff}, font, renderer);
+    btn1->SetPressedText("- -", {0, 0, 0}, font, renderer);
+    row->AddComponent(btn1);
+
+    auto inb1 = new utaha::UIFlatInputBox(font);
+    inb1->mutable_rect()->w = 180;
+    inb1->mutable_rect()->h = 48;
+    inb1->set_id(2);
+    inb1->set_name("demo");
+    inb1->set_bg_color({0x80, 0x8b, 0xff});
+    inb1->set_text_color({0xff, 0xff, 0xff});
+    inb1->set_border_color({0xff, 0xff, 0xff});
+    row = layout->AddRow(utaha::UILayout::ALIGN_CENTER);
+    row->AddComponent(inb1);
+
+    auto menu = new utaha::UIFlatMenu(font);
+    menu->set_bg_color({0x80, 0x8b, 0xff});
+    menu->set_hot_color({0x00, 0x7b, 0xff});
+    menu->set_font_color({0xff, 0xff, 0xff});
+    menu->set_border_color({0xff, 0xff, 0xff});
+    menu->AddItem("Open", 1, nullptr);
+    menu->AddDiv();
+    menu->AddItem("Save", 2, nullptr);
+    menu->AddItem("Save as ...", 3, nullptr);
+
+    root.InsertLL(layout);
+    root.InsertRR(menu);
+
+    bool quit = false;
+    bool is_break = false;
+    SDL_Event e;
+    while(!quit) {
+        //Handle events on queue
+        while(SDL_PollEvent(&e) != 0) {
+            //User requests quit
+            if(e.type == SDL_QUIT) {
+                quit = true;
+            }
+            layout->OnEvent(&e, &is_break);
+            menu->OnEvent(&e, &is_break);
+
+            if (e.type == SDL_MOUSEBUTTONUP) {
+                if (e.button.button == 3) {
+                    menu->Popup(e.button.x, e.button.y, renderer);
+                }
+            }
+        }
+        //Clear screen
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
+        SDL_RenderClear(renderer);
+        root.OnRender(renderer);
+        SDL_RenderPresent(renderer);
+    }
+
+    //Destroy window
+    SDL_DestroyWindow(main_window);
+    //Quit SDL subsystems
+    SDL_Quit();
+    return 0;
+}
 
 int render_demo(int argc, char *argv[]) {
     SDL_Init(SDL_INIT_VIDEO);
