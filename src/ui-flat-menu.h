@@ -50,6 +50,8 @@ public:
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIFlatMenu);
 private:
+    SDL_Texture *CreateTexture(int x, int y, SDL_Renderer *renderer);
+
     TTF_Font *font_;
     SDL_Color border_color_ = {0, 0, 0, 0};
     SDL_Color bg_color_ = {0, 0, 0, 0};
@@ -58,6 +60,7 @@ private:
     std::vector<Item> items_;
     SDL_Texture *texture_ = nullptr;
     int padding_size_ = 2;
+    bool is_changed_ = false;
 }; // class UIFlatMenu
 
 } // namespace utaha

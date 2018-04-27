@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		23044E1E2092CDBD001924AA /* ui-flat-menu-group.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23044E1D2092CDBD001924AA /* ui-flat-menu-group.cc */; };
+		23044E21209326D2001924AA /* ui-component-factory.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23044E20209326D2001924AA /* ui-component-factory.cc */; };
 		230822FC20900BE2003804EA /* ui-layout.cc in Sources */ = {isa = PBXBuildFile; fileRef = 230822FB20900BE2003804EA /* ui-layout.cc */; };
 		2308230020908D7C003804EA /* ui-flat-menu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 230822FF20908D7C003804EA /* ui-flat-menu.cc */; };
 		239F4809208ED2EB00FD09AD /* interactive-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F4808208ED2EB00FD09AD /* interactive-entity.cc */; };
@@ -15,8 +17,6 @@
 		239F4813208F233B00FD09AD /* ui-flat-input-box.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F4812208F233B00FD09AD /* ui-flat-input-box.cc */; };
 		23B83F621D7585B400DBC418 /* lodepng_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23B83F5F1D7585B400DBC418 /* lodepng_util.cpp */; };
 		23B83F631D7585B400DBC418 /* lodepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23B83F601D7585B400DBC418 /* lodepng.cpp */; };
-		23B83F6F1D791A6700DBC418 /* character_ascii.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23B83F6E1D791A6700DBC418 /* character_ascii.cc */; };
-		23B83F711D79213700DBC418 /* character.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23B83F701D79213700DBC418 /* character.cc */; };
 		23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785B208DB72E00A8EA4F /* render-entity.cc */; };
 		23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785F208DBB3600A8EA4F /* root-render-entity.cc */; };
 		23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C67862208DC4FD00A8EA4F /* sample-render-entity.cc */; };
@@ -32,9 +32,7 @@
 		23C9A4151D70249700DAA480 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C9A4141D70249700DAA480 /* GLKit.framework */; };
 		23C9A4171D70249E00DAA480 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C9A4161D70249E00DAA480 /* GLUT.framework */; };
 		23C9A4191D702F9D00DAA480 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C9A4181D702F9D00DAA480 /* IOKit.framework */; };
-		23C9E6731D9CFA820078DFFF /* texture2d_collection.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C9E6721D9CFA820078DFFF /* texture2d_collection.cc */; };
 		23C9E67C1D9CFB9B0078DFFF /* lua-utils.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C9E67A1D9CFB9B0078DFFF /* lua-utils.cc */; };
-		23D14F921DC83F2C001E4EFC /* script_bootstrap.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23D14F911DC83F2C001E4EFC /* script_bootstrap.cc */; };
 		23E1D75E208889CB00F9EF96 /* editor-main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23E1D75D208889CB00F9EF96 /* editor-main.cc */; };
 		23FD3C8020888C7800975CBB /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23FD3C7F20888C7800975CBB /* SDL2.framework */; };
 		23FD3C8220888C7B00975CBB /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23FD3C8120888C7B00975CBB /* SDL2_image.framework */; };
@@ -55,6 +53,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		23044E1C2092CD2E001924AA /* ui-flat-menu-group.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-flat-menu-group.h"; sourceTree = "<group>"; };
+		23044E1D2092CDBD001924AA /* ui-flat-menu-group.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-flat-menu-group.cc"; sourceTree = "<group>"; };
+		23044E1F2093264D001924AA /* ui-component-factory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-component-factory.h"; sourceTree = "<group>"; };
+		23044E20209326D2001924AA /* ui-component-factory.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-component-factory.cc"; sourceTree = "<group>"; };
 		230822FA20900BA9003804EA /* ui-layout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-layout.h"; sourceTree = "<group>"; };
 		230822FB20900BE2003804EA /* ui-layout.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-layout.cc"; sourceTree = "<group>"; };
 		230822FE20908D33003804EA /* ui-flat-menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ui-flat-menu.h"; sourceTree = "<group>"; };
@@ -73,10 +75,7 @@
 		23B83F5F1D7585B400DBC418 /* lodepng_util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lodepng_util.cpp; path = ../src/lodepng/lodepng_util.cpp; sourceTree = "<group>"; };
 		23B83F601D7585B400DBC418 /* lodepng.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lodepng.cpp; path = ../src/lodepng/lodepng.cpp; sourceTree = "<group>"; };
 		23B83F6B1D78524800DBC418 /* datatype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = datatype.h; sourceTree = "<group>"; };
-		23B83F6C1D7916F400DBC418 /* character.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = character.h; sourceTree = "<group>"; };
 		23B83F6D1D79177200DBC418 /* base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base.h; sourceTree = "<group>"; };
-		23B83F6E1D791A6700DBC418 /* character_ascii.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = character_ascii.cc; sourceTree = "<group>"; };
-		23B83F701D79213700DBC418 /* character.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = character.cc; sourceTree = "<group>"; };
 		23C6785A208DB6BA00A8EA4F /* render-entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "render-entity.h"; sourceTree = "<group>"; };
 		23C6785B208DB72E00A8EA4F /* render-entity.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "render-entity.cc"; sourceTree = "<group>"; };
 		23C6785E208DBAE400A8EA4F /* root-render-entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "root-render-entity.h"; sourceTree = "<group>"; };
@@ -96,14 +95,11 @@
 		23C9A4141D70249700DAA480 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		23C9A4161D70249E00DAA480 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		23C9A4181D702F9D00DAA480 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		23C9E6711D9CF8810078DFFF /* texture2d_collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture2d_collection.h; sourceTree = "<group>"; };
-		23C9E6721D9CFA820078DFFF /* texture2d_collection.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texture2d_collection.cc; sourceTree = "<group>"; };
 		23C9E67A1D9CFB9B0078DFFF /* lua-utils.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "lua-utils.cc"; sourceTree = "<group>"; };
 		23C9E67B1D9CFB9B0078DFFF /* lua-utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "lua-utils.h"; sourceTree = "<group>"; };
 		23C9E67D1D9CFC450078DFFF /* LuaBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LuaBridge.h; path = "../src/lua-bridge/LuaBridge.h"; sourceTree = "<group>"; };
 		23C9E67E1D9CFC450078DFFF /* RefCountedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RefCountedObject.h; path = "../src/lua-bridge/RefCountedObject.h"; sourceTree = "<group>"; };
 		23C9E67F1D9CFC450078DFFF /* RefCountedPtr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RefCountedPtr.h; path = "../src/lua-bridge/RefCountedPtr.h"; sourceTree = "<group>"; };
-		23D14F911DC83F2C001E4EFC /* script_bootstrap.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = script_bootstrap.cc; sourceTree = "<group>"; };
 		23E1D75D208889CB00F9EF96 /* editor-main.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "editor-main.cc"; sourceTree = "<group>"; };
 		23FD3C7F20888C7800975CBB /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		23FD3C8120888C7B00975CBB /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
@@ -187,10 +183,6 @@
 			isa = PBXGroup;
 			children = (
 				23C9E67A1D9CFB9B0078DFFF /* lua-utils.cc */,
-				23B83F701D79213700DBC418 /* character.cc */,
-				23B83F6E1D791A6700DBC418 /* character_ascii.cc */,
-				23C9E6721D9CFA820078DFFF /* texture2d_collection.cc */,
-				23D14F911DC83F2C001E4EFC /* script_bootstrap.cc */,
 				23E1D75D208889CB00F9EF96 /* editor-main.cc */,
 				23C6785B208DB72E00A8EA4F /* render-entity.cc */,
 				23C6785F208DBB3600A8EA4F /* root-render-entity.cc */,
@@ -199,8 +191,10 @@
 				239F480C208ED5CF00FD09AD /* ui-component.cc */,
 				239F480F208EE17E00FD09AD /* ui-flat-button.cc */,
 				239F4812208F233B00FD09AD /* ui-flat-input-box.cc */,
+				23044E1D2092CDBD001924AA /* ui-flat-menu-group.cc */,
 				230822FF20908D7C003804EA /* ui-flat-menu.cc */,
 				230822FB20900BE2003804EA /* ui-layout.cc */,
+				23044E20209326D2001924AA /* ui-component-factory.cc */,
 			);
 			name = Sources;
 			path = ../src;
@@ -211,9 +205,7 @@
 			children = (
 				23C9E67B1D9CFB9B0078DFFF /* lua-utils.h */,
 				23B83F6B1D78524800DBC418 /* datatype.h */,
-				23B83F6C1D7916F400DBC418 /* character.h */,
 				23B83F6D1D79177200DBC418 /* base.h */,
-				23C9E6711D9CF8810078DFFF /* texture2d_collection.h */,
 				23C6785A208DB6BA00A8EA4F /* render-entity.h */,
 				23C6785E208DBAE400A8EA4F /* root-render-entity.h */,
 				239F480A208ED43D00FD09AD /* interactive-listenner.h */,
@@ -222,8 +214,10 @@
 				239F480B208ED57F00FD09AD /* ui-component.h */,
 				239F480E208EE14000FD09AD /* ui-flat-button.h */,
 				239F4811208F226A00FD09AD /* ui-flat-input-box.h */,
+				23044E1C2092CD2E001924AA /* ui-flat-menu-group.h */,
 				230822FE20908D33003804EA /* ui-flat-menu.h */,
 				230822FA20900BA9003804EA /* ui-layout.h */,
+				23044E1F2093264D001924AA /* ui-component-factory.h */,
 			);
 			name = Include;
 			path = ../src;
@@ -296,6 +290,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23044E21209326D2001924AA /* ui-component-factory.cc in Sources */,
 				239F4810208EE17E00FD09AD /* ui-flat-button.cc in Sources */,
 				239F480D208ED5CF00FD09AD /* ui-component.cc in Sources */,
 				23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */,
@@ -303,15 +298,12 @@
 				239F4813208F233B00FD09AD /* ui-flat-input-box.cc in Sources */,
 				2308230020908D7C003804EA /* ui-flat-menu.cc in Sources */,
 				239F4809208ED2EB00FD09AD /* interactive-entity.cc in Sources */,
-				23C9E6731D9CFA820078DFFF /* texture2d_collection.cc in Sources */,
-				23D14F921DC83F2C001E4EFC /* script_bootstrap.cc in Sources */,
+				23044E1E2092CDBD001924AA /* ui-flat-menu-group.cc in Sources */,
 				23B83F631D7585B400DBC418 /* lodepng.cpp in Sources */,
 				23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */,
 				23C9E67C1D9CFB9B0078DFFF /* lua-utils.cc in Sources */,
 				23E1D75E208889CB00F9EF96 /* editor-main.cc in Sources */,
-				23B83F711D79213700DBC418 /* character.cc in Sources */,
 				23B83F621D7585B400DBC418 /* lodepng_util.cpp in Sources */,
-				23B83F6F1D791A6700DBC418 /* character_ascii.cc in Sources */,
 				23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

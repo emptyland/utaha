@@ -3,6 +3,7 @@
 #include "ui-flat-button.h"
 #include "ui-flat-input-box.h"
 #include "ui-layout.h"
+#include "ui-flat-menu-group.h"
 #include "ui-flat-menu.h"
 #include "interactive-listenner.h"
 #include <SDL2/SDL.h>
@@ -24,16 +25,93 @@ public:
     virtual int OnMouseMove(utaha::UIComponent *sender, int x, int y, bool *is_break) override {
         return 0;
     }
+
+    virtual int OnCommand(utaha::UIComponent *sender, int cmd_id, void *param, bool *is_break) override {
+        return 0;
+    }
 };
 
 int texture_demo(int argc, char *argv[]);
 int render_demo(int argc, char *argv[]);
 int layout_demo(int argc, char *argv[]);
+int main_menu_demo(int argc, char *argv[]);
 
 int main(int argc, char *argv[]) {
     //return texture_demo(argc, argv);
     //return render_demo(argc, argv);
-    return layout_demo(argc, argv);
+    //return layout_demo(argc, argv);
+    return main_menu_demo(argc, argv);
+}
+
+int main_menu_demo(int argc, char *argv[]) {
+    SDL_Init(SDL_INIT_VIDEO);
+    TTF_Init();
+    SDL_Window *main_window = SDL_CreateWindow("render", SDL_WINDOWPOS_UNDEFINED,
+                                               SDL_WINDOWPOS_UNDEFINED, 288 * 2, 512,
+                                               SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE);
+    SDL_Renderer *renderer = SDL_CreateRenderer(main_window, -1, SDL_RENDERER_ACCELERATED);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
+
+    TTF_Font *font = TTF_OpenFont("assets/fonts/default.ttf", 20);
+    utaha::RootRenderEntity root;
+
+    auto layout = new utaha::UILayout(main_window);
+    layout->set_debug_mode(true);
+    layout->set_padding_size(5);
+    layout->set_vertical_alignment(utaha::UILayout::ALIGN_LEFT_OR_TOP);
+    layout->set_horizontal_aligment(utaha::UILayout::ALIGN_LEFT_OR_TOP);
+    auto row = layout->AddRow(utaha::UILayout::ALIGN_LEFT_OR_TOP);
+
+    auto menu = new utaha::UIFlatMenu(font);
+    menu->set_bg_color({0x80, 0x8b, 0xff});
+    menu->set_hot_color({0x00, 0x7b, 0xff});
+    menu->set_font_color({0xff, 0xff, 0xff});
+    menu->set_border_color({0xff, 0xff, 0xff});
+    menu->AddItem("Open", 1, nullptr);
+    menu->AddDiv();
+    menu->AddItem("Save", 2, nullptr);
+    menu->AddItem("Save as ...", 3, nullptr);
+
+    auto main_menu = new utaha::UIFlatMenuGroup(font);
+    main_menu->set_bg_color({0, 0, 0});
+    main_menu->set_border_color({0xff, 0xff, 0xff});
+    main_menu->set_hot_color({0x00, 0x7b, 0xff});
+    main_menu->set_font_color({0xff, 0xff, 0xff});
+    main_menu->set_h_padding_size(10);
+    main_menu->set_v_padding_size(2);
+    main_menu->AddColumn("File", 1, menu);
+    main_menu->AddColumn("2", 2, nullptr);
+    main_menu->AddColumn("3", 3, nullptr);
+    main_menu->AddColumn("44", 4, nullptr);
+    main_menu->AddColumn("Help", 5, nullptr);
+    row->AddComponent(main_menu);
+
+    root.InsertLL(layout);
+
+    bool quit = false;
+    bool is_break = false;
+    SDL_Event e;
+    while(!quit) {
+        //Handle events on queue
+        while(SDL_PollEvent(&e) != 0) {
+            //User requests quit
+            if(e.type == SDL_QUIT) {
+                quit = true;
+            }
+            layout->OnEvent(&e, &is_break);
+        }
+        //Clear screen
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
+        SDL_RenderClear(renderer);
+        root.OnRender(renderer);
+        SDL_RenderPresent(renderer);
+    }
+
+    //Destroy window
+    SDL_DestroyWindow(main_window);
+    //Quit SDL subsystems
+    SDL_Quit();
+    return 0;
 }
 
 int layout_demo(int argc, char *argv[]) {

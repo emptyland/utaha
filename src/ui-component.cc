@@ -44,4 +44,12 @@ UIComponent::UIComponent()
     return InteractiveEntity::OnEvent(event, is_break);
 }
 
+int UIComponent::ProcessCmdIfNeeded(int cmd_id, void *param, bool *is_break) {
+    int result = 0;
+    if (listenner_) {
+        result = listenner_->OnCommand(this, cmd_id, param, is_break);
+    }
+    return result;
+}
+
 } // namespace utaha

@@ -19,6 +19,12 @@ UIFlatButton::UIFlatButton() {
     }
     if (event->type == SDL_MOUSEBUTTONUP) {
         is_pressed_ = false;
+        if (InRect(rect(), event->button.x, event->button.y)) {
+            ProcessCmdIfNeeded(static_cast<int>(id()), nullptr, is_break);
+            if (*is_break) {
+                return 0;
+            }
+        }
     }
 
     return UIComponent::OnEvent(event, is_break);

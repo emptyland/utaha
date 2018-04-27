@@ -31,6 +31,10 @@ UIFlatMenu::UIFlatMenu(TTF_Font *font)
                     item.state = Item::STATE_NORMAL;
                 }
             }
+        } else {
+            for (auto &item : items_) {
+                item.state = Item::STATE_NORMAL;
+            }
         }
     }
 
@@ -39,16 +43,18 @@ UIFlatMenu::UIFlatMenu(TTF_Font *font)
     }
 
     if (event->type == SDL_MOUSEBUTTONUP) {
+        set_is_show(false);
         if (InRect(rect(), event->motion.x, event->motion.y)) {
             for (const auto &item : items_) {
                 if (event->motion.y >= item.y &&
                     event->motion.y <= item.y + item.h) {
-                    //items_.at(i).state = Item::STATE_HOT;
-                    // TODO: on command
+                    ProcessCmdIfNeeded(item.cmd_id, item.param, is_break);
+                    if (*is_break) {
+                        return 0;
+                    }
                 }
             }
         }
-        set_is_show(false);
     }
 
     return UIComponent::OnEvent(event, is_break);
@@ -74,9 +80,7 @@ UIFlatMenu::UIFlatMenu(TTF_Font *font)
                     .w = rect().w,
                     .h = item.h,
                 };
-                if (SDL_RenderFillRect(renderer, &item_rect) < 0) {
-                    //printf("error: %s\n", SDL_GetError());
-                }
+                SDL_RenderFillRect(renderer, &item_rect);
             }
         } else if (item.kind == Item::MENU_DIV) {
             SDL_SetRenderDrawColor(renderer, border_color_.r, border_color_.g,
@@ -100,73 +104,27 @@ bool UIFlatMenu::Popup(int x, int y, SDL_Renderer *renderer) {
     if (is_show()) {
         return false;
     }
-    if (texture_) {
+    if (is_changed_ && texture_) {
         SDL_DestroyTexture(texture_);
         texture_ = nullptr;
     }
+    if (is_changed_) {
+        is_changed_ = false;
+        texture_ = CreateTexture(x, y, renderer);
+        if (!texture_) {
+            return false;
+        }
+    } else {
+        mutable_rect()->x = x;
+        mutable_rect()->y = y;
 
-    std::vector<SDL_Surface *> surfaces;
-    int w = 0, h = padding_size_, item_top = y;
-    for (auto &item : items_) {
-        SDL_Surface *surface = nullptr;
-        if (item.kind == Item::MENU_ITEM) {
-            surface = TTF_RenderUTF8_Blended(font_, item.name.c_str(),
-                                             font_color_);
-            h += (surface->h + padding_size_);
-            if (surface->w > w) {
-                w = surface->w;
-            }
+        int item_top = y;
+        for (auto &item : items_) {
             item.y = item_top;
-            item.h = (surface->h + padding_size_ * 2);
-
-            item_top += (surface->h + padding_size_ * 2);
-        } else if (item.kind == Item::MENU_DIV) {
-            h += (1 + padding_size_);
-            item.y = item_top;
-            item.h = 1;
-
-            item_top += 1;
-        }
-        surfaces.push_back(surface);
-    }
-    w += (padding_size_ * 2);
-
-    SDL_Surface *total = SDL_CreateRGBSurface(0, w, h, 32, 0x000000ff,
-                                              0x0000ff00, 0x00ff0000, 0xff000000);
-    int dy = padding_size_;
-    for (auto surface : surfaces) {
-        if (!surface) {
-            dy += (1 + padding_size_);
-            continue;
-        }
-        SDL_Rect src = {
-            .x = 0,
-            .y = 0,
-            .w = surface->w,
-            .h = surface->h,
-        };
-        SDL_Rect dst = {
-            .x = padding_size_,
-            .y = dy,
-            .w = surface->w,
-            .h = surface->h,
-        };
-        dy += (surface->h + padding_size_);
-        SDL_BlitSurface(surface, &src, total, &dst);
-    }
-
-    texture_ = SDL_CreateTextureFromSurface(renderer, total);
-    for (auto surface : surfaces) {
-        if (surface) {
-            SDL_FreeSurface(surface);
+            item_top += item.h;
         }
     }
-    SDL_FreeSurface(total);
 
-    mutable_rect()->x = x;
-    mutable_rect()->y = y;
-    mutable_rect()->w = w;
-    mutable_rect()->h = h;
     set_is_show(true);
     return true;
 }
@@ -181,6 +139,7 @@ UIFlatMenu *UIFlatMenu::AddItem(const char *name, int cmd_id, void *param) {
         .is_selected = false,
     };
     items_.emplace_back(item);
+    is_changed_ = true;
     return this;
 }
 
@@ -189,7 +148,75 @@ UIFlatMenu *UIFlatMenu::AddDiv() {
         .kind = Item::MENU_DIV,
     };
     items_.emplace_back(item);
+    is_changed_ = true;
     return this;
+}
+
+SDL_Texture *UIFlatMenu::CreateTexture(int x, int y, SDL_Renderer *renderer) {
+    std::vector<SDL_Surface *> surfaces;
+    int w = 0, h = 0, item_top = y;
+    for (auto &item : items_) {
+        SDL_Surface *surface = nullptr;
+        if (item.kind == Item::MENU_ITEM) {
+            surface = TTF_RenderUTF8_Blended(font_, item.name.c_str(),
+                                             font_color_);
+            h += (surface->h + padding_size_ * 2);
+            if (surface->w > w) {
+                w = surface->w;
+            }
+            item.y = item_top;
+            item.h = (surface->h + padding_size_ * 2);
+
+            item_top += item.h;
+        } else if (item.kind == Item::MENU_DIV) {
+            h += 1;
+            item.y = item_top;
+            item.h = 1;
+
+            item_top += 1;
+        }
+        surfaces.push_back(surface);
+    }
+    w += (padding_size_ * 2);
+
+    SDL_Surface *total = SDL_CreateRGBSurface(0, w, h, 32, COLOR_R_MASK,
+                                              COLOR_G_MASK, COLOR_B_MASK,
+                                              COLOR_A_MASK);
+    int dy = 0;
+    for (auto surface : surfaces) {
+        if (!surface) {
+            dy += 1;
+            continue;
+        }
+        SDL_Rect src = {
+            .x = 0,
+            .y = 0,
+            .w = surface->w,
+            .h = surface->h,
+        };
+        SDL_Rect dst = {
+            .x = padding_size_,
+            .y = dy + padding_size_,
+            .w = surface->w,
+            .h = surface->h,
+        };
+        dy += (surface->h + padding_size_ * 2);
+        SDL_BlitSurface(surface, &src, total, &dst);
+    }
+
+    auto texture = SDL_CreateTextureFromSurface(renderer, total);
+    for (auto surface : surfaces) {
+        if (surface) {
+            SDL_FreeSurface(surface);
+        }
+    }
+    SDL_FreeSurface(total);
+
+    mutable_rect()->x = x;
+    mutable_rect()->y = y;
+    mutable_rect()->w = w;
+    mutable_rect()->h = h;
+    return texture;
 }
 
 } // namespace utaha

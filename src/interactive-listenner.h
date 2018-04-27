@@ -15,6 +15,7 @@ public:
     virtual int OnClick(UIComponent *sender, bool *is_break) = 0;
     virtual int OnDoubleClick(UIComponent *sender, bool *is_break) = 0;
     virtual int OnMouseMove(UIComponent *sender, int x, int y, bool *is_break) = 0;
+    virtual int OnCommand(UIComponent *sender, int cmd_id, void *param, bool *is_break) = 0;
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(InteractiveListenner);
 }; // class InteractiveListenner

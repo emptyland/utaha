@@ -18,6 +18,8 @@ public:
         listenner_ = listenner;
     }
 
+    DEF_PTR_GETTER(InteractiveListenner, listenner);
+
 protected:
     InteractiveListenner *listenner_ = nullptr;
 }; // class InteractiveEntity

@@ -19,6 +19,8 @@ public:
     DEF_VAL_PROP_RW(bool, is_focused);
     DEF_VAL_PROP_RMW(SDL_Rect, rect);
 
+    int ProcessCmdIfNeeded(int cmd_id, void *param, bool *is_break);
+
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIComponent);
 private:
     int64_t id_ = 0;

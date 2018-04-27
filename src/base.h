@@ -79,6 +79,11 @@ char (&ArraySizeHelper(const T (&array)[N]))[N];
 #define DEF_PTR_SETTER_NOTNULL(type, name) \
     inline void set_##name(type *value) { name##_ = DCHECK_NOTNULL(value); }
 
+#define COLOR_R_MASK 0x000000ff
+#define COLOR_G_MASK 0x0000ff00
+#define COLOR_B_MASK 0x00ff0000
+#define COLOR_A_MASK 0xff000000
+
 } // namespace utaha
 
 #endif // UTAHA_BASE_H_
