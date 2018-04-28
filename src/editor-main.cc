@@ -6,6 +6,8 @@
 #include "ui-flat-menu-group.h"
 #include "ui-flat-menu.h"
 #include "interactive-listenner.h"
+#include "ui-style-collection.h"
+#include "lua-utils.h"
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
 #include <SDL2_ttf/SDL_ttf.h>
@@ -35,12 +37,40 @@ int texture_demo(int argc, char *argv[]);
 int render_demo(int argc, char *argv[]);
 int layout_demo(int argc, char *argv[]);
 int main_menu_demo(int argc, char *argv[]);
+int style_demo(int argc, char *argv[]);
 
 int main(int argc, char *argv[]) {
     //return texture_demo(argc, argv);
     //return render_demo(argc, argv);
     //return layout_demo(argc, argv);
-    return main_menu_demo(argc, argv);
+    //return main_menu_demo(argc, argv);
+    return style_demo(argc, argv);
+}
+
+int style_demo(int argc, char *argv[]) {
+    //SDL_Init(SDL_INIT_VIDEO);
+    TTF_Init();
+
+    auto L = utaha::LuaUtils::GeneralOpenLua();
+    utaha::UIStyleCollection::BindTo(L);
+
+    std::unique_ptr<utaha::UIStyleCollection> style(new utaha::UIStyleCollection());
+    luabridge::setGlobal(L, style.get(), "style");
+
+    auto err = utaha::LuaUtils::ProtectedDoFile(L, "tests/000-style-loading.lua");
+    if (err) {
+        printf("lua error: %s\n", err);
+        return 1;
+    }
+    lua_close(L);
+
+    bool ok = true;
+    printf("%p\n", style->FindFont("FlatMenu.font", &ok));
+    printf("%d\n", ok);
+
+    style.reset();
+    TTF_Quit();
+    return 0;
 }
 
 int main_menu_demo(int argc, char *argv[]) {

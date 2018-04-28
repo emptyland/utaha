@@ -127,7 +127,7 @@ struct LuaUtils {
 
     static
     inline lua_State *GeneralOpenLua() {
-        auto L = lua_open();
+        auto L = luaL_newstate();
         if (!L) {
             return nullptr;
         }

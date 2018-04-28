@@ -2,5 +2,7 @@
 
 namespace utaha {
 
+/*virtual*/ UIComponentFactory::~UIComponentFactory() {
+}
 
 } // namespace utaha
