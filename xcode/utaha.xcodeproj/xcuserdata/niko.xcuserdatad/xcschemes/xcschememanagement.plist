@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>unit-tests.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>utaha.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -12,6 +17,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>237E91402094611300176FA8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>23C9A3EE1D7022EE00DAA480</key>
 		<dict>
 			<key>primary</key>
