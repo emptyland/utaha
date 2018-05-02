@@ -14,6 +14,9 @@ UIFlatMenuGroup::UIFlatMenuGroup(TTF_Font *font)
         SDL_DestroyTexture(texture_);
         texture_ = nullptr;
     }
+    for (const auto &column : columns_) {
+        delete column.menu;
+    }
 }
 
 /*virtual*/ int UIFlatMenuGroup::OnEvent(SDL_Event *event, bool *is_break) {

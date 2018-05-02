@@ -10,9 +10,15 @@ namespace utaha {
 class UILayoutRow;
 class UIComponent;
 
+//#define DEFINE_LAYOUT_ALIGNMENT(M) \
+//    M(ALIGN_LEFT_OR_TOP, 0)        \
+//    M(ALIGN_RIGHT_OR_BOTTOM, 1)    \
+//    M(ALIGN_CENTER, 2)             \
+//    M(ALIGN_FILL, 3)
+
 class UILayout : public InteractiveEntity {
 public:
-    enum Alignment {
+    enum Alignment: int {
         ALIGN_LEFT_OR_TOP,
         ALIGN_RIGHT_OR_BOTTOM,
         ALIGN_CENTER,

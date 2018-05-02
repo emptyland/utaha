@@ -47,6 +47,10 @@ public:
     DEF_VAL_PROP_RMW(SDL_Color, hot_color);
     DEF_VAL_PROP_RMW(SDL_Color, font_color);
     DEF_VAL_PROP_RW(int, padding_size);
+    DEF_PTR_GETTER(TTF_Font, font);
+
+    size_t items_size() const { return items_.size(); }
+    const Item &item(size_t i) const { return items_[i]; }
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIFlatMenu);
 private:

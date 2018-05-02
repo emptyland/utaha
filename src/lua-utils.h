@@ -31,13 +31,42 @@ struct EnumWarpper<T, true> {
 
 namespace d = detail;
 
+#define LUA_DEF_CONST_ENUM(name, value) name = value,
+#define LUA_DEF_CONST_ID(macro_name, macro_value) { \
+        .name = #macro_name,                        \
+        .value = (macro_value),                     \
+    },
+
+struct LuaConstantId {
+    const char * const name;
+    int value;
+};
+
 struct LuaUtils {
+
+    static
+    inline void InitConstantId(lua_State *L, const char *ns, const char *name,
+                               const LuaConstantId *entries, size_t n) {
+        luabridge::LuaRef k(L, luabridge::newTable(L));
+        for (size_t i = 0; i < n; ++i) {
+            k[entries[i].name] = entries[i].value;
+        }
+        auto lua_ns = luabridge::getGlobal(L, ns);
+        if (lua_ns.isTable()) {
+            lua_ns[name] = k;
+        } else {
+            luabridge::setGlobal(L, k, name);
+        }
+    }
 
     template<class T>
     static
     inline std::tuple<T, bool> GetByFieldName(lua_State *L, const char *name) {
         std::tuple<T, bool> result;
-        luaL_checktype(L, -1, LUA_TTABLE);
+        if (!lua_istable(L, -1)) {
+            std::get<1>(result) = false;
+            return result;
+        }
 
         lua_pushstring(L, name);
         lua_rawget(L, -2);
@@ -228,6 +257,7 @@ private:
     bool ok_ = false;
 
 }; // class LuaIterator
+
 
 extern const char kLuaNamespace[];
 extern const char kLuaConstTableName[];

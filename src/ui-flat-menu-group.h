@@ -37,6 +37,9 @@ public:
     DEF_VAL_PROP_RW(int, h_padding_size);
     DEF_VAL_PROP_RW(int, v_padding_size);
 
+    size_t columns_size() const { return columns_.size(); }
+    const Column &column(size_t i) const { return columns_[i]; }
+
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIFlatMenuGroup);
 private:
     SDL_Texture *CreateTexture(SDL_Renderer *renderer);

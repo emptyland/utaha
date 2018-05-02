@@ -58,7 +58,22 @@ TEST_F(UIStyleCollectionTest, Sanity) {
 }
 
 TEST_F(UIStyleCollectionTest, StyleDemo1) {
+    std::unique_ptr<utaha::UIStyleCollection> style(new utaha::UIStyleCollection());
+    auto pt = style.get();
+    luabridge::getGlobalNamespace(L)
+        .beginNamespace(kLuaNamespace)
+            .addVariable("styleCollection", &pt, false)
+        .endNamespace();
 
+    auto err = utaha::LuaUtils::ProtectedDoFile(L, "tests/001-styles-demo1.lua");
+    EXPECT_EQ(0, err) << err;
+    lua_close(L); L = nullptr;
+
+    bool ok = true;
+    ASSERT_EQ(10, style->FindInt("FlatMenuGroup.padding.h.size", &ok));
+    ASSERT_TRUE(ok);
+    ASSERT_EQ(2, style->FindInt("FlatMenuGroup.padding.v.size", &ok));
+    ASSERT_TRUE(ok);
 }
 
 } // namespace utaha

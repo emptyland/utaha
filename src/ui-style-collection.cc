@@ -30,6 +30,24 @@ bool UIStyleCollection::AddFont(const std::string &name,
     return true;
 }
 
+const char *UIStyleCollection::LoadFromFile(const char *file_name) {
+    lua_State *L = LuaUtils::GeneralOpenLua();
+    if (!L) {
+        return "Can not open lua!";
+    }
+    BindTo(L);
+
+    auto pointer_stub = this;
+    luabridge::getGlobalNamespace(L)
+        .beginNamespace(kLuaNamespace)
+            .addVariable("styleCollection", &pointer_stub, false)
+        .endNamespace();
+    const char *err = LuaUtils::ProtectedDoFile(L, file_name);
+    lua_close(L);
+    L = nullptr;
+    return err;
+}
+
 /*static*/ int UIStyleCollection::BindTo(lua_State *L) {
     luabridge::getGlobalNamespace(L)
         .beginNamespace(kLuaNamespace)

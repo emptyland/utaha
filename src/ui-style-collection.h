@@ -59,6 +59,8 @@ public:
 
     static int BindTo(lua_State *L);
 
+    const char *LoadFromFile(const char *file_name);
+
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIStyleCollection);
 private:
     static inline Value ForInt(int val) { return {.ival = val}; }

@@ -41,6 +41,10 @@
 		237E9160209461B800176FA8 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23FD3C7F20888C7800975CBB /* SDL2.framework */; };
 		237E91632094628800176FA8 /* test-main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 237E91612094628800176FA8 /* test-main.cc */; };
 		237E9164209462D700176FA8 /* editor-main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23E1D75D208889CB00F9EF96 /* editor-main.cc */; };
+		237E916620947C5F00176FA8 /* ui-component-factory-test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 237E916520947C5F00176FA8 /* ui-component-factory-test.cc */; };
+		238F6CDE2099555B00791F67 /* ui-component-builder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 238F6CDD2099555B00791F67 /* ui-component-builder.cc */; };
+		238F6CDF2099555B00791F67 /* ui-component-builder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 238F6CDD2099555B00791F67 /* ui-component-builder.cc */; };
+		238F6CE1209958CF00791F67 /* ui-component-builder-test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 238F6CE0209958CF00791F67 /* ui-component-builder-test.cc */; };
 		239F4809208ED2EB00FD09AD /* interactive-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F4808208ED2EB00FD09AD /* interactive-entity.cc */; };
 		239F480D208ED5CF00FD09AD /* ui-component.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F480C208ED5CF00FD09AD /* ui-component.cc */; };
 		239F4810208EE17E00FD09AD /* ui-flat-button.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F480F208EE17E00FD09AD /* ui-flat-button.cc */; };
@@ -93,6 +97,10 @@
 		237E91412094611300176FA8 /* unit-tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "unit-tests"; sourceTree = BUILT_PRODUCTS_DIR; };
 		237E915B2094618400176FA8 /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest.a; path = "../third-party/libs/libgtest.a"; sourceTree = "<group>"; };
 		237E91612094628800176FA8 /* test-main.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "test-main.cc"; sourceTree = "<group>"; };
+		237E916520947C5F00176FA8 /* ui-component-factory-test.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-component-factory-test.cc"; sourceTree = "<group>"; };
+		238F6CDC209954ED00791F67 /* ui-component-builder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-component-builder.h"; sourceTree = "<group>"; };
+		238F6CDD2099555B00791F67 /* ui-component-builder.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-component-builder.cc"; sourceTree = "<group>"; };
+		238F6CE0209958CF00791F67 /* ui-component-builder-test.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-component-builder-test.cc"; sourceTree = "<group>"; };
 		239F4807208EC88D00FD09AD /* interactive-entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "interactive-entity.h"; sourceTree = "<group>"; };
 		239F4808208ED2EB00FD09AD /* interactive-entity.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "interactive-entity.cc"; sourceTree = "<group>"; };
 		239F480A208ED43D00FD09AD /* interactive-listenner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "interactive-listenner.h"; sourceTree = "<group>"; };
@@ -163,6 +171,8 @@
 			isa = PBXGroup;
 			children = (
 				237E913B209460C700176FA8 /* ui-style-collection-test.cc */,
+				237E916520947C5F00176FA8 /* ui-component-factory-test.cc */,
+				238F6CE0209958CF00791F67 /* ui-component-builder-test.cc */,
 				237E91612094628800176FA8 /* test-main.cc */,
 			);
 			name = Tests;
@@ -218,6 +228,7 @@
 				230822FB20900BE2003804EA /* ui-layout.cc */,
 				23044E20209326D2001924AA /* ui-component-factory.cc */,
 				2353C92720940B2200C4B4EB /* ui-component-style-factory.cc */,
+				238F6CDD2099555B00791F67 /* ui-component-builder.cc */,
 				2353C92A20940CF400C4B4EB /* ui-style-collection.cc */,
 			);
 			name = Sources;
@@ -242,6 +253,7 @@
 				230822FE20908D33003804EA /* ui-flat-menu.h */,
 				230822FA20900BA9003804EA /* ui-layout.h */,
 				23044E1F2093264D001924AA /* ui-component-factory.h */,
+				238F6CDC209954ED00791F67 /* ui-component-builder.h */,
 				2353C92920940CB500C4B4EB /* ui-style-collection.h */,
 			);
 			name = Include;
@@ -251,12 +263,12 @@
 		23FD3C7E20888C7800975CBB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				237E915B2094618400176FA8 /* libgtest.a */,
 				23FD3C8520888D3900975CBB /* SDL2_mixer.framework */,
 				23FD3C8320888D3600975CBB /* SDL2_ttf.framework */,
 				23FD3C8120888C7B00975CBB /* SDL2_image.framework */,
 				23FD3C7F20888C7800975CBB /* SDL2.framework */,
 				23C9A4011D70241E00DAA480 /* libluajit.a */,
+				237E915B2094618400176FA8 /* libgtest.a */,
 				23C9A4001D70241E00DAA480 /* libglog.a */,
 				2353C92C20942A8E00C4B4EB /* libgflags.a */,
 			);
@@ -344,7 +356,10 @@
 				237E91482094616500176FA8 /* ui-style-collection-test.cc in Sources */,
 				237E91492094616500176FA8 /* lua-utils.cc in Sources */,
 				237E914B2094616500176FA8 /* render-entity.cc in Sources */,
+				238F6CE1209958CF00791F67 /* ui-component-builder-test.cc in Sources */,
+				237E916620947C5F00176FA8 /* ui-component-factory-test.cc in Sources */,
 				237E914C2094616500176FA8 /* root-render-entity.cc in Sources */,
+				238F6CDF2099555B00791F67 /* ui-component-builder.cc in Sources */,
 				237E914D2094616500176FA8 /* sample-render-entity.cc in Sources */,
 				237E914E2094616500176FA8 /* interactive-entity.cc in Sources */,
 				237E914F2094616500176FA8 /* ui-component.cc in Sources */,
@@ -377,6 +392,7 @@
 				239F4809208ED2EB00FD09AD /* interactive-entity.cc in Sources */,
 				23044E1E2092CDBD001924AA /* ui-flat-menu-group.cc in Sources */,
 				23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */,
+				238F6CDE2099555B00791F67 /* ui-component-builder.cc in Sources */,
 				23C9E67C1D9CFB9B0078DFFF /* lua-utils.cc in Sources */,
 				23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */,
 			);
