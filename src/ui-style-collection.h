@@ -56,6 +56,7 @@ public:
     inline TTF_Font *FindFont(const std::string &name, bool *ok) const;
     inline bool FindColor(const std::string &name, SDL_Color *color) const;
     inline std::tuple<int, int> FindSize(const std::string &name, bool *ok) const;
+    inline bool FindSize(const std::string &name, int *w, int *h) const;
 
     static int BindTo(lua_State *L);
 
@@ -145,6 +146,18 @@ float UIStyleCollection::FindFloat(const std::string &name, bool *ok) const {
         return iter->second.fval;
     }
     return 0;
+}
+
+inline
+bool UIStyleCollection::FindSize(const std::string &name, int *w, int *h) const {
+    auto iter = values_.find(name);
+    if (iter == values_.end()) {
+        return false;
+    } else {
+        *w = iter->second.size.w;
+        *h = iter->second.size.h;
+    }
+    return true;
 }
 
 } // namespace utaha

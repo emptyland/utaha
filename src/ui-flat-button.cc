@@ -1,29 +1,47 @@
 #include "ui-flat-button.h"
 #include "sample-render-entity.h"
+#include "glog/logging.h"
 
 namespace utaha {
 
-UIFlatButton::UIFlatButton() {
+UIFlatButton::UIFlatButton(TTF_Font *font)
+    : font_(DCHECK_NOTNULL(font)) {
 }
 
 /*virtual*/ UIFlatButton::~UIFlatButton() {
+    if (texture_) {
+        SDL_DestroyTexture(texture_);
+        texture_ = nullptr;
+    }
 }
 
 /*virtual*/ int UIFlatButton::OnEvent(SDL_Event *event, bool *is_break) {
+    if (!is_show()) {
+        return 0;
+    }
+    if (event->type == SDL_MOUSEMOTION) {
+        if (InRect(rect(), event->button.x, event->button.y)) {
+            state_ = STATE_HOT;
+        } else {
+            state_ = STATE_NORMAL;
+        }
+    }
     if (event->type == SDL_MOUSEBUTTONDOWN) {
         if (InRect(rect(), event->button.x, event->button.y)) {
-            is_pressed_ = true;
+            state_ = STATE_PRESSED;
         } else {
-            is_pressed_ = false;
+            state_ = STATE_NORMAL;
         }
     }
     if (event->type == SDL_MOUSEBUTTONUP) {
-        is_pressed_ = false;
         if (InRect(rect(), event->button.x, event->button.y)) {
+            state_ = STATE_HOT;
             ProcessCmdIfNeeded(static_cast<int>(id()), nullptr, is_break);
             if (*is_break) {
                 return 0;
             }
+        } else {
+            state_ = STATE_NORMAL;
         }
     }
 
@@ -34,75 +52,56 @@ UIFlatButton::UIFlatButton() {
     if (!is_show()) {
         return 0;
     }
+    if (texture_ == nullptr) {
+        auto surface = TTF_RenderUTF8_Blended(font_, text_.c_str(), font_color_);
+        if (!surface) {
+            LOG(ERROR) << SDL_GetError();
+            return -1;
+        }
+        text_w_ = surface->w;
+        text_h_ = surface->h;
 
-    if (is_pressed_) {
-        int dw = (rect().w - pressed_->surface()->w) / 2;
-        int dh = (rect().h - pressed_->surface()->h) / 2;
+        texture_ = SDL_CreateTextureFromSurface(renderer, surface);
+        SDL_FreeSurface(surface); surface = nullptr;
+        if (!texture_) {
+            LOG(ERROR) << SDL_GetError();
+            return -1;
+        }
+    }
 
-        pressed_->set_rect({
-            .x = rect().x + dw,
-            .y = rect().y + dh,
-            .w = pressed_->surface()->w,
-            .h = pressed_->surface()->h,
-        });
-        SDL_SetRenderDrawColor(renderer, pressed_color_.r,
-                               pressed_color_.g,
-                               pressed_color_.b,
-                               pressed_color_.a);
-    } else {
-        int dw = (rect().w - normal_->surface()->w) / 2;
-        int dh = (rect().h - normal_->surface()->h) / 2;
-
-        normal_->set_rect({
-            .x = rect().x + dw,
-            .y = rect().y + dh,
-            .w = normal_->surface()->w,
-            .h = normal_->surface()->h,
-        });
-        SDL_SetRenderDrawColor(renderer, normal_color_.r,
-                               normal_color_.g,
-                               normal_color_.b,
-                               normal_color_.a);
+    switch (state_) {
+        case STATE_HOT:
+            SDL_SetRenderDrawColor(renderer, hot_color_.r,
+                                   hot_color_.g,
+                                   hot_color_.b,
+                                   hot_color_.a);
+            break;
+        case STATE_PRESSED:
+            SDL_SetRenderDrawColor(renderer, pressed_color_.r,
+                                   pressed_color_.g,
+                                   pressed_color_.b,
+                                   pressed_color_.a);
+            break;
+        case STATE_NORMAL:
+            SDL_SetRenderDrawColor(renderer, normal_color_.r,
+                                   normal_color_.g,
+                                   normal_color_.b,
+                                   normal_color_.a);
+            break;
+        default:
+            break;
     }
     SDL_RenderFillRect(renderer, mutable_rect());
+    SDL_Rect src = {.x = 0, .y = 0, .w = text_w_, .h = text_h_};
+    SDL_Rect dst = {
+        .x = rect().x + (rect().w - text_w_) / 2,
+        .y = rect().y + (rect().h - text_h_) / 2,
+        .w = text_w_,
+        .h = text_h_,
+    };
 
-    return is_pressed_ ? pressed_->OnRender(renderer) : normal_->OnRender(renderer);
-}
-
-bool UIFlatButton::SetNormalText(const char *text, SDL_Color fg, TTF_Font *font,
-                                 SDL_Renderer *renderer) {
-    normal_.reset();
-    std::unique_ptr<SampleTextLabel> label(CreateTextLabel(text, fg, font, renderer));
-    normal_.swap(label);
-    return normal_.get() != nullptr;
-}
-
-bool UIFlatButton::SetPressedText(const char *text, SDL_Color fg, TTF_Font *font,
-                                  SDL_Renderer *renderer) {
-    pressed_.reset();
-    std::unique_ptr<SampleTextLabel> label(CreateTextLabel(text, fg, font, renderer));
-    pressed_.swap(label);
-    return pressed_.get() != nullptr;
-}
-
-SampleTextLabel *
-UIFlatButton::CreateTextLabel(const char *text, SDL_Color fg, TTF_Font *font,
-                              SDL_Renderer *renderer) {
-    std::unique_ptr<SampleTextLabel> label(new SampleTextLabel(font));
-    if (!label->SetTextBlended(text, fg, renderer)) {
-        return nullptr;
-    }
-
-    int dw = (rect().w - label->surface()->w) / 2;
-    int dh = (rect().h - label->surface()->h) / 2;
-
-    label->set_rect({
-        .x = rect().x + dw,
-        .y = rect().y + dh,
-        .w = label->surface()->w,
-        .h = label->surface()->h,
-    });
-    return label.release();
+    SDL_RenderCopy(renderer, texture_, &src, &dst);
+    return 0;
 }
 
 } // namespace utaha

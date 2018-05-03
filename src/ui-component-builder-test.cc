@@ -3,8 +3,10 @@
 #include "ui-style-collection.h"
 #include "ui-flat-menu-group.h"
 #include "ui-flat-menu.h"
+#include "ui-layout.h"
 #include "lua-utils.h"
 #include "gtest/gtest.h"
+#include <SDL2/SDL.h>
 
 namespace utaha {
 
@@ -15,12 +17,19 @@ public:
         auto err = style_->LoadFromFile("tests/001-styles-demo1.lua");
         ASSERT_EQ(nullptr, err) << err;
         factory_ = CreateUIComponentStyleFactory(style_);
-        builder_ = new UIComponentBuilder(factory_);
+        window_ = SDL_CreateWindow("test", SDL_WINDOWPOS_UNDEFINED,
+                                   SDL_WINDOWPOS_UNDEFINED, 1, 1,
+                                   SDL_WINDOW_HIDDEN);
+        ASSERT_NE(nullptr, window_) << SDL_GetError();
+        builder_ = new UIComponentBuilder(factory_, window_);
     }
 
     virtual void TearDown() override {
         delete builder_;
         builder_ = nullptr;
+
+        SDL_DestroyWindow(window_);
+        window_ = nullptr;
 
         delete factory_;
         factory_ = nullptr;
@@ -33,6 +42,7 @@ protected:
     UIStyleCollection *style_ = nullptr;
     UIComponentFactory *factory_ = nullptr;
     UIComponentBuilder *builder_ = nullptr;
+    SDL_Window *window_ = nullptr;
 };
 
 TEST_F(UIComponentBuilderTest, BuildFlatMenuGroup) {
@@ -114,6 +124,34 @@ TEST_F(UIComponentBuilderTest, BuildFlatMenuFromFile) {
 
     EXPECT_EQ("test.3", m->item(4).name);
     EXPECT_EQ(TestR::ID_TEST_3, m->item(4).cmd_id);
+}
+
+TEST_F(UIComponentBuilderTest, BuildLayoutFromFile) {
+    auto L = LuaUtils::GeneralOpenLua();
+    UIComponentBuilder::BindTo(L);
+
+    luabridge::getGlobalNamespace(L)
+    .beginNamespace(kLuaNamespace)
+        .addVariable("uiBuilder", &builder_, false)
+    .endNamespace();
+
+    LuaUtils::InitConstantId(L, kLuaNamespace, "R", test_id,
+                             arraysize(test_id));
+
+    auto err = LuaUtils::ProtectedDoFile(L, "tests/004-layout-builder-1.lua");
+    ASSERT_EQ(nullptr, err) << err;
+
+    std::unique_ptr<const UILayout> layout(luabridge::Stack<UILayout *>::get(L, lua_gettop(L)));
+    lua_close(L);
+    ASSERT_TRUE(!!layout);
+    EXPECT_EQ(1, layout->padding_size());
+    EXPECT_TRUE(layout->debug_mode());
+    EXPECT_EQ(UILayout::ALIGN_CENTER, layout->vertical_alignment());
+    EXPECT_EQ(UILayout::ALIGN_CENTER, layout->horizontal_aligment());
+
+    ASSERT_EQ(1, layout->rows_size());
+    auto row = layout->row(0);
+    EXPECT_EQ(UILayout::ALIGN_CENTER, row->horizontal_aligment());
 }
 
 } // namespace utaha

@@ -8,6 +8,9 @@ UILayout::UILayout(SDL_Window *window)
     : window_(DCHECK_NOTNULL(window)) { UpdateRect(); }
 
 /*virtual*/ UILayout::~UILayout() {
+    for (auto row : rows_) {
+        delete row;
+    }
 }
 
 /*virtual*/ int UILayout::OnEvent(SDL_Event *event, bool *is_break) {
@@ -132,6 +135,9 @@ UILayoutRow::UILayoutRow(UILayout *layout, UILayout::Alignment horizontal_aligme
 }
 
 /*virtual*/ UILayoutRow::~UILayoutRow() {
+    for (auto component : components_) {
+        delete component;
+    }
 }
 
 /*virtual*/ int UILayoutRow::OnEvent(SDL_Event *event, bool *is_break) {

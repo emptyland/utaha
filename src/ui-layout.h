@@ -40,6 +40,9 @@ public:
 
     Row *AddRow(Alignment horizontal_aligment);
 
+    size_t rows_size() const { return rows_.size(); }
+    Row *row(size_t i) const { return rows_[i]; }
+
     friend class UILayoutRow;
     DISALLOW_IMPLICIT_CONSTRUCTORS(UILayout);
 private:
@@ -69,6 +72,10 @@ public:
     int CalculateHeight();
 
     DEF_VAL_PROP_RMW(SDL_Rect, rect);
+    DEF_VAL_GETTER(UILayout::Alignment, horizontal_aligment);
+
+    size_t components_size() const { return components_.size(); }
+    UIComponent *component(size_t i) const { return components_[i]; }
 
     friend class UILayout;
     DISALLOW_IMPLICIT_CONSTRUCTORS(UILayoutRow);

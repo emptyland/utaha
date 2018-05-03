@@ -42,6 +42,13 @@ static const char FLAT_MENU_GROUP_BORDER_COLOR[]   = "FlatMenuGroup.border.color
 static const char FLAT_MENU_GROUP_PADDING_H_SIZE[] = "FlatMenuGroup.padding.h.size";
 static const char FLAT_MENU_GROUP_PADDING_V_SIZE[] = "FlatMenuGroup.padding.v.size";
 
+static const char FLAT_BUTTON_FONT[]          = "FlatButton.font";
+static const char FLAT_BUTTON_DEFAULT_SIZE[]  = "FlatButton.defaultSize";
+static const char FLAT_BUTTON_HOT_COLOR[]     = "FlatButton.hot.color";
+static const char FLAT_BUTTON_FONT_COLOR[]    = "FlatButton.font.color";
+static const char FLAT_BUTTON_PRESSED_COLOR[] = "FlatButton.pressed.color";
+static const char FLAT_BUTTON_NORMAL_COLOR[]  = "FlatButton.bg.color";
+
 UIComponentFactory *CreateUIComponentStyleFactory(UIStyleCollection *style) {
     return new UIComponentStyleFactory(style);
 }
@@ -55,7 +62,37 @@ UIComponentStyleFactory::UIComponentStyleFactory(UIStyleCollection *style)
 
 /*virtual*/ UIFlatButton *
 UIComponentStyleFactory::CreateFlatButton(const std::string &name) {
-    return nullptr;
+    bool ok = true;
+    TTF_Font *font = style_->FindFont(FLAT_BUTTON_FONT, &ok);
+    if (!ok) {
+        LOG(ERROR) << "can not find font: " << FLAT_BUTTON_FONT;
+        return nullptr;
+    }
+    std::unique_ptr<UIFlatButton> component(new UIFlatButton(font));
+    component->set_name(name);
+    component->set_id(NextId());
+    if (!style_->FindColor(FLAT_BUTTON_PRESSED_COLOR, component->mutable_pressed_color())) {
+        LOG(ERROR) << "can not find color: " << FLAT_BUTTON_PRESSED_COLOR;
+        return nullptr;
+    }
+    if (!style_->FindColor(FLAT_BUTTON_NORMAL_COLOR, component->mutable_normal_color())) {
+        LOG(ERROR) << "can not find color: " << FLAT_BUTTON_NORMAL_COLOR;
+        return nullptr;
+    }
+    if (!style_->FindColor(FLAT_BUTTON_HOT_COLOR, component->mutable_hot_color())) {
+        LOG(ERROR) << "can not find color: " << FLAT_BUTTON_HOT_COLOR;
+        return nullptr;
+    }
+    if (!style_->FindColor(FLAT_BUTTON_FONT_COLOR, component->mutable_font_color())) {
+        LOG(ERROR) << "can not find color: " << FLAT_BUTTON_FONT_COLOR;
+        return nullptr;
+    }
+    if (!style_->FindSize(FLAT_BUTTON_DEFAULT_SIZE, &component->mutable_rect()->w,
+                          &component->mutable_rect()->h)) {
+        LOG(ERROR) << "can not find size: " << FLAT_BUTTON_DEFAULT_SIZE;
+        return nullptr;
+    }
+    return component.release();
 }
 
 /*virtual*/ UIFlatMenu *

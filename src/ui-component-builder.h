@@ -6,6 +6,7 @@
 #include <string>
 
 typedef struct lua_State lua_State;
+typedef struct SDL_Window SDL_Window;
 
 namespace utaha {
 
@@ -14,19 +15,25 @@ class UIComponentFactory;
 class UIFlatMenuGroupBuilder;
 class UIFlatMenuGroupColumnBuilder;
 class UIFlatMenuBuilder;
+class UIFlatButtonBuilder;
 class UILayoutBuilder;
 class UILayoutRowBuilder;
+class UIComponent;
 class UIFlatMenuGroup;
 class UIFlatMenu;
+class UIFlatButton;
 class UILayout;
+class UILayoutRow;
+
 
 class UIComponentBuilder {
 public:
-    UIComponentBuilder(UIComponentFactory *factory);
+    UIComponentBuilder(UIComponentFactory *factory, SDL_Window *window);
     ~UIComponentBuilder();
 
     UIFlatMenuGroupBuilder *BeginFlatMenuGroup(const char *name);
     UIFlatMenuBuilder *BeginFlatMenu(const char *name);
+    UIFlatButtonBuilder *BeginFlatButton(const char *name);
     UILayoutBuilder *BeginLayout();
 
     static int BindTo(lua_State *L);
@@ -34,6 +41,7 @@ public:
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIComponentBuilder);
 private:
     UIComponentFactory *factory_;
+    SDL_Window *window_;
 }; // class UIComponentBuilder
 
 
@@ -99,6 +107,22 @@ public:
 }; // class UIFlatMenuBuilder
 
 
+class UIFlatButtonBuilder : public UIComponentBuilderBase<UIFlatButton> {
+public:
+    inline UIFlatButtonBuilder(UIFlatButton *component, UIComponentFactory *factory)
+        : UIComponentBuilderBase(component, factory) {}
+    inline ~UIFlatButtonBuilder() = default;
+
+    UIFlatButtonBuilder *LetX(int x);
+    UIFlatButtonBuilder *LetY(int y);
+    UIFlatButtonBuilder *LetW(int w);
+    UIFlatButtonBuilder *LetH(int h);
+    UIFlatButton *EndButton();
+
+    DISALLOW_IMPLICIT_CONSTRUCTORS(UIFlatButtonBuilder);
+}; // class UIFlatButtonBuilder
+
+
 class UILayoutBuilder {
 public:
     inline UILayoutBuilder(UILayout *layout) : layout_(DCHECK_NOTNULL(layout)) {}
@@ -115,6 +139,23 @@ public:
 private:
     UILayout *layout_;
 }; // class UILayoutBuilder
+
+
+class UILayoutRowBuilder {
+public:
+    inline UILayoutRowBuilder(UILayoutRow *row, UILayoutBuilder *builder)
+        : row_(DCHECK_NOTNULL(row))
+        , builder_(DCHECK_NOTNULL(builder)) {}
+    inline ~UILayoutRowBuilder() = default;
+
+    UILayoutRowBuilder *AddComponent(UIComponent *component);
+    UILayoutBuilder *EndRow();
+
+    DISALLOW_IMPLICIT_CONSTRUCTORS(UILayoutRowBuilder);
+private:
+    UILayoutRow *row_;
+    UILayoutBuilder *builder_;
+}; // class UILayoutRowBuilder
 
 } // namespace utaha
 

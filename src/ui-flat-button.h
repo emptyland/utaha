@@ -9,34 +9,38 @@ typedef struct _TTF_Font TTF_Font;
 
 namespace utaha {
 
-class SampleTextLabel;
-
 class UIFlatButton : public UIComponent {
 public:
-    UIFlatButton();
+    enum State: int {
+        STATE_NORMAL,
+        STATE_PRESSED,
+        STATE_HOT,
+    };
+
+    UIFlatButton(TTF_Font *font);
     virtual ~UIFlatButton();
     virtual int OnEvent(SDL_Event *event, bool *is_break) override;
     virtual int OnRender(SDL_Renderer *renderer) override;
 
     DEF_VAL_PROP_RMW(SDL_Color, normal_color);
     DEF_VAL_PROP_RMW(SDL_Color, pressed_color);
-
-    bool SetNormalText(const char *text, SDL_Color fg, TTF_Font *font,
-                       SDL_Renderer *renderer);
-    bool SetPressedText(const char *text, SDL_Color fg, TTF_Font *font,
-                        SDL_Renderer *renderer);
+    DEF_VAL_PROP_RMW(SDL_Color, hot_color);
+    DEF_VAL_PROP_RMW(SDL_Color, font_color);
+    DEF_VAL_PROP_RMW(std::string, text);
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIFlatButton);
 private:
-    SampleTextLabel *
-    CreateTextLabel(const char *text, SDL_Color fg, TTF_Font *font,
-                    SDL_Renderer *renderer);
 
-    bool is_pressed_ = false;
+    State state_ = STATE_NORMAL;
     SDL_Color pressed_color_ = {0, 0, 0, 0};
     SDL_Color normal_color_  = {0, 0, 0, 0};
-    std::unique_ptr<SampleTextLabel> pressed_;
-    std::unique_ptr<SampleTextLabel> normal_;
+    SDL_Color hot_color_     = {0, 0, 0, 0};
+    SDL_Color font_color_    = {0, 0, 0, 0};
+    std::string text_;
+    SDL_Texture *texture_ = nullptr;
+    int text_w_ = 0;
+    int text_h_ = 0;
+    TTF_Font *font_;
 }; // class UIFlatButton
 
 } // namespace utaha

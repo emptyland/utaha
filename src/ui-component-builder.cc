@@ -2,14 +2,16 @@
 #include "ui-component-factory.h"
 #include "ui-flat-menu.h"
 #include "ui-flat-menu-group.h"
+#include "ui-flat-button.h"
 #include "ui-layout.h"
 #include "lua-utils.h"
 #include "glog/logging.h"
 
 namespace utaha {
 
-UIComponentBuilder::UIComponentBuilder(UIComponentFactory *factory)
-    : factory_(DCHECK_NOTNULL(factory)) {
+UIComponentBuilder::UIComponentBuilder(UIComponentFactory *factory, SDL_Window *window)
+    : factory_(DCHECK_NOTNULL(factory))
+    , window_(DCHECK_NOTNULL(window)) {
 }
 
 UIComponentBuilder::~UIComponentBuilder() {
@@ -33,12 +35,28 @@ UIFlatMenuBuilder *UIComponentBuilder::BeginFlatMenu(const char *name) {
     return new UIFlatMenuBuilder(component, factory_);
 }
 
+UIFlatButtonBuilder *UIComponentBuilder::BeginFlatButton(const char *name) {
+    auto component = factory_->CreateFlatButton(name);
+    if (!component) {
+        LOG(ERROR) << "can not create <UIFlatButton>!";
+        return nullptr;
+    }
+    return new UIFlatButtonBuilder(component, factory_);
+}
+
+UILayoutBuilder *UIComponentBuilder::BeginLayout() {
+    auto layout = new UILayout(window_);
+    return new UILayoutBuilder(layout);
+}
+
 /*static*/ int UIComponentBuilder::BindTo(lua_State *L) {
     luabridge::getGlobalNamespace(L)
         .beginNamespace(kLuaNamespace)
             .beginClass<UIComponentBuilder>("UIComponentBuilder")
                 .addFunction("beginFlatMenuGroup", &UIComponentBuilder::BeginFlatMenuGroup)
                 .addFunction("beginFlatMenu", &UIComponentBuilder::BeginFlatMenu)
+                .addFunction("beginFlatButton", &UIComponentBuilder::BeginFlatButton)
+                .addFunction("beginLayout", &UIComponentBuilder::BeginLayout)
             .endClass()
             .beginClass<UIFlatMenuGroupBuilder>("FlatMenuGroupBuilder")
                 .addFunction("beginColumn", &UIFlatMenuGroupBuilder::BeginColumn)
@@ -54,14 +72,28 @@ UIFlatMenuBuilder *UIComponentBuilder::BeginFlatMenu(const char *name) {
                 .addFunction("addDiv", &UIFlatMenuBuilder::AddDiv)
                 .addFunction("endMenu", &UIFlatMenuBuilder::EndMenu)
             .endClass()
+            .beginClass<UIFlatButtonBuilder>("FlatButtonBuilder")
+                .addFunction("x", &UIFlatButtonBuilder::LetX)
+                .addFunction("y", &UIFlatButtonBuilder::LetY)
+                .addFunction("w", &UIFlatButtonBuilder::LetW)
+                .addFunction("h", &UIFlatButtonBuilder::LetH)
+            .endClass()
             .beginClass<UILayoutBuilder>("LayoutBuilder")
                 .addFunction("paddingSize", &UILayoutBuilder::LetPaddingSize)
                 .addFunction("verticalAlignment", &UILayoutBuilder::LetVerticalAlignment)
                 .addFunction("horizontalAligment", &UILayoutBuilder::LetHorizontalAligment)
                 .addFunction("debugMode", &UILayoutBuilder::LetDebugMode)
+                .addFunction("beginRow", &UILayoutBuilder::BeginRow)
+                .addFunction("endLayout", &UILayoutBuilder::EndLayout)
             .endClass()
-            .beginClass<UIFlatMenuGroup>("FlatMenuGroup").endClass()
-            .beginClass<UIFlatMenu>("FlatMenu").endClass()
+            .beginClass<UILayoutRowBuilder>("LayoutRowBuilder")
+                .addFunction("add", &UILayoutRowBuilder::AddComponent)
+                .addFunction("endRow", &UILayoutRowBuilder::EndRow)
+            .endClass()
+            .beginClass<UIComponent>("Component").endClass()
+            .deriveClass<UIFlatMenuGroup, UIComponent>("FlatMenuGroup").endClass()
+            .deriveClass<UIFlatMenu, UIComponent>("FlatMenu").endClass()
+            .deriveClass<UIFlatButton, UIComponent>("FlatButton").endClass()
             .beginClass<UILayout>("Layout").endClass()
         .endNamespace();
 
@@ -168,11 +200,58 @@ UILayoutBuilder *UILayoutBuilder::LetDebugMode(bool turn_on) {
 }
 
 UILayoutRowBuilder *UILayoutBuilder::BeginRow(int aligment) {
-    return nullptr;
+    auto row = layout_->AddRow(static_cast<UILayout::Alignment>(aligment));
+    return new UILayoutRowBuilder(row, this);
 }
 
 UILayout *UILayoutBuilder::EndLayout() {
-    return layout_;
+    auto result = layout_;
+    delete this;
+    return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// class UILayoutRowBuilder
+////////////////////////////////////////////////////////////////////////////////
+UILayoutRowBuilder *UILayoutRowBuilder::AddComponent(UIComponent *component) {
+    row_->AddComponent(component);
+    return this;
+}
+
+UILayoutBuilder *UILayoutRowBuilder::EndRow() {
+    auto result = builder_;
+    delete this;
+    return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// class UIFlatButtonBuilder
+////////////////////////////////////////////////////////////////////////////////
+
+UIFlatButtonBuilder *UIFlatButtonBuilder::LetX(int x) {
+    component()->mutable_rect()->x = x;
+    return this;
+}
+
+UIFlatButtonBuilder *UIFlatButtonBuilder::LetY(int y) {
+    component()->mutable_rect()->y = y;
+    return this;
+}
+
+UIFlatButtonBuilder *UIFlatButtonBuilder::LetW(int w) {
+    component()->mutable_rect()->w = w;
+    return this;
+}
+
+UIFlatButtonBuilder *UIFlatButtonBuilder::LetH(int h) {
+    component()->mutable_rect()->h = h;
+    return this;
+}
+
+UIFlatButton *UIFlatButtonBuilder::EndButton() {
+    auto result = component();
+    delete this;
+    return result;
 }
 
 } // namespace utaha
