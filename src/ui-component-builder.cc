@@ -3,6 +3,7 @@
 #include "ui-flat-menu.h"
 #include "ui-flat-menu-group.h"
 #include "ui-flat-button.h"
+#include "ui-flat-input-box.h"
 #include "ui-layout.h"
 #include "lua-utils.h"
 #include "glog/logging.h"
@@ -44,6 +45,15 @@ UIFlatButtonBuilder *UIComponentBuilder::BeginFlatButton(const char *name) {
     return new UIFlatButtonBuilder(component, factory_);
 }
 
+UIFlatInputBoxBuilder *UIComponentBuilder::BeginFlatInputBox(const char *name) {
+    auto component = factory_->CreateFlatInputBox(name);
+    if (!component) {
+        LOG(ERROR) << "can not create <CreateFlatInputBox>!";
+        return nullptr;
+    }
+    return new UIFlatInputBoxBuilder(component, factory_);
+}
+
 UILayoutBuilder *UIComponentBuilder::BeginLayout() {
     auto layout = new UILayout(window_);
     return new UILayoutBuilder(layout);
@@ -56,6 +66,7 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
                 .addFunction("beginFlatMenuGroup", &UIComponentBuilder::BeginFlatMenuGroup)
                 .addFunction("beginFlatMenu", &UIComponentBuilder::BeginFlatMenu)
                 .addFunction("beginFlatButton", &UIComponentBuilder::BeginFlatButton)
+                .addFunction("beginFlatInputBox", &UIComponentBuilder::BeginFlatInputBox)
                 .addFunction("beginLayout", &UIComponentBuilder::BeginLayout)
             .endClass()
             .beginClass<UIFlatMenuGroupBuilder>("FlatMenuGroupBuilder")
@@ -73,10 +84,21 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
                 .addFunction("endMenu", &UIFlatMenuBuilder::EndMenu)
             .endClass()
             .beginClass<UIFlatButtonBuilder>("FlatButtonBuilder")
+                .addFunction("text", &UIFlatButtonBuilder::LetText)
                 .addFunction("x", &UIFlatButtonBuilder::LetX)
                 .addFunction("y", &UIFlatButtonBuilder::LetY)
                 .addFunction("w", &UIFlatButtonBuilder::LetW)
                 .addFunction("h", &UIFlatButtonBuilder::LetH)
+                .addFunction("endButton", &UIFlatButtonBuilder::EndButton)
+            .endClass()
+            .beginClass<UIFlatInputBoxBuilder>("FlatInputBox")
+                .addFunction("text", &UIFlatInputBoxBuilder::LetText)
+                .addFunction("maxInput", &UIFlatInputBoxBuilder::LetMaxInput)
+                .addFunction("x", &UIFlatInputBoxBuilder::LetX)
+                .addFunction("y", &UIFlatInputBoxBuilder::LetY)
+                .addFunction("w", &UIFlatInputBoxBuilder::LetW)
+                .addFunction("h", &UIFlatInputBoxBuilder::LetH)
+                .addFunction("endInputBox", &UIFlatInputBoxBuilder::EndInputBox)
             .endClass()
             .beginClass<UILayoutBuilder>("LayoutBuilder")
                 .addFunction("paddingSize", &UILayoutBuilder::LetPaddingSize)
@@ -94,6 +116,7 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
             .deriveClass<UIFlatMenuGroup, UIComponent>("FlatMenuGroup").endClass()
             .deriveClass<UIFlatMenu, UIComponent>("FlatMenu").endClass()
             .deriveClass<UIFlatButton, UIComponent>("FlatButton").endClass()
+            .deriveClass<UIFlatInputBox, UIComponent>("FlatInputBox").endClass()
             .beginClass<UILayout>("Layout").endClass()
         .endNamespace();
 
@@ -228,6 +251,11 @@ UILayoutBuilder *UILayoutRowBuilder::EndRow() {
 // class UIFlatButtonBuilder
 ////////////////////////////////////////////////////////////////////////////////
 
+UIFlatButtonBuilder *UIFlatButtonBuilder::LetText(const char *text) {
+    component()->set_text(text);
+    return this;
+}
+
 UIFlatButtonBuilder *UIFlatButtonBuilder::LetX(int x) {
     component()->mutable_rect()->x = x;
     return this;
@@ -249,6 +277,46 @@ UIFlatButtonBuilder *UIFlatButtonBuilder::LetH(int h) {
 }
 
 UIFlatButton *UIFlatButtonBuilder::EndButton() {
+    auto result = component();
+    delete this;
+    return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// class UIFlatInputBoxBuilder
+////////////////////////////////////////////////////////////////////////////////
+
+UIFlatInputBoxBuilder *UIFlatInputBoxBuilder::LetText(const char *text) {
+    component()->set_text(text);
+    return this;
+}
+
+UIFlatInputBoxBuilder *UIFlatInputBoxBuilder::LetMaxInput(int max_input) {
+    component()->set_max_input(max_input);
+    return this;
+}
+
+UIFlatInputBoxBuilder *UIFlatInputBoxBuilder::LetX(int x) {
+    component()->mutable_rect()->x = x;
+    return this;
+}
+
+UIFlatInputBoxBuilder *UIFlatInputBoxBuilder::LetY(int y) {
+    component()->mutable_rect()->y = y;
+    return this;
+}
+
+UIFlatInputBoxBuilder *UIFlatInputBoxBuilder::LetW(int w) {
+    component()->mutable_rect()->w = w;
+    return this;
+}
+
+UIFlatInputBoxBuilder *UIFlatInputBoxBuilder::LetH(int h) {
+    component()->mutable_rect()->h = h;
+    return this;
+}
+
+UIFlatInputBox *UIFlatInputBoxBuilder::EndInputBox() {
     auto result = component();
     delete this;
     return result;

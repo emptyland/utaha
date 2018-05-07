@@ -128,6 +128,28 @@ UIFlatMenuGroup::UIFlatMenuGroup(TTF_Font *font)
     return 0;
 }
 
+/*virtual*/ void UIFlatMenuGroup::UpdateRect() {
+    int h = 0, w = 0;
+    for (const auto &column : columns_) {
+        SDL_Surface *surface = TTF_RenderUTF8_Blended(font_, column.name.c_str(),
+                                                      font_color_);
+        if (!surface) {
+            LOG(ERROR) << "Update rect fail!" << SDL_GetError();
+            break;
+        }
+
+        if (surface->h > h) {
+            h = surface->h;
+        }
+        w += surface->w + h_padding_size_ * 2;
+        SDL_FreeSurface(surface);
+    }
+    h += v_padding_size_ * 2;
+
+    mutable_rect()->w = w;
+    mutable_rect()->h = h;
+}
+
 void UIFlatMenuGroup::AddColumn(const char *name, int cmd_id, UIFlatMenu *menu) {
     Column column = {
         .is_hot = false,

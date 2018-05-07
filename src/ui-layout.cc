@@ -5,7 +5,9 @@
 namespace utaha {
 
 UILayout::UILayout(SDL_Window *window)
-    : window_(DCHECK_NOTNULL(window)) { UpdateRect(); }
+    : window_(DCHECK_NOTNULL(window)) {
+    //UpdateRect();
+}
 
 /*virtual*/ UILayout::~UILayout() {
     for (auto row : rows_) {
@@ -19,7 +21,6 @@ UILayout::UILayout(SDL_Window *window)
             case SDL_WINDOWEVENT_SIZE_CHANGED:
                 UpdateRect(event->window.data1, event->window.data2);
                 break;
-
             default:
                 break;
         }
@@ -92,7 +93,6 @@ void UILayout::UpdateRect(int w, int h) {
         default:
             break;
     }
-
     int y = rect_.y;
     for (auto row : rows_) {
         y += row->UpdateComponentsRect(row->CalculateWidth(),
@@ -163,6 +163,7 @@ UILayoutRow::UILayoutRow(UILayout *layout, UILayout::Alignment horizontal_aligme
 
 UILayoutRow *UILayoutRow::AddComponent(UIComponent *component) {
     components_.push_back(DCHECK_NOTNULL(component));
+    component->UpdateRect();
     layout_->UpdateRect();
     return this;
 }

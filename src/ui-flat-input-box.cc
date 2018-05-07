@@ -1,5 +1,6 @@
 #include "ui-flat-input-box.h"
-#include "sample-render-entity.h"
+#include "glog/logging.h"
+#include <SDL2_ttf/SDL_ttf.h>
 
 namespace utaha {
 
@@ -31,7 +32,7 @@ UIFlatInputBox::UIFlatInputBox(TTF_Font *font)
              (event->text.text[ 0 ] == 'v' || event->text.text[ 0 ] == 'V' ) &&
              SDL_GetModState() & KMOD_CTRL)) {
             //Append character
-            if (text_.length() < max_input_) {
+            if (text_w_ < rect().w - padding_size_ * 2 - 4 && text_.length() < max_input_) {
                 text_.append(event->text.text);
                 is_changed_ = true;
             }
@@ -61,62 +62,66 @@ UIFlatInputBox::UIFlatInputBox(TTF_Font *font)
         return -1;
     }
 
-    SDL_Rect cursor_rect;
-    if (label_) {
-        label_->OnRender(renderer);
-        cursor_rect = {
-            .x = label_->rect().x + label_->rect().w + padding_size_,
-            .y = label_->rect().y,
-            .w = 2,
-            .h = label_->rect().h,
-        };
-    } else {
-        cursor_rect = {
+    if (texture_) {
+        const SDL_Rect src{.x = 0, .y = 0, .w = text_w_, .h = text_h_};
+        const SDL_Rect dst{
             .x = rect().x + padding_size_,
+            .y = rect().y + (rect().h - text_h_) / 2,
+            .w = text_w_,
+            .h = text_h_,
+        };
+        SDL_RenderCopy(renderer, texture_, &src, &dst);
+    }
+    if (is_focused() && SDL_GetTicks() % 1000 >= 500) {
+        SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0);
+
+        SDL_Rect cursor_rect {
+            .x = rect().x + text_w_ + padding_size_,
             .y = rect().y + padding_size_,
             .w = 2,
             .h = rect().h - padding_size_ * 2,
         };
-    }
-    if (is_focused() && SDL_GetTicks() % 1000 >= 500) {
-        SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0);
         SDL_RenderDrawRect(renderer, &cursor_rect);
     }
     return 0;
 }
 
 bool UIFlatInputBox::CreateOrSetText(SDL_Renderer *renderer) {
-    if (!label_) {
+    bool should_create = false;
+    if (!texture_) {
         if (!text_.empty()) {
-            std::unique_ptr<SampleTextLabel> label(new SampleTextLabel(font_));
-            if (!label->SetTextBlended(text_.c_str(), text_color_, renderer)) {
-                return false;
-            }
-            label_.swap(label);
+            should_create = true;
             is_changed_ = false;
+        } else {
+            text_w_ = 0;
         }
     } else {
         if (is_changed_) {
             is_changed_ = false;
-
-            if (text_.empty()) {
-                label_.reset();
-            } else if (!label_->SetTextBlended(text_.c_str(), text_color_, renderer)) {
-                return false;
+            if (texture_) {
+                SDL_DestroyTexture(texture_);
+                texture_ = nullptr;
             }
+            should_create = true;
         }
     }
-
-    if (!label_) {
+    if (!should_create) {
         return true;
     }
-    int dh = (rect().h - label_->surface()->h) / 2;
-    label_->set_rect({
-        .x = rect().x + padding_size_,
-        .y = rect().y + dh,
-        .w = std::min(label_->surface()->w, rect().w - padding_size_),
-        .h = label_->surface()->h,
-    });
+    SDL_Surface *surface = TTF_RenderUTF8_Blended(font_, text_.c_str(), font_color_);
+    if (!surface) {
+        //LOG(ERROR) << "Render ttf fail!" << SDL_GetError();
+        return false;
+    }
+    texture_ = SDL_CreateTextureFromSurface(renderer, surface);
+    if (!texture_) {
+        LOG(ERROR) << "Create texture fail!" << SDL_GetError();
+        SDL_FreeSurface(surface);
+        return false;
+    }
+    text_w_ = surface->w;
+    text_h_ = surface->h;
+    SDL_FreeSurface(surface);
     return true;
 }
 

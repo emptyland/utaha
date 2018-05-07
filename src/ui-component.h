@@ -12,6 +12,7 @@ public:
     UIComponent();
     virtual ~UIComponent();
     virtual int OnEvent(SDL_Event *event, bool *is_break) override;
+    virtual void UpdateRect();
 
     DEF_VAL_PROP_RW(int64_t, id);
     DEF_VAL_PROP_RW(std::string, name);

@@ -27,6 +27,7 @@ public:
     virtual ~UIFlatMenuGroup();
     virtual int OnEvent(SDL_Event *event, bool *is_break) override;
     virtual int OnRender(SDL_Renderer *renderer) override;
+    virtual void UpdateRect() override;
 
     void AddColumn(const char *name, int cmd_id, UIFlatMenu *menu);
 

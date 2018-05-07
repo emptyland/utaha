@@ -49,6 +49,15 @@ static const char FLAT_BUTTON_FONT_COLOR[]    = "FlatButton.font.color";
 static const char FLAT_BUTTON_PRESSED_COLOR[] = "FlatButton.pressed.color";
 static const char FLAT_BUTTON_NORMAL_COLOR[]  = "FlatButton.bg.color";
 
+static const char FLAT_INPUT_BOX_FONT[]               = "FlatInputBox.font";
+static const char FLAT_INPUT_BOX_DEFAULT_SIZE[]       = "FlatInputBox.defaultSize";
+static const char FLAT_INPUT_BOX_DEFAULT_MAX_INPUT[]  = "FlatInputBox.defaultMaxInput";
+static const char FLAT_INPUT_BOX_FONT_COLOR[]    = "FlatInputBox.font.color";
+static const char FLAT_INPUT_BOX_BORDER_COLOR[]  = "FlatInputBox.border.color";
+static const char FLAT_INPUT_BOX_BG_COLOR[]      = "FlatInputBox.bg.color";
+static const char FLAT_INPUT_BOX_PADDING_SIZE[]  = "FlatInputBox.padding.size";
+
+
 UIComponentFactory *CreateUIComponentStyleFactory(UIStyleCollection *style) {
     return new UIComponentStyleFactory(style);
 }
@@ -71,23 +80,28 @@ UIComponentStyleFactory::CreateFlatButton(const std::string &name) {
     std::unique_ptr<UIFlatButton> component(new UIFlatButton(font));
     component->set_name(name);
     component->set_id(NextId());
-    if (!style_->FindColor(FLAT_BUTTON_PRESSED_COLOR, component->mutable_pressed_color())) {
+    if (!style_->FindColor(FLAT_BUTTON_PRESSED_COLOR,
+                           component->mutable_pressed_color())) {
         LOG(ERROR) << "can not find color: " << FLAT_BUTTON_PRESSED_COLOR;
         return nullptr;
     }
-    if (!style_->FindColor(FLAT_BUTTON_NORMAL_COLOR, component->mutable_normal_color())) {
+    if (!style_->FindColor(FLAT_BUTTON_NORMAL_COLOR,
+                           component->mutable_normal_color())) {
         LOG(ERROR) << "can not find color: " << FLAT_BUTTON_NORMAL_COLOR;
         return nullptr;
     }
-    if (!style_->FindColor(FLAT_BUTTON_HOT_COLOR, component->mutable_hot_color())) {
+    if (!style_->FindColor(FLAT_BUTTON_HOT_COLOR,
+                           component->mutable_hot_color())) {
         LOG(ERROR) << "can not find color: " << FLAT_BUTTON_HOT_COLOR;
         return nullptr;
     }
-    if (!style_->FindColor(FLAT_BUTTON_FONT_COLOR, component->mutable_font_color())) {
+    if (!style_->FindColor(FLAT_BUTTON_FONT_COLOR,
+                           component->mutable_font_color())) {
         LOG(ERROR) << "can not find color: " << FLAT_BUTTON_FONT_COLOR;
         return nullptr;
     }
-    if (!style_->FindSize(FLAT_BUTTON_DEFAULT_SIZE, &component->mutable_rect()->w,
+    if (!style_->FindSize(FLAT_BUTTON_DEFAULT_SIZE,
+                          &component->mutable_rect()->w,
                           &component->mutable_rect()->h)) {
         LOG(ERROR) << "can not find size: " << FLAT_BUTTON_DEFAULT_SIZE;
         return nullptr;
@@ -112,15 +126,18 @@ UIComponentStyleFactory::CreateFlatMenu(const std::string &name) {
         LOG(ERROR) << "can not find color: " << FLAT_MENU_BG_COLOR;
         return nullptr;
     }
-    if (!style_->FindColor(FLAT_MENU_HOT_COLOR, component->mutable_hot_color())) {
+    if (!style_->FindColor(FLAT_MENU_HOT_COLOR,
+                           component->mutable_hot_color())) {
         LOG(ERROR) << "can not find color: " << FLAT_MENU_HOT_COLOR;
         return nullptr;
     }
-    if (!style_->FindColor(FLAT_MENU_FONT_COLOR, component->mutable_font_color())) {
+    if (!style_->FindColor(FLAT_MENU_FONT_COLOR,
+                           component->mutable_font_color())) {
         LOG(ERROR) << "can not find color: " << FLAT_MENU_FONT_COLOR;
         return nullptr;
     }
-    if (!style_->FindColor(FLAT_MENU_BORDER_COLOR, component->mutable_border_color())) {
+    if (!style_->FindColor(FLAT_MENU_BORDER_COLOR,
+                           component->mutable_border_color())) {
         LOG(ERROR) << "can not find color: " << FLAT_MENU_BORDER_COLOR;
         return nullptr;
     }
@@ -145,19 +162,23 @@ UIComponentStyleFactory::CreateFlatMenuGroup(const std::string &name) {
     component->set_name(name);
     component->set_id(NextId());
 
-    if (!style_->FindColor(FLAT_MENU_GROUP_BG_COLOR, component->mutable_bg_color())) {
+    if (!style_->FindColor(FLAT_MENU_GROUP_BG_COLOR,
+                           component->mutable_bg_color())) {
         LOG(ERROR) << "can not find color: " << FLAT_MENU_GROUP_BG_COLOR;
         return nullptr;
     }
-    if (!style_->FindColor(FLAT_MENU_GROUP_HOT_COLOR, component->mutable_hot_color())) {
+    if (!style_->FindColor(FLAT_MENU_GROUP_HOT_COLOR,
+                           component->mutable_hot_color())) {
         LOG(ERROR) << "can not find color: " << FLAT_MENU_GROUP_HOT_COLOR;
         return nullptr;
     }
-    if (!style_->FindColor(FLAT_MENU_GROUP_FONT_COLOR, component->mutable_font_color())) {
+    if (!style_->FindColor(FLAT_MENU_GROUP_FONT_COLOR,
+                           component->mutable_font_color())) {
         LOG(ERROR) << "can not find color: " << FLAT_MENU_GROUP_FONT_COLOR;
         return nullptr;
     }
-    if (!style_->FindColor(FLAT_MENU_GROUP_BORDER_COLOR, component->mutable_border_color())) {
+    if (!style_->FindColor(FLAT_MENU_GROUP_BORDER_COLOR,
+                           component->mutable_border_color())) {
         LOG(ERROR) << "can not find color: " << FLAT_MENU_GROUP_BORDER_COLOR;
         return nullptr;
     }
@@ -179,7 +200,53 @@ UIComponentStyleFactory::CreateFlatMenuGroup(const std::string &name) {
 
 /*virtual*/ UIFlatInputBox *
 UIComponentStyleFactory::CreateFlatInputBox(const std::string &name) {
-    return nullptr;
+    bool ok = true;
+    TTF_Font *font = style_->FindFont(FLAT_INPUT_BOX_FONT, &ok);
+    if (!ok) {
+        LOG(ERROR) << "can not find font: " << FLAT_MENU_GROUP_FONT;
+        return nullptr;
+    }
+
+    std::unique_ptr<UIFlatInputBox> component(new UIFlatInputBox(font));
+    component->set_name(name);
+    component->set_id(NextId());
+
+    if (!style_->FindSize(FLAT_INPUT_BOX_DEFAULT_SIZE,
+                          &component->mutable_rect()->w,
+                          &component->mutable_rect()->h)) {
+        LOG(ERROR) << "can not find size: " << FLAT_INPUT_BOX_DEFAULT_SIZE;
+        return nullptr;
+    }
+    component->set_max_input(style_->FindInt(FLAT_INPUT_BOX_DEFAULT_MAX_INPUT,
+                                             &ok));
+    if (!ok) {
+        LOG(ERROR) << "can not find int value: "
+                   << FLAT_INPUT_BOX_DEFAULT_MAX_INPUT;
+        return nullptr;
+    }
+    if (!style_->FindColor(FLAT_INPUT_BOX_BG_COLOR,
+                           component->mutable_bg_color())) {
+        LOG(ERROR) << "can not find color: " << FLAT_INPUT_BOX_BG_COLOR;
+        return nullptr;
+    }
+    if (!style_->FindColor(FLAT_INPUT_BOX_FONT_COLOR,
+                           component->mutable_font_color())) {
+        LOG(ERROR) << "can not find color: " << FLAT_INPUT_BOX_FONT_COLOR;
+        return nullptr;
+    }
+    if (!style_->FindColor(FLAT_INPUT_BOX_BORDER_COLOR,
+                           component->mutable_border_color())) {
+        LOG(ERROR) << "can not find color: " << FLAT_INPUT_BOX_BORDER_COLOR;
+        return nullptr;
+    }
+    component->set_padding_size(style_->FindInt(FLAT_INPUT_BOX_PADDING_SIZE,
+                                                &ok));
+    if (!ok) {
+        LOG(ERROR) << "can not find int value: " << FLAT_INPUT_BOX_PADDING_SIZE;
+        return nullptr;
+    }
+
+    return component.release();
 }
 
 

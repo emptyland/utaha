@@ -8,8 +8,6 @@ typedef struct _TTF_Font TTF_Font;
 
 namespace utaha {
 
-class SampleTextLabel;
-
 class UIFlatInputBox : public UIComponent {
 public:
     UIFlatInputBox(TTF_Font *font);
@@ -20,7 +18,7 @@ public:
     DEF_VAL_PROP_RMW(std::string, text);
     DEF_VAL_PROP_RMW(SDL_Color, border_color);
     DEF_VAL_PROP_RMW(SDL_Color, bg_color);
-    DEF_VAL_PROP_RMW(SDL_Color, text_color);
+    DEF_VAL_PROP_RMW(SDL_Color, font_color);
     DEF_VAL_PROP_RW(int, max_input);
     DEF_VAL_PROP_RW(int, padding_size);
 
@@ -28,15 +26,17 @@ public:
 private:
     bool CreateOrSetText(SDL_Renderer *renderer);
 
+    TTF_Font *font_;
     std::string text_;
-    SDL_Color border_color_;
-    SDL_Color bg_color_;
-    SDL_Color text_color_;
+    SDL_Color border_color_ = {0, 0, 0, 0};
+    SDL_Color bg_color_ = {0, 0, 0, 0};
+    SDL_Color font_color_ = {0, 0, 0, 0};
     int max_input_ = 1024;
     int padding_size_ = 2;
     bool is_changed_ = false;
-    TTF_Font *font_;
-    std::unique_ptr<SampleTextLabel> label_;
+    SDL_Texture *texture_ = nullptr;
+    int text_w_ = 0;
+    int text_h_ = 0;
 }; // class UIFlatInputBox
 
 } // namespace utaha

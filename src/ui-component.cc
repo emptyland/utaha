@@ -1,5 +1,6 @@
 #include "ui-component.h"
 #include "interactive-listenner.h"
+#include "glog/logging.h"
 
 namespace utaha {
 
@@ -42,6 +43,10 @@ UIComponent::UIComponent()
     }
 
     return InteractiveEntity::OnEvent(event, is_break);
+}
+
+/*virtual*/ void UIComponent::UpdateRect() {
+    DLOG(WARNING) << "UpdateRect() is not override!";
 }
 
 int UIComponent::ProcessCmdIfNeeded(int cmd_id, void *param, bool *is_break) {

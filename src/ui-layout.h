@@ -40,13 +40,14 @@ public:
 
     Row *AddRow(Alignment horizontal_aligment);
 
+    void UpdateRect();
+
     size_t rows_size() const { return rows_.size(); }
     Row *row(size_t i) const { return rows_[i]; }
 
     friend class UILayoutRow;
     DISALLOW_IMPLICIT_CONSTRUCTORS(UILayout);
 private:
-    void UpdateRect();
     void UpdateRect(int w, int h);
     int CalculateMaxRowWidth();
     int CalculateRowsHeight();
