@@ -5,6 +5,7 @@
 #include "ui-layout.h"
 #include "ui-flat-menu-group.h"
 #include "ui-flat-menu.h"
+#include "ui-pic-grid-selector.h"
 #include "ui-component-builder.h"
 #include "ui-component-factory.h"
 #include "interactive-listenner.h"
@@ -79,8 +80,19 @@ int style_demo(int argc, char *argv[]) {
     delete builder;
     builder = nullptr;
 
-    root.InsertLL(layout);
+    std::unique_ptr<utaha::UIPicGridSelector> selector(factory->CreatePicGridSelector("test.pic"));
+    selector->mutable_rect()->x = 0;
+    selector->mutable_rect()->y = layout->rect().h;
+    selector->mutable_rect()->w = 480;
+    selector->mutable_rect()->h = 256;
+    selector->set_grid_size_w(24);
+    selector->set_grid_size_h(32);
+    selector->LoadPicFromFile("assets/raw-02.png");
 
+    root.InsertLL(layout);
+    root.InsertLL(selector.get());
+
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     bool quit = false;
     bool is_break = false;
     SDL_Event e;
@@ -91,6 +103,7 @@ int style_demo(int argc, char *argv[]) {
             if(e.type == SDL_QUIT) {
                 quit = true;
             }
+            selector->OnEvent(&e, &is_break);
             layout->OnEvent(&e, &is_break);
         }
         //Clear screen

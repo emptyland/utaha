@@ -10,33 +10,44 @@ style
 -- Flat Menu Styles
     :setFont("FlatMenu.font",          "font.normal")
     :setColor("FlatMenu.bg.color",     0x00000080)
-    :setColor("FlatMenu.hot.color",    0x007bff00)
-    :setColor("FlatMenu.font.color",   0xffffff00)
-    :setColor("FlatMenu.border.color", 0xffffff00)
+    :setColor("FlatMenu.hot.color",    0x007bffff)
+    :setColor("FlatMenu.font.color",   0xffffffff)
+    :setColor("FlatMenu.border.color", 0xffffffff)
     :setInt("FlatMenu.padding.size",   4)
 
 -- Flat Menu Group Styles
     :setFont("FlatMenuGroup.font",          "font.normal")
-    :setColor("FlatMenuGroup.bg.color",     0x00000080)
-    :setColor("FlatMenuGroup.hot.color",    0x007bff00)
-    :setColor("FlatMenuGroup.font.color",   0xffffff00)
-    :setColor("FlatMenuGroup.border.color", 0xffffff00)
+    :setColor("FlatMenuGroup.bg.color",     0x000000ff)
+    :setColor("FlatMenuGroup.hot.color",    0x007bffff)
+    :setColor("FlatMenuGroup.font.color",   0xffffffff)
+    :setColor("FlatMenuGroup.border.color", 0xffffffff)
     :setInt("FlatMenuGroup.padding.h.size", 10)
     :setInt("FlatMenuGroup.padding.v.size", 2)
 
 -- Flat Button Styles
     :setFont("FlatButton.font", "font.normal")
     :setSize("FlatButton.defaultSize",    40, 22)
-    :setColor("FlatButton.bg.color",      0x007bff00)
-    :setColor("FlatButton.hot.color",     0x108bff00)
-    :setColor("FlatButton.font.color",    0xffffff00)
-    :setColor("FlatButton.pressed.color", 0x007bff00)
+    :setColor("FlatButton.bg.color",      0x007bffff)
+    :setColor("FlatButton.hot.color",     0x108bffff)
+    :setColor("FlatButton.font.color",    0xffffffff)
+    :setColor("FlatButton.pressed.color", 0x007bffff)
 
 -- Flat Input Box Styles
     :setFont("FlatInputBox.font", "font.normal")
     :setSize("FlatInputBox.defaultSize",    40, 22)
     :setInt("FlatInputBox.defaultMaxInput", 32)
-    :setColor("FlatInputBox.bg.color",      0x00000080)
-    :setColor("FlatInputBox.font.color",    0x00ff0000)
-    :setColor("FlatInputBox.border.color",  0xffffff00)
+    :setColor("FlatInputBox.bg.color",      0x000000ff)
+    :setColor("FlatInputBox.font.color",    0x00ff00ff)
+    :setColor("FlatInputBox.border.color",  0xffffffff)
     :setInt("FlatInputBox.padding.size",    4)
+
+-- Flat Check Box Styles
+    :setFont("FlatCheckBox.font",          "font.normal")
+    :setColor("FlatCheckBox.font.color",   0xffffffff)
+    :setColor("FlatCheckBox.box.color",    0x007bffff)
+    :setInt("FlatCheckBox.padding.h.size", 10)
+    :setInt("FlatCheckBox.padding.v.size", 2)
+
+-- Pic Grid Selector Styles
+    :setColor("PicGridSelector.grid.color",     0x00ff00ff)
+    :setColor("PicGridSelector.selected.color", 0x80ff008f)

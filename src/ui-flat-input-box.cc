@@ -73,7 +73,7 @@ UIFlatInputBox::UIFlatInputBox(TTF_Font *font)
         SDL_RenderCopy(renderer, texture_, &src, &dst);
     }
     if (is_focused() && SDL_GetTicks() % 1000 >= 500) {
-        SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0);
+        SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
 
         SDL_Rect cursor_rect {
             .x = rect().x + text_w_ + padding_size_,

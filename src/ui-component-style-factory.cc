@@ -3,6 +3,8 @@
 #include "ui-flat-menu.h"
 #include "ui-flat-menu-group.h"
 #include "ui-flat-input-box.h"
+#include "ui-flat-check-box.h"
+#include "ui-pic-grid-selector.h"
 #include "ui-style-collection.h"
 #include "glog/logging.h"
 #include <memory>
@@ -18,6 +20,8 @@ public:
     virtual UIFlatMenu *CreateFlatMenu(const std::string &name) override;
     virtual UIFlatMenuGroup *CreateFlatMenuGroup(const std::string &name) override;
     virtual UIFlatInputBox *CreateFlatInputBox(const std::string &name) override;
+    virtual UIFlatCheckBox *CreateFlatCheckBox(const std::string &name) override;
+    virtual UIPicGridSelector *CreatePicGridSelector(const std::string &name) override;
     
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIComponentStyleFactory);
 private:
@@ -57,6 +61,14 @@ static const char FLAT_INPUT_BOX_BORDER_COLOR[]  = "FlatInputBox.border.color";
 static const char FLAT_INPUT_BOX_BG_COLOR[]      = "FlatInputBox.bg.color";
 static const char FLAT_INPUT_BOX_PADDING_SIZE[]  = "FlatInputBox.padding.size";
 
+static const char FLAT_CHECK_BOX_FONT[]           = "FlatCheckBox.font";
+static const char FLAT_CHECK_BOX_FONT_COLOR[]     = "FlatCheckBox.font.color";
+static const char FLAT_CHECK_BOX_BOX_COLOR[]      = "FlatCheckBox.box.color";
+static const char FLAT_CHECK_BOX_PADDING_H_SIZE[] = "FlatCheckBox.padding.h.size";
+static const char FLAT_CHECK_BOX_PADDING_V_SIZE[] = "FlatCheckBox.padding.v.size";
+
+static const char PIC_GRID_SELECTOR_GRID_COLOR[] = "PicGridSelector.grid.color";
+static const char PIC_GRID_SELECTOR_SELECTED_COLOR[] = "PicGridSelector.selected.color";
 
 UIComponentFactory *CreateUIComponentStyleFactory(UIStyleCollection *style) {
     return new UIComponentStyleFactory(style);
@@ -203,7 +215,7 @@ UIComponentStyleFactory::CreateFlatInputBox(const std::string &name) {
     bool ok = true;
     TTF_Font *font = style_->FindFont(FLAT_INPUT_BOX_FONT, &ok);
     if (!ok) {
-        LOG(ERROR) << "can not find font: " << FLAT_MENU_GROUP_FONT;
+        LOG(ERROR) << "can not find font: " << FLAT_INPUT_BOX_FONT;
         return nullptr;
     }
 
@@ -249,5 +261,65 @@ UIComponentStyleFactory::CreateFlatInputBox(const std::string &name) {
     return component.release();
 }
 
+/*virtual*/ UIFlatCheckBox *
+UIComponentStyleFactory::CreateFlatCheckBox(const std::string &name) {
+    bool ok = true;
+    TTF_Font *font = style_->FindFont(FLAT_CHECK_BOX_FONT, &ok);
+    if (!ok) {
+        LOG(ERROR) << "can not find font: " << FLAT_CHECK_BOX_FONT;
+        return nullptr;
+    }
+
+    std::unique_ptr<UIFlatCheckBox> component(new UIFlatCheckBox(font));
+    component->set_name(name);
+    component->set_id(NextId());
+
+    if (!style_->FindColor(FLAT_CHECK_BOX_FONT_COLOR,
+                           component->mutable_font_color())) {
+        LOG(ERROR) << "can not find color: " << FLAT_CHECK_BOX_FONT_COLOR;
+        return nullptr;
+    }
+    if (!style_->FindColor(FLAT_CHECK_BOX_BOX_COLOR,
+                           component->mutable_box_color())) {
+        LOG(ERROR) << "can not find color: " << FLAT_CHECK_BOX_BOX_COLOR;
+        return nullptr;
+    }
+
+    component->set_h_padding_size(style_->FindInt(FLAT_CHECK_BOX_PADDING_H_SIZE,
+                                                  &ok));
+    if (!ok) {
+        LOG(ERROR) << "can not find int value: "
+                   << FLAT_CHECK_BOX_PADDING_H_SIZE;
+        return nullptr;
+    }
+    component->set_v_padding_size(style_->FindInt(FLAT_CHECK_BOX_PADDING_V_SIZE,
+                                                  &ok));
+    if (!ok) {
+        LOG(ERROR) << "can not find int value: "
+                   << FLAT_CHECK_BOX_PADDING_V_SIZE;
+        return nullptr;
+    }
+
+    return component.release();
+}
+
+/*virtual*/ UIPicGridSelector *
+UIComponentStyleFactory::CreatePicGridSelector(const std::string &name) {
+    std::unique_ptr<UIPicGridSelector> component(new UIPicGridSelector());
+    component->set_name(name);
+    component->set_id(NextId());
+
+    if (!style_->FindColor(PIC_GRID_SELECTOR_GRID_COLOR,
+                           component->mutable_grid_color())) {
+        LOG(ERROR) << "can not find color: " << PIC_GRID_SELECTOR_GRID_COLOR;
+        return nullptr;
+    }
+    if (!style_->FindColor(PIC_GRID_SELECTOR_SELECTED_COLOR,
+                           component->mutable_selected_color())) {
+        LOG(ERROR) << "can not find color: " << PIC_GRID_SELECTOR_SELECTED_COLOR;
+        return nullptr;
+    }
+    return component.release();
+}
 
 } // namespace utaha

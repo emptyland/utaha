@@ -12,11 +12,14 @@ namespace utaha {
 
 class UIComponentFactory;
 
+class InteractiveListenner;
 class UIFlatMenuGroupBuilder;
 class UIFlatMenuGroupColumnBuilder;
 class UIFlatMenuBuilder;
 class UIFlatButtonBuilder;
 class UIFlatInputBoxBuilder;
+class UIFlatCheckBoxBuilder;
+class UIPicGridSelectorBuilder;
 class UILayoutBuilder;
 class UILayoutRowBuilder;
 class UIComponent;
@@ -24,6 +27,8 @@ class UIFlatMenuGroup;
 class UIFlatMenu;
 class UIFlatButton;
 class UIFlatInputBox;
+class UIFlatCheckBox;
+class UIPicGridSelector;
 class UILayout;
 class UILayoutRow;
 
@@ -37,6 +42,8 @@ public:
     UIFlatMenuBuilder *BeginFlatMenu(const char *name);
     UIFlatButtonBuilder *BeginFlatButton(const char *name);
     UIFlatInputBoxBuilder *BeginFlatInputBox(const char *name);
+    UIFlatCheckBoxBuilder *BeginFlatCheckBox(const char *name);
+    UIPicGridSelectorBuilder *BeginPicGridSelector(const char *name);
     UILayoutBuilder *BeginLayout();
 
     static int BindTo(lua_State *L);
@@ -45,6 +52,7 @@ public:
 private:
     UIComponentFactory *factory_;
     SDL_Window *window_;
+    InteractiveListenner *listenner_ = nullptr;
 }; // class UIComponentBuilder
 
 
@@ -147,6 +155,39 @@ public:
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIFlatInputBoxBuilder);
 }; // class UIFlatInputBoxBuilder
+
+
+class UIFlatCheckBoxBuilder : public UIComponentBuilderBase<UIFlatCheckBox> {
+public:
+    inline UIFlatCheckBoxBuilder(UIFlatCheckBox *component,
+                                 UIComponentFactory *factory)
+        : UIComponentBuilderBase(component, factory) {}
+    inline ~UIFlatCheckBoxBuilder() = default;
+
+    UIFlatCheckBoxBuilder *LetLabel(const char *text);
+    UIFlatCheckBoxBuilder *LetX(int x);
+    UIFlatCheckBoxBuilder *LetY(int y);
+    UIFlatCheckBoxBuilder *LetW(int w);
+    UIFlatCheckBoxBuilder *LetH(int h);
+    UIFlatCheckBox *EndCheckBox();
+
+    DISALLOW_IMPLICIT_CONSTRUCTORS(UIFlatCheckBoxBuilder);
+}; // class UIFlatCheckBoxBuilder
+
+class UIPicGridSelectorBuilder : public UIComponentBuilderBase<UIPicGridSelector> {
+public:
+    inline UIPicGridSelectorBuilder(UIPicGridSelector *component,
+                                    UIComponentFactory *factory)
+        : UIComponentBuilderBase(component, factory) {}
+    inline ~UIPicGridSelectorBuilder() = default;
+
+    UIPicGridSelectorBuilder *LetGridSizeW(int w);
+    UIPicGridSelectorBuilder *LetGridSizeH(int h);
+    UIPicGridSelector *EndPicGridSelectorFromFile(const char *file);
+    UIPicGridSelector *EndPicGridSelector();
+
+    DISALLOW_IMPLICIT_CONSTRUCTORS(UIPicGridSelectorBuilder);
+}; // UIPicGridSelectorBuilder
 
 
 class UILayoutBuilder {

@@ -10,6 +10,8 @@ class UIFlatButton;
 class UIFlatMenu;
 class UIFlatMenuGroup;
 class UIFlatInputBox;
+class UIFlatCheckBox;
+class UIPicGridSelector;
 class UIStyleCollection;
 
 class UIComponentFactory {
@@ -21,6 +23,8 @@ public:
     virtual UIFlatMenu *CreateFlatMenu(const std::string &name) = 0;
     virtual UIFlatMenuGroup *CreateFlatMenuGroup(const std::string &name) = 0;
     virtual UIFlatInputBox *CreateFlatInputBox(const std::string &name) = 0;
+    virtual UIFlatCheckBox *CreateFlatCheckBox(const std::string &name) = 0;
+    virtual UIPicGridSelector *CreatePicGridSelector(const std::string &name) = 0;
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIComponentFactory);
 }; // class UIComponentFactory

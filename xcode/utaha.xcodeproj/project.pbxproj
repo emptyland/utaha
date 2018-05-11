@@ -49,6 +49,10 @@
 		239F480D208ED5CF00FD09AD /* ui-component.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F480C208ED5CF00FD09AD /* ui-component.cc */; };
 		239F4810208EE17E00FD09AD /* ui-flat-button.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F480F208EE17E00FD09AD /* ui-flat-button.cc */; };
 		239F4813208F233B00FD09AD /* ui-flat-input-box.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F4812208F233B00FD09AD /* ui-flat-input-box.cc */; };
+		23A3FC3520A045FB00474E12 /* ui-pic-grid-selector.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */; };
+		23A3FC3620A045FB00474E12 /* ui-pic-grid-selector.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */; };
+		23A3FC3920A2EF3800474E12 /* ui-flat-check-box.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3820A2EF3800474E12 /* ui-flat-check-box.cc */; };
+		23A3FC3A20A2EF3800474E12 /* ui-flat-check-box.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3820A2EF3800474E12 /* ui-flat-check-box.cc */; };
 		23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785B208DB72E00A8EA4F /* render-entity.cc */; };
 		23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785F208DBB3600A8EA4F /* root-render-entity.cc */; };
 		23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C67862208DC4FD00A8EA4F /* sample-render-entity.cc */; };
@@ -110,6 +114,10 @@
 		239F480F208EE17E00FD09AD /* ui-flat-button.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-flat-button.cc"; sourceTree = "<group>"; };
 		239F4811208F226A00FD09AD /* ui-flat-input-box.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-flat-input-box.h"; sourceTree = "<group>"; };
 		239F4812208F233B00FD09AD /* ui-flat-input-box.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-flat-input-box.cc"; sourceTree = "<group>"; };
+		23A3FC3320A0453700474E12 /* ui-pic-grid-selector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-pic-grid-selector.h"; sourceTree = "<group>"; };
+		23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-pic-grid-selector.cc"; sourceTree = "<group>"; };
+		23A3FC3720A2EEEE00474E12 /* ui-flat-check-box.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-flat-check-box.h"; sourceTree = "<group>"; };
+		23A3FC3820A2EF3800474E12 /* ui-flat-check-box.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-flat-check-box.cc"; sourceTree = "<group>"; };
 		23B83F5D1D7585B400DBC418 /* lodepng_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lodepng_util.h; path = ../src/lodepng/lodepng_util.h; sourceTree = "<group>"; };
 		23B83F6B1D78524800DBC418 /* datatype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = datatype.h; sourceTree = "<group>"; };
 		23B83F6D1D79177200DBC418 /* base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base.h; sourceTree = "<group>"; };
@@ -225,6 +233,8 @@
 				239F4812208F233B00FD09AD /* ui-flat-input-box.cc */,
 				23044E1D2092CDBD001924AA /* ui-flat-menu-group.cc */,
 				230822FF20908D7C003804EA /* ui-flat-menu.cc */,
+				23A3FC3820A2EF3800474E12 /* ui-flat-check-box.cc */,
+				23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */,
 				230822FB20900BE2003804EA /* ui-layout.cc */,
 				23044E20209326D2001924AA /* ui-component-factory.cc */,
 				2353C92720940B2200C4B4EB /* ui-component-style-factory.cc */,
@@ -251,6 +261,8 @@
 				239F4811208F226A00FD09AD /* ui-flat-input-box.h */,
 				23044E1C2092CD2E001924AA /* ui-flat-menu-group.h */,
 				230822FE20908D33003804EA /* ui-flat-menu.h */,
+				23A3FC3720A2EEEE00474E12 /* ui-flat-check-box.h */,
+				23A3FC3320A0453700474E12 /* ui-pic-grid-selector.h */,
 				230822FA20900BA9003804EA /* ui-layout.h */,
 				23044E1F2093264D001924AA /* ui-component-factory.h */,
 				238F6CDC209954ED00791F67 /* ui-component-builder.h */,
@@ -356,6 +368,7 @@
 				237E91482094616500176FA8 /* ui-style-collection-test.cc in Sources */,
 				237E91492094616500176FA8 /* lua-utils.cc in Sources */,
 				237E914B2094616500176FA8 /* render-entity.cc in Sources */,
+				23A3FC3A20A2EF3800474E12 /* ui-flat-check-box.cc in Sources */,
 				238F6CE1209958CF00791F67 /* ui-component-builder-test.cc in Sources */,
 				237E916620947C5F00176FA8 /* ui-component-factory-test.cc in Sources */,
 				237E914C2094616500176FA8 /* root-render-entity.cc in Sources */,
@@ -372,6 +385,7 @@
 				237E91552094616500176FA8 /* ui-component-factory.cc in Sources */,
 				237E91562094616500176FA8 /* ui-component-style-factory.cc in Sources */,
 				237E91572094616500176FA8 /* ui-style-collection.cc in Sources */,
+				23A3FC3620A045FB00474E12 /* ui-pic-grid-selector.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,6 +395,7 @@
 			files = (
 				237E9164209462D700176FA8 /* editor-main.cc in Sources */,
 				23044E21209326D2001924AA /* ui-component-factory.cc in Sources */,
+				23A3FC3520A045FB00474E12 /* ui-pic-grid-selector.cc in Sources */,
 				239F4810208EE17E00FD09AD /* ui-flat-button.cc in Sources */,
 				2353C92820940B2200C4B4EB /* ui-component-style-factory.cc in Sources */,
 				239F480D208ED5CF00FD09AD /* ui-component.cc in Sources */,
@@ -393,6 +408,7 @@
 				23044E1E2092CDBD001924AA /* ui-flat-menu-group.cc in Sources */,
 				23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */,
 				238F6CDE2099555B00791F67 /* ui-component-builder.cc in Sources */,
+				23A3FC3920A2EF3800474E12 /* ui-flat-check-box.cc in Sources */,
 				23C9E67C1D9CFB9B0078DFFF /* lua-utils.cc in Sources */,
 				23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */,
 			);

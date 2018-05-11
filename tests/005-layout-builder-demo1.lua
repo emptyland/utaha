@@ -52,4 +52,18 @@ return builder:beginLayout()
             :h(24)
         :endInputBox())
     :endRow()
+    :beginRow(alignment.ALIGN_LEFT_OR_TOP)
+        :add(builder:beginFlatCheckBox("check.a")
+            :label("选择1")
+        :endCheckBox())
+        :add(builder:beginFlatCheckBox("check.b")
+            :label("选择2")
+        :endCheckBox())
+        :add(builder:beginFlatCheckBox("check.c")
+            :label("选择3")
+        :endCheckBox())
+    :endRow()
 :endLayout()
+
+-- 48
+-- 64
