@@ -56,6 +56,10 @@
 		23A3FC3D20A59C7000474E12 /* ui-form.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3C20A59C7000474E12 /* ui-form.cc */; };
 		23A3FC3E20A59C7000474E12 /* ui-form.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3C20A59C7000474E12 /* ui-form.cc */; };
 		23A3FC4020A9351400474E12 /* editor-form.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3F20A9351400474E12 /* editor-form.cc */; };
+		23A3FC4420A93FE300474E12 /* on-exit-scope.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4320A93FE300474E12 /* on-exit-scope.cc */; };
+		23A3FC4520A93FE300474E12 /* on-exit-scope.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4320A93FE300474E12 /* on-exit-scope.cc */; };
+		23A3FC4820A9740700474E12 /* script-executor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4720A9740700474E12 /* script-executor.cc */; };
+		23A3FC4920A9740700474E12 /* script-executor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4720A9740700474E12 /* script-executor.cc */; };
 		23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785B208DB72E00A8EA4F /* render-entity.cc */; };
 		23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785F208DBB3600A8EA4F /* root-render-entity.cc */; };
 		23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C67862208DC4FD00A8EA4F /* sample-render-entity.cc */; };
@@ -124,6 +128,11 @@
 		23A3FC3B20A5919A00474E12 /* ui-form.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-form.h"; sourceTree = "<group>"; };
 		23A3FC3C20A59C7000474E12 /* ui-form.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-form.cc"; sourceTree = "<group>"; };
 		23A3FC3F20A9351400474E12 /* editor-form.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "editor-form.cc"; sourceTree = "<group>"; };
+		23A3FC4120A93A5300474E12 /* lazy-instance.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "lazy-instance.h"; sourceTree = "<group>"; };
+		23A3FC4220A93F6300474E12 /* on-exit-scope.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "on-exit-scope.h"; sourceTree = "<group>"; };
+		23A3FC4320A93FE300474E12 /* on-exit-scope.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "on-exit-scope.cc"; sourceTree = "<group>"; };
+		23A3FC4620A9445B00474E12 /* script-executor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "script-executor.h"; sourceTree = "<group>"; };
+		23A3FC4720A9740700474E12 /* script-executor.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "script-executor.cc"; sourceTree = "<group>"; };
 		23B83F5D1D7585B400DBC418 /* lodepng_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lodepng_util.h; path = ../src/lodepng/lodepng_util.h; sourceTree = "<group>"; };
 		23B83F6B1D78524800DBC418 /* datatype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = datatype.h; sourceTree = "<group>"; };
 		23B83F6D1D79177200DBC418 /* base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base.h; sourceTree = "<group>"; };
@@ -248,6 +257,8 @@
 				238F6CDD2099555B00791F67 /* ui-component-builder.cc */,
 				2353C92A20940CF400C4B4EB /* ui-style-collection.cc */,
 				23A3FC3C20A59C7000474E12 /* ui-form.cc */,
+				23A3FC4320A93FE300474E12 /* on-exit-scope.cc */,
+				23A3FC4720A9740700474E12 /* script-executor.cc */,
 			);
 			name = Sources;
 			path = ../src;
@@ -276,6 +287,9 @@
 				238F6CDC209954ED00791F67 /* ui-component-builder.h */,
 				2353C92920940CB500C4B4EB /* ui-style-collection.h */,
 				23A3FC3B20A5919A00474E12 /* ui-form.h */,
+				23A3FC4120A93A5300474E12 /* lazy-instance.h */,
+				23A3FC4220A93F6300474E12 /* on-exit-scope.h */,
+				23A3FC4620A9445B00474E12 /* script-executor.h */,
 			);
 			name = Include;
 			path = ../src;
@@ -378,8 +392,10 @@
 				237E91492094616500176FA8 /* lua-utils.cc in Sources */,
 				237E914B2094616500176FA8 /* render-entity.cc in Sources */,
 				23A3FC3A20A2EF3800474E12 /* ui-flat-check-box.cc in Sources */,
+				23A3FC4520A93FE300474E12 /* on-exit-scope.cc in Sources */,
 				238F6CE1209958CF00791F67 /* ui-component-builder-test.cc in Sources */,
 				237E916620947C5F00176FA8 /* ui-component-factory-test.cc in Sources */,
+				23A3FC4920A9740700474E12 /* script-executor.cc in Sources */,
 				237E914C2094616500176FA8 /* root-render-entity.cc in Sources */,
 				238F6CDF2099555B00791F67 /* ui-component-builder.cc in Sources */,
 				237E914D2094616500176FA8 /* sample-render-entity.cc in Sources */,
@@ -406,6 +422,8 @@
 				237E9164209462D700176FA8 /* editor-main.cc in Sources */,
 				23044E21209326D2001924AA /* ui-component-factory.cc in Sources */,
 				23A3FC3520A045FB00474E12 /* ui-pic-grid-selector.cc in Sources */,
+				23A3FC4820A9740700474E12 /* script-executor.cc in Sources */,
+				23A3FC4420A93FE300474E12 /* on-exit-scope.cc in Sources */,
 				239F4810208EE17E00FD09AD /* ui-flat-button.cc in Sources */,
 				2353C92820940B2200C4B4EB /* ui-component-style-factory.cc in Sources */,
 				239F480D208ED5CF00FD09AD /* ui-component.cc in Sources */,

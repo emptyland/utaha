@@ -2,6 +2,8 @@
 #include "ui-style-collection.h"
 #include "ui-component-factory.h"
 #include "ui-component-builder.h"
+#include "lua-utils.h"
+#include "script-executor.h"
 #include "glog/logging.h"
 
 namespace utaha {
@@ -26,6 +28,22 @@ private:
     UIComponentFactory *factory_ = nullptr;
 }; // class EditorForm
 
+#define DEFINE_CMD_ID(M) \
+    M(ID_EDIT_CONSTRUCTION, 100) \
+    M(ID_EDIT_SPIRIT,       200) \
+    M(ID_EDIT_MAP,          300) \
+    M(ID_FILE_SAVE_ALL,     400)
+
+struct EditorFormR {
+    enum ID: int {
+        DEFINE_CMD_ID(LUA_DEF_CONST_ENUM)
+    };
+};
+
+static const LuaConstantId editor_form_id[] = {
+    DEFINE_CMD_ID(LUA_DEF_CONST_ID)
+};
+
 UIForm *CreateEditorForm() {
     return new EditorForm();
 }
@@ -38,11 +56,29 @@ EditorForm::EditorForm() {
 
 /*virtual*/ int EditorForm::OnCommand(UIComponent *sender, int cmd_id, void *param,
                                       bool *is_break) {
+    switch (cmd_id) {
+        case EditorFormR::ID_EDIT_CONSTRUCTION:
+            break;
 
+        case EditorFormR::ID_EDIT_SPIRIT:
+            break;
+
+        case EditorFormR::ID_EDIT_MAP:
+            break;
+
+        case EditorFormR::ID_FILE_SAVE_ALL:
+            LOG(INFO) << "save all";
+            break;
+
+        default:
+            break;
+    }
     return 0;
 }
 
 /*virtual*/ int EditorForm::OnInit() {
+    ScriptScope scripts(SCRIPTS.ptr());
+
     styles_ = new UIStyleCollection();
     auto err = styles_->LoadFromFile("res/styles.lua");
     if (err) {
@@ -55,7 +91,33 @@ EditorForm::EditorForm() {
         return -1;
     }
 
-    //UIComponentBuilder builder(factory_, this, this);
+    UIComponentBuilder *builder = new UIComponentBuilder(factory_, this, this);
+    err = nullptr;
+    auto L = scripts.ExecStandaloneFile([&builder](lua_State *L){
+        UIComponentBuilder::BindTo(L);
+
+        luabridge::getGlobalNamespace(L)
+        .beginNamespace(utaha::kLuaNamespace)
+            .addVariable("uiBuilder", &builder, false)
+        .endNamespace();
+
+        LuaUtils::InitConstantId(L, utaha::kLuaNamespace, "R", editor_form_id,
+                                 arraysize(editor_form_id));
+    }, "res/form-layouts.lua", &err);
+    if (err) {
+        LOG(ERROR) << "Can not create form layout. " << err;
+        return -1;
+    }
+
+    luabridge::LuaRef result = luabridge::LuaRef::fromStack(L, -1);
+    if (!result.isTable()) {
+        LOG(ERROR) << "Incorrect script return result, need table. "
+                   << lua_typename(L, result.type());
+        return -1;
+    }
+
+    auto main_menu = result["mainMenu"].cast<UIComponent *>();
+    set_main_menu(DCHECK_NOTNULL(main_menu));
 
     return UIForm::OnInit();
 }

@@ -84,6 +84,12 @@ char (&ArraySizeHelper(const T (&array)[N]))[N];
 #define COLOR_B_MASK 0x00ff0000
 #define COLOR_A_MASK 0xff000000
 
+
+enum Initializer {
+    LAZY_INSTANCE_INITIALIZER,
+    ON_EXIT_SCOPE_INITIALIZER
+};
+
 } // namespace utaha
 
 #endif // UTAHA_BASE_H_

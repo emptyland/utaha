@@ -39,11 +39,6 @@ UIFlatMenu::UIFlatMenu(TTF_Font *font)
     }
 
     if (event->type == SDL_MOUSEBUTTONDOWN) {
-
-    }
-
-    if (event->type == SDL_MOUSEBUTTONUP) {
-        set_is_show(false);
         if (InRect(rect(), event->motion.x, event->motion.y)) {
             for (const auto &item : items_) {
                 if (event->motion.y >= item.y &&
@@ -55,6 +50,10 @@ UIFlatMenu::UIFlatMenu(TTF_Font *font)
                 }
             }
         }
+    }
+
+    if (event->type == SDL_MOUSEBUTTONUP) {
+        set_is_show(false);
     }
 
     return UIComponent::OnEvent(event, is_break);

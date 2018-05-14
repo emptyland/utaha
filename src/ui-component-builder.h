@@ -76,21 +76,25 @@ private:
 
 class UIFlatMenuGroupBuilder : public UIComponentBuilderBase<UIFlatMenuGroup> {
 public:
-    inline UIFlatMenuGroupBuilder(UIFlatMenuGroup *component,
+    inline UIFlatMenuGroupBuilder(InteractiveListenner *listenner,
+                                  UIFlatMenuGroup *component,
                                   UIComponentFactory *factory)
-        : UIComponentBuilderBase(component, factory) {}
+        : UIComponentBuilderBase(component, factory), listenner_(listenner) {}
     inline ~UIFlatMenuGroupBuilder() = default;
 
     UIFlatMenuGroupColumnBuilder *BeginColumn(const char *name, int cmd_id);
     UIFlatMenuGroup *EndMenuGroup();
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIFlatMenuGroupBuilder);
+private:
+    InteractiveListenner *listenner_;
 }; // class UIFlatMenuGroupBuilder
 
 
 class UIFlatMenuGroupColumnBuilder : public UIComponentBuilderBase<UIFlatMenu> {
 public:
     UIFlatMenuGroupColumnBuilder(const char *name, int cmd_id, void *param,
+                                 InteractiveListenner *listenner,
                                  UIFlatMenuGroupBuilder *builder);
     inline UIFlatMenuGroupColumnBuilder() = default;
 

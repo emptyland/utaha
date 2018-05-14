@@ -31,7 +31,7 @@ UIComponentBuilder::BeginFlatMenuGroup(const char *name) {
         return nullptr;
     }
     component->AddListenner(listenner_);
-    return new UIFlatMenuGroupBuilder(component, factory_);
+    return new UIFlatMenuGroupBuilder(listenner_, component, factory_);
 }
 
 UIFlatMenuBuilder *UIComponentBuilder::BeginFlatMenu(const char *name) {
@@ -185,7 +185,8 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
 
 UIFlatMenuGroupColumnBuilder *
 UIFlatMenuGroupBuilder::BeginColumn(const char *name, int cmd_id) {
-    return new UIFlatMenuGroupColumnBuilder(name, cmd_id, nullptr, this);
+    return new UIFlatMenuGroupColumnBuilder(name, cmd_id, nullptr, listenner_,
+                                            this);
 }
 
 UIFlatMenuGroup *UIFlatMenuGroupBuilder::EndMenuGroup() {
@@ -201,6 +202,7 @@ UIFlatMenuGroup *UIFlatMenuGroupBuilder::EndMenuGroup() {
 UIFlatMenuGroupColumnBuilder::UIFlatMenuGroupColumnBuilder(const char *name,
                                                            int cmd_id,
                                                            void *param,
+                                                           InteractiveListenner *listenner,
                                                            UIFlatMenuGroupBuilder *builder)
     : col_name_(DCHECK_NOTNULL(name))
     , col_cmd_id_(cmd_id)
@@ -208,6 +210,7 @@ UIFlatMenuGroupColumnBuilder::UIFlatMenuGroupColumnBuilder(const char *name,
     , builder_(DCHECK_NOTNULL(builder))
     , UIComponentBuilderBase(builder->factory()->CreateFlatMenu(name),
                              builder->factory()) {
+    component()->AddListenner(listenner);
 }
 
 UIFlatMenuGroupColumnBuilder *

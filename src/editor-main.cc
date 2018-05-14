@@ -11,7 +11,9 @@
 #include "interactive-listenner.h"
 #include "ui-style-collection.h"
 #include "ui-form.h"
+#include "on-exit-scope.h"
 #include "lua-utils.h"
+#include "lazy-instance.h"
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
 #include <SDL2_ttf/SDL_ttf.h>
@@ -26,6 +28,8 @@ namespace utaha {
 int main(int argc, char *argv[]) {
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
+
+    utaha::OnExitScope on_exit(utaha::ON_EXIT_SCOPE_INITIALIZER);
 
     std::unique_ptr<utaha::UIForm> form(utaha::CreateEditorForm());
     if (!form->CreateWindow("Utaha-Editor", 800, 600)) {
