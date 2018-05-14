@@ -9,6 +9,7 @@ namespace utaha {
 
 class UILayoutRow;
 class UIComponent;
+class UIForm;
 
 //#define DEFINE_LAYOUT_ALIGNMENT(M) \
 //    M(ALIGN_LEFT_OR_TOP, 0)        \
@@ -26,12 +27,12 @@ public:
     };
     typedef UILayoutRow Row;
 
-    UILayout(SDL_Window *window);
+    UILayout(UIForm *form);
     virtual ~UILayout();
     virtual int OnEvent(SDL_Event *event, bool *is_break) override;
     virtual int OnRender(SDL_Renderer *renderer) override;
 
-    DEF_PTR_GETTER(SDL_Window, window);
+    DEF_PTR_GETTER(UIForm, form);
     DEF_VAL_PROP_RW(int, padding_size);
     DEF_VAL_PROP_RMW(SDL_Rect, rect);
     DEF_VAL_PROP_RW(Alignment, vertical_alignment);
@@ -52,7 +53,7 @@ private:
     int CalculateMaxRowWidth();
     int CalculateRowsHeight();
 
-    SDL_Window *window_;
+    UIForm *form_;
     Alignment vertical_alignment_ = ALIGN_LEFT_OR_TOP;
     Alignment horizontal_aligment_ = ALIGN_LEFT_OR_TOP;
     int padding_size_ = 2;

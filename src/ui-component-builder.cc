@@ -13,9 +13,11 @@
 namespace utaha {
 
 UIComponentBuilder::UIComponentBuilder(UIComponentFactory *factory,
-                                       SDL_Window *window)
+                                       UIForm *form,
+                                       InteractiveListenner *listenner)
     : factory_(DCHECK_NOTNULL(factory))
-    , window_(DCHECK_NOTNULL(window)) {
+    , form_(DCHECK_NOTNULL(form))
+    , listenner_(DCHECK_NOTNULL(listenner)) {
 }
 
 UIComponentBuilder::~UIComponentBuilder() {
@@ -84,7 +86,7 @@ UIComponentBuilder::BeginPicGridSelector(const char *name) {
 }
 
 UILayoutBuilder *UIComponentBuilder::BeginLayout() {
-    auto layout = new UILayout(window_);
+    auto layout = new UILayout(form_);
     return new UILayoutBuilder(layout);
 }
 

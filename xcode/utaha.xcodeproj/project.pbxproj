@@ -53,6 +53,9 @@
 		23A3FC3620A045FB00474E12 /* ui-pic-grid-selector.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */; };
 		23A3FC3920A2EF3800474E12 /* ui-flat-check-box.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3820A2EF3800474E12 /* ui-flat-check-box.cc */; };
 		23A3FC3A20A2EF3800474E12 /* ui-flat-check-box.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3820A2EF3800474E12 /* ui-flat-check-box.cc */; };
+		23A3FC3D20A59C7000474E12 /* ui-form.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3C20A59C7000474E12 /* ui-form.cc */; };
+		23A3FC3E20A59C7000474E12 /* ui-form.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3C20A59C7000474E12 /* ui-form.cc */; };
+		23A3FC4020A9351400474E12 /* editor-form.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3F20A9351400474E12 /* editor-form.cc */; };
 		23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785B208DB72E00A8EA4F /* render-entity.cc */; };
 		23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785F208DBB3600A8EA4F /* root-render-entity.cc */; };
 		23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C67862208DC4FD00A8EA4F /* sample-render-entity.cc */; };
@@ -118,6 +121,9 @@
 		23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-pic-grid-selector.cc"; sourceTree = "<group>"; };
 		23A3FC3720A2EEEE00474E12 /* ui-flat-check-box.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-flat-check-box.h"; sourceTree = "<group>"; };
 		23A3FC3820A2EF3800474E12 /* ui-flat-check-box.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-flat-check-box.cc"; sourceTree = "<group>"; };
+		23A3FC3B20A5919A00474E12 /* ui-form.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-form.h"; sourceTree = "<group>"; };
+		23A3FC3C20A59C7000474E12 /* ui-form.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-form.cc"; sourceTree = "<group>"; };
+		23A3FC3F20A9351400474E12 /* editor-form.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "editor-form.cc"; sourceTree = "<group>"; };
 		23B83F5D1D7585B400DBC418 /* lodepng_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lodepng_util.h; path = ../src/lodepng/lodepng_util.h; sourceTree = "<group>"; };
 		23B83F6B1D78524800DBC418 /* datatype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = datatype.h; sourceTree = "<group>"; };
 		23B83F6D1D79177200DBC418 /* base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base.h; sourceTree = "<group>"; };
@@ -223,6 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				23C9E67A1D9CFB9B0078DFFF /* lua-utils.cc */,
+				23A3FC3F20A9351400474E12 /* editor-form.cc */,
 				23E1D75D208889CB00F9EF96 /* editor-main.cc */,
 				23C6785B208DB72E00A8EA4F /* render-entity.cc */,
 				23C6785F208DBB3600A8EA4F /* root-render-entity.cc */,
@@ -240,6 +247,7 @@
 				2353C92720940B2200C4B4EB /* ui-component-style-factory.cc */,
 				238F6CDD2099555B00791F67 /* ui-component-builder.cc */,
 				2353C92A20940CF400C4B4EB /* ui-style-collection.cc */,
+				23A3FC3C20A59C7000474E12 /* ui-form.cc */,
 			);
 			name = Sources;
 			path = ../src;
@@ -267,6 +275,7 @@
 				23044E1F2093264D001924AA /* ui-component-factory.h */,
 				238F6CDC209954ED00791F67 /* ui-component-builder.h */,
 				2353C92920940CB500C4B4EB /* ui-style-collection.h */,
+				23A3FC3B20A5919A00474E12 /* ui-form.h */,
 			);
 			name = Include;
 			path = ../src;
@@ -384,6 +393,7 @@
 				237E91542094616500176FA8 /* ui-layout.cc in Sources */,
 				237E91552094616500176FA8 /* ui-component-factory.cc in Sources */,
 				237E91562094616500176FA8 /* ui-component-style-factory.cc in Sources */,
+				23A3FC3E20A59C7000474E12 /* ui-form.cc in Sources */,
 				237E91572094616500176FA8 /* ui-style-collection.cc in Sources */,
 				23A3FC3620A045FB00474E12 /* ui-pic-grid-selector.cc in Sources */,
 			);
@@ -399,6 +409,7 @@
 				239F4810208EE17E00FD09AD /* ui-flat-button.cc in Sources */,
 				2353C92820940B2200C4B4EB /* ui-component-style-factory.cc in Sources */,
 				239F480D208ED5CF00FD09AD /* ui-component.cc in Sources */,
+				23A3FC4020A9351400474E12 /* editor-form.cc in Sources */,
 				23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */,
 				2353C92B20940CF400C4B4EB /* ui-style-collection.cc in Sources */,
 				230822FC20900BE2003804EA /* ui-layout.cc in Sources */,
@@ -408,6 +419,7 @@
 				23044E1E2092CDBD001924AA /* ui-flat-menu-group.cc in Sources */,
 				23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */,
 				238F6CDE2099555B00791F67 /* ui-component-builder.cc in Sources */,
+				23A3FC3D20A59C7000474E12 /* ui-form.cc in Sources */,
 				23A3FC3920A2EF3800474E12 /* ui-flat-check-box.cc in Sources */,
 				23C9E67C1D9CFB9B0078DFFF /* lua-utils.cc in Sources */,
 				23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */,

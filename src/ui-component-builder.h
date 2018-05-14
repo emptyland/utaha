@@ -31,11 +31,12 @@ class UIFlatCheckBox;
 class UIPicGridSelector;
 class UILayout;
 class UILayoutRow;
+class UIForm;
 
 
 class UIComponentBuilder {
 public:
-    UIComponentBuilder(UIComponentFactory *factory, SDL_Window *window);
+    UIComponentBuilder(UIComponentFactory *factory, UIForm *form, InteractiveListenner *listenner);
     ~UIComponentBuilder();
 
     UIFlatMenuGroupBuilder *BeginFlatMenuGroup(const char *name);
@@ -51,7 +52,7 @@ public:
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIComponentBuilder);
 private:
     UIComponentFactory *factory_;
-    SDL_Window *window_;
+    UIForm *form_;
     InteractiveListenner *listenner_ = nullptr;
 }; // class UIComponentBuilder
 
