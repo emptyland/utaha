@@ -15,11 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="utaha.rc">
-      <Filter>资源文件</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="small.ico">
       <Filter>资源文件</Filter>
     </Image>
@@ -88,6 +83,24 @@
     <ClInclude Include="..\src\ui-style-collection.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\ui-flat-status-bar.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-form.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lazy-instance.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\on-exit-scope.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\raw-pic-collection.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\script-executor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\editor-main.cc">
@@ -106,9 +119,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\src\sample-render-entity.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ui_layout.cc">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ui-component.cc">
@@ -145,6 +155,24 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ui-style-collection.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\editor-form.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-status-bar.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-form.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\on-exit-scope.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\raw-pic-collection.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\script-executor.cc">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

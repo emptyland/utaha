@@ -1,5 +1,6 @@
 #include "ui-flat-status-bar.h"
-#include <SDL2_ttf/SDL_ttf.h>
+#include SDL_TTF_H
+#include <algorithm>
 
 namespace utaha {
 

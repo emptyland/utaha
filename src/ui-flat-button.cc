@@ -92,12 +92,12 @@ UIFlatButton::UIFlatButton(TTF_Font *font)
             break;
     }
     SDL_RenderFillRect(renderer, mutable_rect());
-    SDL_Rect src = {.x = 0, .y = 0, .w = text_w_, .h = text_h_};
+    SDL_Rect src = {0, 0, text_w_, text_h_};
     SDL_Rect dst = {
-        .x = rect().x + (rect().w - text_w_) / 2,
-        .y = rect().y + (rect().h - text_h_) / 2,
-        .w = text_w_,
-        .h = text_h_,
+        rect().x + (rect().w - text_w_) / 2,
+        rect().y + (rect().h - text_h_) / 2,
+        text_w_,
+        text_h_,
     };
 
     SDL_RenderCopy(renderer, texture_, &src, &dst);

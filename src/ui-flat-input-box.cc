@@ -63,12 +63,12 @@ UIFlatInputBox::UIFlatInputBox(TTF_Font *font)
     }
 
     if (texture_) {
-        const SDL_Rect src{.x = 0, .y = 0, .w = text_w_, .h = text_h_};
+        const SDL_Rect src{0, 0, text_w_, text_h_};
         const SDL_Rect dst{
-            .x = rect().x + padding_size_,
-            .y = rect().y + (rect().h - text_h_) / 2,
-            .w = text_w_,
-            .h = text_h_,
+            rect().x + padding_size_,
+            rect().y + (rect().h - text_h_) / 2,
+            text_w_,
+            text_h_,
         };
         SDL_RenderCopy(renderer, texture_, &src, &dst);
     }
@@ -76,10 +76,10 @@ UIFlatInputBox::UIFlatInputBox(TTF_Font *font)
         SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
 
         SDL_Rect cursor_rect {
-            .x = rect().x + text_w_ + padding_size_,
-            .y = rect().y + padding_size_,
-            .w = 2,
-            .h = rect().h - padding_size_ * 2,
+            rect().x + text_w_ + padding_size_,
+            rect().y + padding_size_,
+            2,
+            rect().h - padding_size_ * 2,
         };
         SDL_RenderDrawRect(renderer, &cursor_rect);
     }

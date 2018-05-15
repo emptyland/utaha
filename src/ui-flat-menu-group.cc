@@ -99,10 +99,10 @@ UIFlatMenuGroup::UIFlatMenuGroup(TTF_Font *font)
             SDL_SetRenderDrawColor(renderer, hot_color_.r, hot_color_.g,
                                    hot_color_.b, hot_color_.a);
             SDL_Rect col_rect = {
-                .x = column.x,
-                .y = rect().y,
-                .w = column.w,
-                .h = rect().h,
+                column.x,
+                rect().y,
+                column.w,
+                rect().h,
             };
             SDL_RenderFillRect(renderer, &col_rect);
             if (column.menu) {
@@ -152,13 +152,14 @@ UIFlatMenuGroup::UIFlatMenuGroup(TTF_Font *font)
 
 void UIFlatMenuGroup::AddColumn(const char *name, int cmd_id, UIFlatMenu *menu) {
     Column column = {
-        .is_hot = false,
-        .name   = DCHECK_NOTNULL(name),
-        .cmd_id = cmd_id,
-        .x      = 0,
-        .w      = 0,
-        .menu   = menu,
+        false,
+        DCHECK_NOTNULL(name),
+        cmd_id,
+        0,
+        0,
+        menu,
     };
+
     columns_.emplace_back(column);
     is_changed_ = true;
 }
@@ -195,16 +196,16 @@ SDL_Texture *UIFlatMenuGroup::CreateTexture(SDL_Renderer *renderer) {
     x = 0;
     for (auto surface : surfaces) {
         SDL_Rect dst = {
-            .x = x + h_padding_size_,
-            .y = v_padding_size_,
-            .w = surface->w,
-            .h = surface->h,
+            x + h_padding_size_,
+            v_padding_size_,
+            surface->w,
+            surface->h,
         };
         SDL_Rect src = {
-            .x = 0,
-            .y = 0,
-            .w = surface->w,
-            .h = surface->h,
+            0,
+            0,
+            surface->w,
+            surface->h,
         };
         SDL_BlitSurface(surface, &src, whole, &dst);
         x += (surface->w + h_padding_size_ * 2);

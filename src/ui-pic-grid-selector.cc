@@ -59,7 +59,7 @@ UIPicGridSelector::UIPicGridSelector() {
     }
 
     SDL_Rect dst = GetPicRect(),
-             src = {.x = 0, .y = 0, .w = pic_->w, .h = pic_->h};
+             src = {0, 0, pic_->w, pic_->h};
     SDL_RenderCopy(renderer, texture_, &src, &dst);
 
     SDL_SetRenderDrawColor(renderer, grid_color_.r, grid_color_.g, grid_color_.b,
@@ -75,10 +75,10 @@ UIPicGridSelector::UIPicGridSelector() {
         SDL_SetRenderDrawColor(renderer, selected_color_.r, selected_color_.g,
                                selected_color_.b, selected_color_.a);
         SDL_Rect selected = {
-            .x = dst.x + selected_x_ * grid_size_w_,
-            .y = dst.y + selected_y_ * grid_size_h_,
-            .w = grid_size_w_,
-            .h = grid_size_h_,
+            dst.x + selected_x_ * grid_size_w_,
+            dst.y + selected_y_ * grid_size_h_,
+            grid_size_w_,
+            grid_size_h_,
         };
         SDL_RenderFillRect(renderer, &selected);
     }

@@ -98,14 +98,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;../src/lua-bridge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>libs\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL_image.lib;SDL2.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL_image.lib;SDL2.lib;SDL2_ttf.lib;libglog.lib;luajit.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -116,14 +116,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;../src/lua-bridge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>libs\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL_image.lib;SDL2.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL_image.lib;SDL2.lib;SDL2_ttf.lib;libglog.lib;luajit.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -136,7 +136,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;../src/lua-bridge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
@@ -145,7 +145,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>libs\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL_image.lib;SDL2.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL_image.lib;SDL2.lib;SDL2_ttf.lib;libglog.lib;luajit.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -158,7 +158,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;../src/lua-bridge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
@@ -167,12 +167,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>libs\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL_image.lib;SDL2.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL_image.lib;SDL2.lib;SDL2_ttf.lib;libglog.lib;luajit.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ResourceCompile Include="utaha.rc" />
-  </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico" />
     <Image Include="utaha.ico" />
@@ -182,10 +179,14 @@
     <ClInclude Include="..\src\datatype.h" />
     <ClInclude Include="..\src\interactive-entity.h" />
     <ClInclude Include="..\src\interactive-listenner.h" />
+    <ClInclude Include="..\src\lazy-instance.h" />
     <ClInclude Include="..\src\lua-utils.h" />
+    <ClInclude Include="..\src\on-exit-scope.h" />
+    <ClInclude Include="..\src\raw-pic-collection.h" />
     <ClInclude Include="..\src\render-entity.h" />
     <ClInclude Include="..\src\root-render-entity.h" />
     <ClInclude Include="..\src\sample-render-entity.h" />
+    <ClInclude Include="..\src\script-executor.h" />
     <ClInclude Include="..\src\ui-component-builder.h" />
     <ClInclude Include="..\src\ui-component-factory.h" />
     <ClInclude Include="..\src\ui-component.h" />
@@ -194,18 +195,24 @@
     <ClInclude Include="..\src\ui-flat-input-box.h" />
     <ClInclude Include="..\src\ui-flat-menu-group.h" />
     <ClInclude Include="..\src\ui-flat-menu.h" />
+    <ClInclude Include="..\src\ui-flat-status-bar.h" />
+    <ClInclude Include="..\src\ui-form.h" />
     <ClInclude Include="..\src\ui-layout.h" />
     <ClInclude Include="..\src\ui-pic-grid-selector.h" />
     <ClInclude Include="..\src\ui-style-collection.h" />
     <ClInclude Include="..\src\ui_layout.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\editor-form.cc" />
     <ClCompile Include="..\src\editor-main.cc" />
     <ClCompile Include="..\src\interactive-entity.cc" />
     <ClCompile Include="..\src\lua-utils.cc" />
+    <ClCompile Include="..\src\on-exit-scope.cc" />
+    <ClCompile Include="..\src\raw-pic-collection.cc" />
     <ClCompile Include="..\src\render-entity.cc" />
     <ClCompile Include="..\src\root-render-entity.cc" />
     <ClCompile Include="..\src\sample-render-entity.cc" />
+    <ClCompile Include="..\src\script-executor.cc" />
     <ClCompile Include="..\src\ui-component-builder.cc" />
     <ClCompile Include="..\src\ui-component-factory.cc" />
     <ClCompile Include="..\src\ui-component-style-factory.cc" />
@@ -215,10 +222,11 @@
     <ClCompile Include="..\src\ui-flat-input-box.cc" />
     <ClCompile Include="..\src\ui-flat-menu-group.cc" />
     <ClCompile Include="..\src\ui-flat-menu.cc" />
+    <ClCompile Include="..\src\ui-flat-status-bar.cc" />
+    <ClCompile Include="..\src\ui-form.cc" />
     <ClCompile Include="..\src\ui-layout.cc" />
     <ClCompile Include="..\src\ui-pic-grid-selector.cc" />
     <ClCompile Include="..\src\ui-style-collection.cc" />
-    <ClCompile Include="..\src\ui_layout.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

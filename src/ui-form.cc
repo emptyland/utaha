@@ -1,8 +1,8 @@
 #include "ui-form.h"
 #include "ui-component.h"
-#include <SDL2/SDL.h>
-#include <SDL2_image/SDL_image.h>
-#include <SDL2_ttf/SDL_ttf.h>
+#include SDL_H
+#include SDL_IMAGE_H
+#include SDL_TTF_H
 
 namespace utaha {
 
@@ -84,7 +84,7 @@ int UIForm::GetRetainBottomH() const {
     return status_bar_ ? status_bar_->rect().h : 0;
 }
 
-bool UIForm::CreateWindow(const char *title, int w, int h) {
+bool UIForm::OpenWindow(const char *title, int w, int h) {
     window_ = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
                                SDL_WINDOWPOS_UNDEFINED, w, h,
                                SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE);
