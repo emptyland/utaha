@@ -53,6 +53,18 @@
 		23A3FC3620A045FB00474E12 /* ui-pic-grid-selector.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */; };
 		23A3FC3920A2EF3800474E12 /* ui-flat-check-box.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3820A2EF3800474E12 /* ui-flat-check-box.cc */; };
 		23A3FC3A20A2EF3800474E12 /* ui-flat-check-box.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3820A2EF3800474E12 /* ui-flat-check-box.cc */; };
+		23A3FC3D20A59C7000474E12 /* ui-form.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3C20A59C7000474E12 /* ui-form.cc */; };
+		23A3FC3E20A59C7000474E12 /* ui-form.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3C20A59C7000474E12 /* ui-form.cc */; };
+		23A3FC4020A9351400474E12 /* editor-form.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3F20A9351400474E12 /* editor-form.cc */; };
+		23A3FC4420A93FE300474E12 /* on-exit-scope.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4320A93FE300474E12 /* on-exit-scope.cc */; };
+		23A3FC4520A93FE300474E12 /* on-exit-scope.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4320A93FE300474E12 /* on-exit-scope.cc */; };
+		23A3FC4820A9740700474E12 /* script-executor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4720A9740700474E12 /* script-executor.cc */; };
+		23A3FC4920A9740700474E12 /* script-executor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4720A9740700474E12 /* script-executor.cc */; };
+		23A3FC4C20A989F800474E12 /* ui-flat-status-bar.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4B20A989F800474E12 /* ui-flat-status-bar.cc */; };
+		23A3FC4D20A989F800474E12 /* ui-flat-status-bar.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4B20A989F800474E12 /* ui-flat-status-bar.cc */; };
+		23A3FC5020AACC1200474E12 /* raw-pic-collection.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4F20AACC1200474E12 /* raw-pic-collection.cc */; };
+		23A3FC5120AACC1200474E12 /* raw-pic-collection.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4F20AACC1200474E12 /* raw-pic-collection.cc */; };
+		23A3FC5320AAD79000474E12 /* raw-pic-collection-test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC5220AAD79000474E12 /* raw-pic-collection-test.cc */; };
 		23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785B208DB72E00A8EA4F /* render-entity.cc */; };
 		23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785F208DBB3600A8EA4F /* root-render-entity.cc */; };
 		23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C67862208DC4FD00A8EA4F /* sample-render-entity.cc */; };
@@ -118,7 +130,19 @@
 		23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-pic-grid-selector.cc"; sourceTree = "<group>"; };
 		23A3FC3720A2EEEE00474E12 /* ui-flat-check-box.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-flat-check-box.h"; sourceTree = "<group>"; };
 		23A3FC3820A2EF3800474E12 /* ui-flat-check-box.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-flat-check-box.cc"; sourceTree = "<group>"; };
-		23B83F5D1D7585B400DBC418 /* lodepng_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lodepng_util.h; path = ../src/lodepng/lodepng_util.h; sourceTree = "<group>"; };
+		23A3FC3B20A5919A00474E12 /* ui-form.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-form.h"; sourceTree = "<group>"; };
+		23A3FC3C20A59C7000474E12 /* ui-form.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-form.cc"; sourceTree = "<group>"; };
+		23A3FC3F20A9351400474E12 /* editor-form.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "editor-form.cc"; sourceTree = "<group>"; };
+		23A3FC4120A93A5300474E12 /* lazy-instance.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "lazy-instance.h"; sourceTree = "<group>"; };
+		23A3FC4220A93F6300474E12 /* on-exit-scope.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "on-exit-scope.h"; sourceTree = "<group>"; };
+		23A3FC4320A93FE300474E12 /* on-exit-scope.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "on-exit-scope.cc"; sourceTree = "<group>"; };
+		23A3FC4620A9445B00474E12 /* script-executor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "script-executor.h"; sourceTree = "<group>"; };
+		23A3FC4720A9740700474E12 /* script-executor.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "script-executor.cc"; sourceTree = "<group>"; };
+		23A3FC4A20A9895C00474E12 /* ui-flat-status-bar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-flat-status-bar.h"; sourceTree = "<group>"; };
+		23A3FC4B20A989F800474E12 /* ui-flat-status-bar.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-flat-status-bar.cc"; sourceTree = "<group>"; };
+		23A3FC4E20AACB4D00474E12 /* raw-pic-collection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "raw-pic-collection.h"; sourceTree = "<group>"; };
+		23A3FC4F20AACC1200474E12 /* raw-pic-collection.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "raw-pic-collection.cc"; sourceTree = "<group>"; };
+		23A3FC5220AAD79000474E12 /* raw-pic-collection-test.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "raw-pic-collection-test.cc"; sourceTree = "<group>"; };
 		23B83F6B1D78524800DBC418 /* datatype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = datatype.h; sourceTree = "<group>"; };
 		23B83F6D1D79177200DBC418 /* base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base.h; sourceTree = "<group>"; };
 		23C6785A208DB6BA00A8EA4F /* render-entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "render-entity.h"; sourceTree = "<group>"; };
@@ -181,6 +205,7 @@
 				237E913B209460C700176FA8 /* ui-style-collection-test.cc */,
 				237E916520947C5F00176FA8 /* ui-component-factory-test.cc */,
 				238F6CE0209958CF00791F67 /* ui-component-builder-test.cc */,
+				23A3FC5220AAD79000474E12 /* raw-pic-collection-test.cc */,
 				237E91612094628800176FA8 /* test-main.cc */,
 			);
 			name = Tests;
@@ -193,7 +218,6 @@
 				23C9E67D1D9CFC450078DFFF /* LuaBridge.h */,
 				23C9E67E1D9CFC450078DFFF /* RefCountedObject.h */,
 				23C9E67F1D9CFC450078DFFF /* RefCountedPtr.h */,
-				23B83F5D1D7585B400DBC418 /* lodepng_util.h */,
 			);
 			name = "Third-party";
 			sourceTree = "<group>";
@@ -223,6 +247,7 @@
 			isa = PBXGroup;
 			children = (
 				23C9E67A1D9CFB9B0078DFFF /* lua-utils.cc */,
+				23A3FC3F20A9351400474E12 /* editor-form.cc */,
 				23E1D75D208889CB00F9EF96 /* editor-main.cc */,
 				23C6785B208DB72E00A8EA4F /* render-entity.cc */,
 				23C6785F208DBB3600A8EA4F /* root-render-entity.cc */,
@@ -234,12 +259,17 @@
 				23044E1D2092CDBD001924AA /* ui-flat-menu-group.cc */,
 				230822FF20908D7C003804EA /* ui-flat-menu.cc */,
 				23A3FC3820A2EF3800474E12 /* ui-flat-check-box.cc */,
+				23A3FC4B20A989F800474E12 /* ui-flat-status-bar.cc */,
 				23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */,
 				230822FB20900BE2003804EA /* ui-layout.cc */,
 				23044E20209326D2001924AA /* ui-component-factory.cc */,
 				2353C92720940B2200C4B4EB /* ui-component-style-factory.cc */,
 				238F6CDD2099555B00791F67 /* ui-component-builder.cc */,
 				2353C92A20940CF400C4B4EB /* ui-style-collection.cc */,
+				23A3FC3C20A59C7000474E12 /* ui-form.cc */,
+				23A3FC4320A93FE300474E12 /* on-exit-scope.cc */,
+				23A3FC4720A9740700474E12 /* script-executor.cc */,
+				23A3FC4F20AACC1200474E12 /* raw-pic-collection.cc */,
 			);
 			name = Sources;
 			path = ../src;
@@ -262,11 +292,17 @@
 				23044E1C2092CD2E001924AA /* ui-flat-menu-group.h */,
 				230822FE20908D33003804EA /* ui-flat-menu.h */,
 				23A3FC3720A2EEEE00474E12 /* ui-flat-check-box.h */,
+				23A3FC4A20A9895C00474E12 /* ui-flat-status-bar.h */,
 				23A3FC3320A0453700474E12 /* ui-pic-grid-selector.h */,
 				230822FA20900BA9003804EA /* ui-layout.h */,
 				23044E1F2093264D001924AA /* ui-component-factory.h */,
 				238F6CDC209954ED00791F67 /* ui-component-builder.h */,
 				2353C92920940CB500C4B4EB /* ui-style-collection.h */,
+				23A3FC3B20A5919A00474E12 /* ui-form.h */,
+				23A3FC4120A93A5300474E12 /* lazy-instance.h */,
+				23A3FC4220A93F6300474E12 /* on-exit-scope.h */,
+				23A3FC4620A9445B00474E12 /* script-executor.h */,
+				23A3FC4E20AACB4D00474E12 /* raw-pic-collection.h */,
 			);
 			name = Include;
 			path = ../src;
@@ -369,8 +405,12 @@
 				237E91492094616500176FA8 /* lua-utils.cc in Sources */,
 				237E914B2094616500176FA8 /* render-entity.cc in Sources */,
 				23A3FC3A20A2EF3800474E12 /* ui-flat-check-box.cc in Sources */,
+				23A3FC4520A93FE300474E12 /* on-exit-scope.cc in Sources */,
+				23A3FC5320AAD79000474E12 /* raw-pic-collection-test.cc in Sources */,
+				23A3FC5120AACC1200474E12 /* raw-pic-collection.cc in Sources */,
 				238F6CE1209958CF00791F67 /* ui-component-builder-test.cc in Sources */,
 				237E916620947C5F00176FA8 /* ui-component-factory-test.cc in Sources */,
+				23A3FC4920A9740700474E12 /* script-executor.cc in Sources */,
 				237E914C2094616500176FA8 /* root-render-entity.cc in Sources */,
 				238F6CDF2099555B00791F67 /* ui-component-builder.cc in Sources */,
 				237E914D2094616500176FA8 /* sample-render-entity.cc in Sources */,
@@ -383,7 +423,9 @@
 				237E91532094616500176FA8 /* ui-flat-menu.cc in Sources */,
 				237E91542094616500176FA8 /* ui-layout.cc in Sources */,
 				237E91552094616500176FA8 /* ui-component-factory.cc in Sources */,
+				23A3FC4D20A989F800474E12 /* ui-flat-status-bar.cc in Sources */,
 				237E91562094616500176FA8 /* ui-component-style-factory.cc in Sources */,
+				23A3FC3E20A59C7000474E12 /* ui-form.cc in Sources */,
 				237E91572094616500176FA8 /* ui-style-collection.cc in Sources */,
 				23A3FC3620A045FB00474E12 /* ui-pic-grid-selector.cc in Sources */,
 			);
@@ -396,9 +438,13 @@
 				237E9164209462D700176FA8 /* editor-main.cc in Sources */,
 				23044E21209326D2001924AA /* ui-component-factory.cc in Sources */,
 				23A3FC3520A045FB00474E12 /* ui-pic-grid-selector.cc in Sources */,
+				23A3FC4820A9740700474E12 /* script-executor.cc in Sources */,
+				23A3FC4420A93FE300474E12 /* on-exit-scope.cc in Sources */,
+				23A3FC5020AACC1200474E12 /* raw-pic-collection.cc in Sources */,
 				239F4810208EE17E00FD09AD /* ui-flat-button.cc in Sources */,
 				2353C92820940B2200C4B4EB /* ui-component-style-factory.cc in Sources */,
 				239F480D208ED5CF00FD09AD /* ui-component.cc in Sources */,
+				23A3FC4020A9351400474E12 /* editor-form.cc in Sources */,
 				23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */,
 				2353C92B20940CF400C4B4EB /* ui-style-collection.cc in Sources */,
 				230822FC20900BE2003804EA /* ui-layout.cc in Sources */,
@@ -407,7 +453,9 @@
 				239F4809208ED2EB00FD09AD /* interactive-entity.cc in Sources */,
 				23044E1E2092CDBD001924AA /* ui-flat-menu-group.cc in Sources */,
 				23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */,
+				23A3FC4C20A989F800474E12 /* ui-flat-status-bar.cc in Sources */,
 				238F6CDE2099555B00791F67 /* ui-component-builder.cc in Sources */,
+				23A3FC3D20A59C7000474E12 /* ui-form.cc in Sources */,
 				23A3FC3920A2EF3800474E12 /* ui-flat-check-box.cc in Sources */,
 				23C9E67C1D9CFB9B0078DFFF /* lua-utils.cc in Sources */,
 				23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */,

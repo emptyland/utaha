@@ -51,8 +51,8 @@ style
 -- Flat Status Bar Styles
     :setFont("FlatStatusBar.font",         "font.normal")
     :setColor("FlatStatusBar.font.color",  0xffffffff)
-    :setColor("FlatStatusBar.bg.color",    0x000000ff)
-    :setColor("FlatCheckBox.border.color", 0xffffffff)
+    :setColor("FlatStatusBar.bg.color",    0x007bffff)
+    :setColor("FlatStatusBar.border.color", 0xffffffff)
     :setInt("FlatStatusBar.padding.size",  10)
 
 -- Pic Grid Selector Styles

@@ -5,6 +5,7 @@
 #include "ui-flat-button.h"
 #include "ui-flat-input-box.h"
 #include "ui-flat-check-box.h"
+#include "ui-flat-status-bar.h"
 #include "ui-pic-grid-selector.h"
 #include "ui-layout.h"
 #include "lua-utils.h"
@@ -13,9 +14,11 @@
 namespace utaha {
 
 UIComponentBuilder::UIComponentBuilder(UIComponentFactory *factory,
-                                       SDL_Window *window)
+                                       UIForm *form,
+                                       InteractiveListenner *listenner)
     : factory_(DCHECK_NOTNULL(factory))
-    , window_(DCHECK_NOTNULL(window)) {
+    , form_(DCHECK_NOTNULL(form))
+    , listenner_(DCHECK_NOTNULL(listenner)) {
 }
 
 UIComponentBuilder::~UIComponentBuilder() {
@@ -29,7 +32,7 @@ UIComponentBuilder::BeginFlatMenuGroup(const char *name) {
         return nullptr;
     }
     component->AddListenner(listenner_);
-    return new UIFlatMenuGroupBuilder(component, factory_);
+    return new UIFlatMenuGroupBuilder(listenner_, component, factory_);
 }
 
 UIFlatMenuBuilder *UIComponentBuilder::BeginFlatMenu(const char *name) {
@@ -72,6 +75,17 @@ UIFlatCheckBoxBuilder *UIComponentBuilder::BeginFlatCheckBox(const char *name) {
     return new UIFlatCheckBoxBuilder(component, factory_);
 }
 
+UIFlatStatusBarBuilder *
+UIComponentBuilder::BeginFlatStatusBar(const char *name) {
+    auto component = factory_->CreateFlatStatusBar(name);
+    if (!component) {
+        LOG(ERROR) << "Can not create <UIFlatStatusBar>!";
+        return nullptr;
+    }
+    component->AddListenner(listenner_);
+    return new UIFlatStatusBarBuilder(component, factory_);
+}
+
 UIPicGridSelectorBuilder *
 UIComponentBuilder::BeginPicGridSelector(const char *name) {
     auto component = factory_->CreatePicGridSelector(name);
@@ -84,7 +98,7 @@ UIComponentBuilder::BeginPicGridSelector(const char *name) {
 }
 
 UILayoutBuilder *UIComponentBuilder::BeginLayout() {
-    auto layout = new UILayout(window_);
+    auto layout = new UILayout(form_);
     return new UILayoutBuilder(layout);
 }
 
@@ -97,6 +111,7 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
                 .addFunction("beginFlatButton", &UIComponentBuilder::BeginFlatButton)
                 .addFunction("beginFlatInputBox", &UIComponentBuilder::BeginFlatInputBox)
                 .addFunction("beginFlatCheckBox", &UIComponentBuilder::BeginFlatCheckBox)
+                .addFunction("beginFlatStatusBar", &UIComponentBuilder::BeginFlatStatusBar)
                 .addFunction("beginPicGridSelector", &UIComponentBuilder::BeginPicGridSelector)
                 .addFunction("beginLayout", &UIComponentBuilder::BeginLayout)
             .endClass()
@@ -122,7 +137,7 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
                 .addFunction("h", &UIFlatButtonBuilder::LetH)
                 .addFunction("endButton", &UIFlatButtonBuilder::EndButton)
             .endClass()
-            .beginClass<UIFlatInputBoxBuilder>("FlatInputBox")
+            .beginClass<UIFlatInputBoxBuilder>("FlatInputBoxBuilder")
                 .addFunction("text", &UIFlatInputBoxBuilder::LetText)
                 .addFunction("maxInput", &UIFlatInputBoxBuilder::LetMaxInput)
                 .addFunction("x", &UIFlatInputBoxBuilder::LetX)
@@ -131,7 +146,7 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
                 .addFunction("h", &UIFlatInputBoxBuilder::LetH)
                 .addFunction("endInputBox", &UIFlatInputBoxBuilder::EndInputBox)
             .endClass()
-            .beginClass<UIFlatCheckBoxBuilder>("FlatCheckBox")
+            .beginClass<UIFlatCheckBoxBuilder>("FlatCheckBoxBuilder")
                 .addFunction("label", &UIFlatCheckBoxBuilder::LetLabel)
                 .addFunction("x", &UIFlatCheckBoxBuilder::LetX)
                 .addFunction("y", &UIFlatCheckBoxBuilder::LetY)
@@ -139,7 +154,22 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
                 .addFunction("h", &UIFlatCheckBoxBuilder::LetH)
                 .addFunction("endCheckBox", &UIFlatCheckBoxBuilder::EndCheckBox)
             .endClass()
-            .beginClass<UIPicGridSelectorBuilder>("PicGridSelector")
+            .beginClass<UIFlatStatusBarBuilder>("FlatStatusBarBuilder")
+                .addFunction("addGrid", &UIFlatStatusBarBuilder::BeginGrid)
+                .addFunction("x", &UIFlatStatusBarBuilder::LetX)
+                .addFunction("y", &UIFlatStatusBarBuilder::LetY)
+                .addFunction("w", &UIFlatStatusBarBuilder::LetW)
+                .addFunction("h", &UIFlatStatusBarBuilder::LetH)
+                .addFunction("endStatusBar", &UIFlatStatusBarBuilder::EndStatusBar)
+            .endClass()
+            .beginClass<UIFlatStatusBarGridBuilder>("FlatStatusBarGridBuilder")
+                .addFunction("text", &UIFlatStatusBarGridBuilder::LetText)
+                .addFunction("w", &UIFlatStatusBarGridBuilder::LetW)
+                .addFunction("fontColor", &UIFlatStatusBarGridBuilder::LetFontColor)
+                .addFunction("bgColor", &UIFlatStatusBarGridBuilder::LetBgColor)
+                .addFunction("endGrid", &UIFlatStatusBarGridBuilder::EndGrid)
+            .endClass()
+            .beginClass<UIPicGridSelectorBuilder>("PicGridSelectorBuilder")
                 .addFunction("gridSizeW", &UIPicGridSelectorBuilder::LetGridSizeW)
                 .addFunction("gridSizeH", &UIPicGridSelectorBuilder::LetGridSizeH)
                 .addFunction("endPicGridSelectorFromFile", &UIPicGridSelectorBuilder::EndPicGridSelectorFromFile)
@@ -163,6 +193,7 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
             .deriveClass<UIFlatButton, UIComponent>("FlatButton").endClass()
             .deriveClass<UIFlatInputBox, UIComponent>("FlatInputBox").endClass()
             .deriveClass<UIFlatCheckBox, UIComponent>("FlatCheckBox").endClass()
+            .deriveClass<UIFlatStatusBar, UIComponent>("FlatStatusBar").endClass()
             .deriveClass<UIPicGridSelector, UIComponent>("PicGridSelector").endClass()
             .beginClass<UILayout>("Layout").endClass()
         .endNamespace();
@@ -183,7 +214,8 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
 
 UIFlatMenuGroupColumnBuilder *
 UIFlatMenuGroupBuilder::BeginColumn(const char *name, int cmd_id) {
-    return new UIFlatMenuGroupColumnBuilder(name, cmd_id, nullptr, this);
+    return new UIFlatMenuGroupColumnBuilder(name, cmd_id, nullptr, listenner_,
+                                            this);
 }
 
 UIFlatMenuGroup *UIFlatMenuGroupBuilder::EndMenuGroup() {
@@ -199,6 +231,7 @@ UIFlatMenuGroup *UIFlatMenuGroupBuilder::EndMenuGroup() {
 UIFlatMenuGroupColumnBuilder::UIFlatMenuGroupColumnBuilder(const char *name,
                                                            int cmd_id,
                                                            void *param,
+                                                           InteractiveListenner *listenner,
                                                            UIFlatMenuGroupBuilder *builder)
     : col_name_(DCHECK_NOTNULL(name))
     , col_cmd_id_(cmd_id)
@@ -206,6 +239,7 @@ UIFlatMenuGroupColumnBuilder::UIFlatMenuGroupColumnBuilder(const char *name,
     , builder_(DCHECK_NOTNULL(builder))
     , UIComponentBuilderBase(builder->factory()->CreateFlatMenu(name),
                              builder->factory()) {
+    component()->AddListenner(listenner);
 }
 
 UIFlatMenuGroupColumnBuilder *
@@ -433,6 +467,71 @@ UIFlatCheckBox *UIFlatCheckBoxBuilder::EndCheckBox() {
     auto result = component();
     delete this;
     return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// class UIFlatStatusBarBuilder
+////////////////////////////////////////////////////////////////////////////////
+
+UIFlatStatusBarGridBuilder *UIFlatStatusBarBuilder::BeginGrid(int w) {
+    return new UIFlatStatusBarGridBuilder(this, component()->AddGrid("", w));
+}
+
+UIFlatStatusBarBuilder *UIFlatStatusBarBuilder::LetX(int x) {
+    component()->mutable_rect()->x = x;
+    return this;
+}
+
+UIFlatStatusBarBuilder *UIFlatStatusBarBuilder::LetY(int y) {
+    component()->mutable_rect()->y = y;
+    return this;
+}
+
+UIFlatStatusBarBuilder *UIFlatStatusBarBuilder::LetW(int w) {
+    component()->mutable_rect()->w = w;
+    return this;
+}
+
+UIFlatStatusBarBuilder *UIFlatStatusBarBuilder::LetH(int h) {
+    component()->mutable_rect()->h = h;
+    return this;
+}
+
+UIFlatStatusBar *UIFlatStatusBarBuilder::EndStatusBar() {
+    auto result = component();
+    delete this;
+    return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// class UIFlatStatusBarGridBuilder
+////////////////////////////////////////////////////////////////////////////////
+
+UIFlatStatusBarGridBuilder *
+UIFlatStatusBarGridBuilder::LetText(const char *text) {
+    grid_->set_text(text);
+    return this;
+}
+
+UIFlatStatusBarGridBuilder *UIFlatStatusBarGridBuilder::LetW(int w) {
+    grid_->set_w(w);
+    return this;
+}
+
+UIFlatStatusBarGridBuilder *UIFlatStatusBarGridBuilder::LetFontColor(int color) {
+    grid_->set_font_color(ToColor(color));
+    return this;
+}
+
+UIFlatStatusBarGridBuilder *UIFlatStatusBarGridBuilder::LetBgColor(int color) {
+    grid_->set_bg_color(ToColor(color));
+    return this;
+}
+
+UIFlatStatusBarBuilder *UIFlatStatusBarGridBuilder::EndGrid() {
+    auto reuslt = builder_;
+    delete this;
+    return reuslt;
 }
 
 } // namespace utaha

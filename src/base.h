@@ -102,7 +102,7 @@ char (&ArraySizeHelper(const T (&array)[N]))[N];
 #endif
 
 
-#if defined(UTAHA_OS_UNIX) || defined(UTAHA_OS_LINUX) || defined(UTAHA_OS_MACOS)
+#if defined(UTAHA_OS_MACOS)
 #define SDL_H       <SDL2/SDL.h>
 #define SDL_IMAGE_H <SDL2_image/SDL_image.h>
 #define SDL_TTF_H   <SDL2_ttf/SDL_ttf.h>
@@ -112,7 +112,12 @@ char (&ArraySizeHelper(const T (&array)[N]))[N];
 #define SDL_H       "SDL.h"
 #define SDL_IMAGE_H "SDL_image.h"
 #define SDL_TTF_H   "SDL_ttf.h"
-#endif 
+#endif
+
+enum Initializer {
+    LAZY_INSTANCE_INITIALIZER,
+    ON_EXIT_SCOPE_INITIALIZER
+};
 
 } // namespace utaha
 

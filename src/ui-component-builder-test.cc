@@ -3,6 +3,7 @@
 #include "ui-style-collection.h"
 #include "ui-flat-menu-group.h"
 #include "ui-flat-menu.h"
+#include "ui-form.h"
 #include "ui-layout.h"
 #include "lua-utils.h"
 #include "gtest/gtest.h"
@@ -17,19 +18,17 @@ public:
         auto err = style_->LoadFromFile("tests/001-styles-demo1.lua");
         ASSERT_EQ(nullptr, err) << err;
         factory_ = CreateUIComponentStyleFactory(style_);
-        window_ = SDL_CreateWindow("test", SDL_WINDOWPOS_UNDEFINED,
-                                   SDL_WINDOWPOS_UNDEFINED, 1, 1,
-                                   SDL_WINDOW_HIDDEN);
-        ASSERT_NE(nullptr, window_) << SDL_GetError();
-        builder_ = new UIComponentBuilder(factory_, window_);
+        form_ = new UIForm();
+        form_->CreateWindow("test", 1, 1);
+        builder_ = new UIComponentBuilder(factory_, form_, form_);
     }
 
     virtual void TearDown() override {
         delete builder_;
         builder_ = nullptr;
 
-        SDL_DestroyWindow(window_);
-        window_ = nullptr;
+        delete form_;
+        form_ = nullptr;
 
         delete factory_;
         factory_ = nullptr;
@@ -42,7 +41,8 @@ protected:
     UIStyleCollection *style_ = nullptr;
     UIComponentFactory *factory_ = nullptr;
     UIComponentBuilder *builder_ = nullptr;
-    SDL_Window *window_ = nullptr;
+    //SDL_Window *window_ = nullptr;
+    UIForm *form_ = nullptr;
 };
 
 TEST_F(UIComponentBuilderTest, BuildFlatMenuGroup) {

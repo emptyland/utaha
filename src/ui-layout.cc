@@ -1,12 +1,12 @@
 #include "ui-layout.h"
 #include "ui-component.h"
+#include "ui-form.h"
 #include "glog/logging.h"
 
 namespace utaha {
 
-UILayout::UILayout(SDL_Window *window)
-    : window_(DCHECK_NOTNULL(window)) {
-    //UpdateRect();
+UILayout::UILayout(UIForm *form)
+    : form_(DCHECK_NOTNULL(form)) {
 }
 
 /*virtual*/ UILayout::~UILayout() {
@@ -53,7 +53,7 @@ UILayout::UILayout(SDL_Window *window)
 
 void UILayout::UpdateRect() {
     int w = 0, h = 0;
-    SDL_GetWindowSize(window_, &w, &h);
+    SDL_GetWindowSize(form_->window(), &w, &h);
     UpdateRect(w, h);
 }
 
@@ -79,15 +79,15 @@ void UILayout::UpdateRect(int w, int h) {
     int rows_h = CalculateRowsHeight();
     switch (vertical_alignment_) {
         case ALIGN_LEFT_OR_TOP:
-            rect_.y = 0;
+            rect_.y = form_->GetRetainTopH();
             rect_.h = rows_h;
             break;
         case ALIGN_RIGHT_OR_BOTTOM:
-            rect_.y = h - rows_h;
+            rect_.y = h - rows_h - form_->GetRetainBottomH();
             rect_.h = rows_h;
             break;
         case ALIGN_CENTER:
-            rect_.y = (h - rows_h) / 2;
+            rect_.y = (h - rows_h - form_->GetRetainBottomH()) / 2;
             rect_.h = rows_h;
             break;
         default:

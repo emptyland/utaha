@@ -36,6 +36,15 @@ inline bool InRect(const SDL_Rect &rect, int x, int y) {
            y >= rect.y && y <= rect.y + rect.h;
 }
 
+inline SDL_Color ToColor(int color) {
+    return SDL_Color {
+        static_cast<Uint8>((color & 0xff000000) >> 24),
+        static_cast<Uint8>((color & 0x00ff0000) >> 16),
+        static_cast<Uint8>((color & 0x0000ff00) >> 8),
+        static_cast<Uint8>(color & 0x000000ff),
+    };
+}
+
 } // namespace utaha
 
 #endif // UTAHA_UI_COMPONENT_H_

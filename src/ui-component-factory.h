@@ -11,6 +11,7 @@ class UIFlatMenu;
 class UIFlatMenuGroup;
 class UIFlatInputBox;
 class UIFlatCheckBox;
+class UIFlatStatusBar;
 class UIPicGridSelector;
 class UIStyleCollection;
 
@@ -24,6 +25,7 @@ public:
     virtual UIFlatMenuGroup *CreateFlatMenuGroup(const std::string &name) = 0;
     virtual UIFlatInputBox *CreateFlatInputBox(const std::string &name) = 0;
     virtual UIFlatCheckBox *CreateFlatCheckBox(const std::string &name) = 0;
+    virtual UIFlatStatusBar *CreateFlatStatusBar(const std::string &name) = 0;
     virtual UIPicGridSelector *CreatePicGridSelector(const std::string &name) = 0;
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIComponentFactory);
