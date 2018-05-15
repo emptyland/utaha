@@ -1,4 +1,7 @@
 #include "ui-form.h"
+#include "ui-flat-status-bar.h"
+#include "ui-flat-menu-group.h"
+#include "ui-flat-menu.h"
 #include "ui-style-collection.h"
 #include "ui-component-factory.h"
 #include "ui-component-builder.h"
@@ -63,12 +66,18 @@ EditorForm::EditorForm() {
         case EditorFormR::ID_EDIT_SPIRIT:
             break;
 
-        case EditorFormR::ID_EDIT_MAP:
-            break;
+        case EditorFormR::ID_EDIT_MAP: {
+            auto grid = static_cast<UIFlatStatusBar *>(status_bar())->mutable_grid(0);
+            grid->set_text("Ready");
+            grid->set_bg_color({0, 255, 255, 255});
+        } break;
 
-        case EditorFormR::ID_FILE_SAVE_ALL:
-            LOG(INFO) << "save all";
-            break;
+        case EditorFormR::ID_FILE_SAVE_ALL: {
+            //LOG(INFO) << "save all";
+            auto grid = static_cast<UIFlatStatusBar *>(status_bar())->mutable_grid(0);
+            grid->set_text("Ok");
+            grid->set_bg_color({0, 255, 0, 255});
+        } break;
 
         default:
             break;
@@ -116,8 +125,17 @@ EditorForm::EditorForm() {
         return -1;
     }
 
+
+
     auto main_menu = result["mainMenu"].cast<UIComponent *>();
     set_main_menu(DCHECK_NOTNULL(main_menu));
+    auto status_bar = result["statusBar"].cast<UIComponent *>();
+    set_status_bar(DCHECK_NOTNULL(status_bar));
+
+    int w, h;
+    SDL_GetWindowSize(window(), &w, &h);
+    status_bar->mutable_rect()->w = w;
+    status_bar->mutable_rect()->y = h - status_bar->rect().h;
 
     return UIForm::OnInit();
 }

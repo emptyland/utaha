@@ -12,4 +12,11 @@ local mainMenu = builder:beginFlatMenuGroup("main-menu")
     :endColumn()
 :endMenuGroup()
 
-return { mainMenu = mainMenu }
+local statusBar = builder:beginFlatStatusBar("main-status-bar")
+    :h(22)
+    :addGrid(60)
+        :text("Ready")
+    :endGrid()
+:endStatusBar()
+
+return { mainMenu = mainMenu, statusBar = statusBar }

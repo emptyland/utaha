@@ -48,6 +48,13 @@ style
     :setInt("FlatCheckBox.padding.h.size", 10)
     :setInt("FlatCheckBox.padding.v.size", 2)
 
+-- Flat Status Bar Styles
+    :setFont("FlatStatusBar.font",         "font.normal")
+    :setColor("FlatStatusBar.font.color",  0xffffffff)
+    :setColor("FlatStatusBar.bg.color",    0x007bffff)
+    :setColor("FlatStatusBar.border.color", 0xffffffff)
+    :setInt("FlatStatusBar.padding.size",  10)
+
 -- Pic Grid Selector Styles
     :setColor("PicGridSelector.grid.color",     0x00ff00ff)
     :setColor("PicGridSelector.selected.color", 0x80ff008f)

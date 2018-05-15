@@ -19,6 +19,8 @@ class UIFlatMenuBuilder;
 class UIFlatButtonBuilder;
 class UIFlatInputBoxBuilder;
 class UIFlatCheckBoxBuilder;
+class UIFlatStatusBarBuilder;
+class UIFlatStatusBarGridBuilder;
 class UIPicGridSelectorBuilder;
 class UILayoutBuilder;
 class UILayoutRowBuilder;
@@ -28,6 +30,8 @@ class UIFlatMenu;
 class UIFlatButton;
 class UIFlatInputBox;
 class UIFlatCheckBox;
+class UIFlatStatusBar;
+class UIFlatStatusBarGrid;
 class UIPicGridSelector;
 class UILayout;
 class UILayoutRow;
@@ -44,6 +48,7 @@ public:
     UIFlatButtonBuilder *BeginFlatButton(const char *name);
     UIFlatInputBoxBuilder *BeginFlatInputBox(const char *name);
     UIFlatCheckBoxBuilder *BeginFlatCheckBox(const char *name);
+    UIFlatStatusBarBuilder *BeginFlatStatusBar(const char *name);
     UIPicGridSelectorBuilder *BeginPicGridSelector(const char *name);
     UILayoutBuilder *BeginLayout();
 
@@ -178,6 +183,46 @@ public:
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIFlatCheckBoxBuilder);
 }; // class UIFlatCheckBoxBuilder
+
+
+class UIFlatStatusBarBuilder : public UIComponentBuilderBase<UIFlatStatusBar> {
+public:
+    inline UIFlatStatusBarBuilder(UIFlatStatusBar *component,
+                                  UIComponentFactory *factory)
+        : UIComponentBuilderBase(component, factory) {}
+    inline ~UIFlatStatusBarBuilder() = default;
+
+    UIFlatStatusBarGridBuilder *BeginGrid(int w);
+    UIFlatStatusBarBuilder *LetX(int x);
+    UIFlatStatusBarBuilder *LetY(int y);
+    UIFlatStatusBarBuilder *LetW(int w);
+    UIFlatStatusBarBuilder *LetH(int h);
+    UIFlatStatusBar *EndStatusBar();
+
+    DISALLOW_IMPLICIT_CONSTRUCTORS(UIFlatStatusBarBuilder);
+}; // class UIFlatStatusBarBuilder
+
+
+class UIFlatStatusBarGridBuilder {
+public:
+    UIFlatStatusBarGridBuilder(UIFlatStatusBarBuilder *builder,
+                               UIFlatStatusBarGrid *grid)
+        : builder_(DCHECK_NOTNULL(builder))
+        , grid_(DCHECK_NOTNULL(grid)) {}
+    ~UIFlatStatusBarGridBuilder() = default;
+
+    UIFlatStatusBarGridBuilder *LetText(const char *text);
+    UIFlatStatusBarGridBuilder *LetW(int w);
+    UIFlatStatusBarGridBuilder *LetFontColor(int color);
+    UIFlatStatusBarGridBuilder *LetBgColor(int color);
+    UIFlatStatusBarBuilder *EndGrid();
+
+    DISALLOW_IMPLICIT_CONSTRUCTORS(UIFlatStatusBarGridBuilder);
+private:
+    UIFlatStatusBarGrid *grid_;
+    UIFlatStatusBarBuilder *builder_;
+}; // class UIFlatStatusBarGridBuilder;
+
 
 class UIPicGridSelectorBuilder : public UIComponentBuilderBase<UIPicGridSelector> {
 public:

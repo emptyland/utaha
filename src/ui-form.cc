@@ -62,9 +62,9 @@ UIForm::UIForm() {
             if (e->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
                 int w = e->window.data1;
                 int h = e->window.data2;
-                if (main_menu_) {
-                    main_menu_->mutable_rect()->w = w;
-                }
+//                if (main_menu_) {
+//                    main_menu_->mutable_rect()->w = w;
+//                }
                 if (status_bar_) {
                     status_bar_->mutable_rect()->w = w;
                     status_bar_->mutable_rect()->y = h - status_bar_->rect().h;
@@ -106,7 +106,6 @@ bool UIForm::CreateWindow(const char *title, int w, int h) {
 int UIForm::Run() {
     bool quit = false;
     bool is_break = false;
-    //bool is_break = false;
     SDL_Event e;
     while(!quit) {
         while(SDL_PollEvent(&e) != 0) {

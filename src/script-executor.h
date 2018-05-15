@@ -45,11 +45,10 @@ private:
 inline lua_State *ScriptScope::ExecStandaloneFile(const char *file,
                                                   char const **err) {
     auto L = executor_->ExecStandaloneFile(file, err);
+    lua_vms_.push_front(L);
     if (*err) {
-        lua_close(L);
         return nullptr;
     }
-    lua_vms_.push_front(L);
     return L;
 }
 
@@ -57,11 +56,10 @@ inline lua_State *
 ScriptScope::ExecStandaloneFile(std::function<void(lua_State *)> init,
                                 const char *file, char const **err) {
     auto L = executor_->ExecStandaloneFile(init, file, err);
+    lua_vms_.push_front(L);
     if (*err) {
-        lua_close(L);
         return nullptr;
     }
-    lua_vms_.push_front(L);
     return L;
 }
 
