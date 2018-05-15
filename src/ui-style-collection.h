@@ -2,7 +2,7 @@
 #define UTAHA_UI_STYLE_COLLECTION_H_
 
 #include "base.h"
-#include <SDL2/SDL.h>
+#include SDL_H
 #include <unordered_map>
 #include <string>
 #include <tuple>

@@ -11,9 +11,9 @@
 #include "interactive-listenner.h"
 #include "ui-style-collection.h"
 #include "lua-utils.h"
-#include <SDL2/SDL.h>
-#include <SDL2_image/SDL_image.h>
-#include <SDL2_ttf/SDL_ttf.h>
+#include SDL_H
+#include SDL_IMAGE_H
+#include SDL_TTF_H
 #include <stdio.h>
 
 class DemoLayoutListenner : public utaha::InteractiveListenner {
@@ -32,6 +32,7 @@ public:
     }
 
     virtual int OnCommand(utaha::UIComponent *sender, int cmd_id, void *param, bool *is_break) override {
+		// TODO
         return 0;
     }
 };

@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="utaha.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="utaha.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\base.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\datatype.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interactive-entity.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interactive-listenner.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lua-utils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render-entity.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\root-render-entity.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\sample-render-entity.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui_layout.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-component.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-component-builder.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-component-factory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-button.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-check-box.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-input-box.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-menu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-menu-group.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-layout.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-pic-grid-selector.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-style-collection.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\editor-main.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interactive-entity.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lua-utils.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\render-entity.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\root-render-entity.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\sample-render-entity.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui_layout.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-component.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-component-builder.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-component-factory.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-component-style-factory.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-button.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-check-box.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-input-box.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-menu.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-menu-group.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-layout.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-pic-grid-selector.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-style-collection.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -84,6 +84,36 @@ char (&ArraySizeHelper(const T (&array)[N]))[N];
 #define COLOR_B_MASK 0x00ff0000
 #define COLOR_A_MASK 0xff000000
 
+// OS macro checking:
+#if defined(_WIN32) || defined(WIN32) || defined(_WIN64)
+#define UTAHA_OS_WINDOWS 1
+#endif
+
+#if defined(unix) || defined(__unix) || defined(__unix__)
+#define UTAHA_OS_UNIX 1
+#endif
+
+#if defined(linux) || defined(__linux) defined(__linux__) defined(__gnu_linux__)
+#define UTAHA_OS_LINUX 1
+#endif
+
+#if defined(__APPLE__)
+#define UTAHA_OS_MACOS 1
+#endif
+
+
+#if defined(UTAHA_OS_UNIX) || defined(UTAHA_OS_LINUX) || defined(UTAHA_OS_MACOS)
+#define SDL_H       <SDL2/SDL.h>
+#define SDL_IMAGE_H <SDL2_image/SDL_image.h>
+#define SDL_TTF_H   <SDL2_ttf/SDL_ttf.h>
+#endif
+
+#if defined(UTAHA_OS_WINDOWS)
+#define SDL_H       "SDL.h"
+#define SDL_IMAGE_H "SDL_image.h"
+#define SDL_TTF_H   "SDL_ttf.h"
+#endif 
+
 } // namespace utaha
 
 #endif // UTAHA_BASE_H_

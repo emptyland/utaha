@@ -1,6 +1,6 @@
 #include "ui-pic-grid-selector.h"
 #include "glog/logging.h"
-#include <SDL2_image/SDL_image.h>
+#include SDL_IMAGE_H
 
 namespace utaha {
 

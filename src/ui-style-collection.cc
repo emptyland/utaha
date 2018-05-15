@@ -1,7 +1,7 @@
 #include "ui-style-collection.h"
 #include "glog/logging.h"
 #include "lua-utils.h"
-#include <SDL2_ttf/SDL_ttf.h>
+#include SDL_TTF_H
 
 namespace utaha {
 
