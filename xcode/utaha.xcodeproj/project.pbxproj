@@ -62,6 +62,9 @@
 		23A3FC4920A9740700474E12 /* script-executor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4720A9740700474E12 /* script-executor.cc */; };
 		23A3FC4C20A989F800474E12 /* ui-flat-status-bar.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4B20A989F800474E12 /* ui-flat-status-bar.cc */; };
 		23A3FC4D20A989F800474E12 /* ui-flat-status-bar.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4B20A989F800474E12 /* ui-flat-status-bar.cc */; };
+		23A3FC5020AACC1200474E12 /* raw-pic-collection.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4F20AACC1200474E12 /* raw-pic-collection.cc */; };
+		23A3FC5120AACC1200474E12 /* raw-pic-collection.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4F20AACC1200474E12 /* raw-pic-collection.cc */; };
+		23A3FC5320AAD79000474E12 /* raw-pic-collection-test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC5220AAD79000474E12 /* raw-pic-collection-test.cc */; };
 		23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785B208DB72E00A8EA4F /* render-entity.cc */; };
 		23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785F208DBB3600A8EA4F /* root-render-entity.cc */; };
 		23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C67862208DC4FD00A8EA4F /* sample-render-entity.cc */; };
@@ -137,6 +140,9 @@
 		23A3FC4720A9740700474E12 /* script-executor.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "script-executor.cc"; sourceTree = "<group>"; };
 		23A3FC4A20A9895C00474E12 /* ui-flat-status-bar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-flat-status-bar.h"; sourceTree = "<group>"; };
 		23A3FC4B20A989F800474E12 /* ui-flat-status-bar.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-flat-status-bar.cc"; sourceTree = "<group>"; };
+		23A3FC4E20AACB4D00474E12 /* raw-pic-collection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "raw-pic-collection.h"; sourceTree = "<group>"; };
+		23A3FC4F20AACC1200474E12 /* raw-pic-collection.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "raw-pic-collection.cc"; sourceTree = "<group>"; };
+		23A3FC5220AAD79000474E12 /* raw-pic-collection-test.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "raw-pic-collection-test.cc"; sourceTree = "<group>"; };
 		23B83F6B1D78524800DBC418 /* datatype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = datatype.h; sourceTree = "<group>"; };
 		23B83F6D1D79177200DBC418 /* base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base.h; sourceTree = "<group>"; };
 		23C6785A208DB6BA00A8EA4F /* render-entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "render-entity.h"; sourceTree = "<group>"; };
@@ -199,6 +205,7 @@
 				237E913B209460C700176FA8 /* ui-style-collection-test.cc */,
 				237E916520947C5F00176FA8 /* ui-component-factory-test.cc */,
 				238F6CE0209958CF00791F67 /* ui-component-builder-test.cc */,
+				23A3FC5220AAD79000474E12 /* raw-pic-collection-test.cc */,
 				237E91612094628800176FA8 /* test-main.cc */,
 			);
 			name = Tests;
@@ -262,6 +269,7 @@
 				23A3FC3C20A59C7000474E12 /* ui-form.cc */,
 				23A3FC4320A93FE300474E12 /* on-exit-scope.cc */,
 				23A3FC4720A9740700474E12 /* script-executor.cc */,
+				23A3FC4F20AACC1200474E12 /* raw-pic-collection.cc */,
 			);
 			name = Sources;
 			path = ../src;
@@ -294,6 +302,7 @@
 				23A3FC4120A93A5300474E12 /* lazy-instance.h */,
 				23A3FC4220A93F6300474E12 /* on-exit-scope.h */,
 				23A3FC4620A9445B00474E12 /* script-executor.h */,
+				23A3FC4E20AACB4D00474E12 /* raw-pic-collection.h */,
 			);
 			name = Include;
 			path = ../src;
@@ -397,6 +406,8 @@
 				237E914B2094616500176FA8 /* render-entity.cc in Sources */,
 				23A3FC3A20A2EF3800474E12 /* ui-flat-check-box.cc in Sources */,
 				23A3FC4520A93FE300474E12 /* on-exit-scope.cc in Sources */,
+				23A3FC5320AAD79000474E12 /* raw-pic-collection-test.cc in Sources */,
+				23A3FC5120AACC1200474E12 /* raw-pic-collection.cc in Sources */,
 				238F6CE1209958CF00791F67 /* ui-component-builder-test.cc in Sources */,
 				237E916620947C5F00176FA8 /* ui-component-factory-test.cc in Sources */,
 				23A3FC4920A9740700474E12 /* script-executor.cc in Sources */,
@@ -429,6 +440,7 @@
 				23A3FC3520A045FB00474E12 /* ui-pic-grid-selector.cc in Sources */,
 				23A3FC4820A9740700474E12 /* script-executor.cc in Sources */,
 				23A3FC4420A93FE300474E12 /* on-exit-scope.cc in Sources */,
+				23A3FC5020AACC1200474E12 /* raw-pic-collection.cc in Sources */,
 				239F4810208EE17E00FD09AD /* ui-flat-button.cc in Sources */,
 				2353C92820940B2200C4B4EB /* ui-component-style-factory.cc in Sources */,
 				239F480D208ED5CF00FD09AD /* ui-component.cc in Sources */,

@@ -33,7 +33,7 @@ TEST_F(UIComponentFactoryTest, Sanity) {
 
     EXPECT_EQ("test.1", menu->name());
     EXPECT_NE(0, menu->id());
-    EXPECT_EQ(2, menu->padding_size());
+    EXPECT_EQ(4, menu->padding_size());
     EXPECT_NE(nullptr, menu->font());
 }
 
