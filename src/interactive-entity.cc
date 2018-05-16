@@ -9,7 +9,7 @@ InteractiveEntity::InteractiveEntity() {
 /*virtual*/ InteractiveEntity::~InteractiveEntity() {
 }
 
-/*virtual*/ int InteractiveEntity::OnEvent(SDL_Event */*event*/, bool */*is_break*/) {
+/*virtual*/ int InteractiveEntity::OnEvent(SDL_Event *, bool *) {
     return 0;
 }
 

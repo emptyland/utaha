@@ -40,6 +40,12 @@ vs/Debug
 vs/debug
 vs/Release
 vs/release
+vs/libs/x86/res
+vs/libs/x86/tests
+vs/libs/x86/assets
+vs/libs/x64/res
+vs/libs/x64/tests
+vs/libs/x64/assets
 vs/utaha.vcxproj.user
 
 *.idb

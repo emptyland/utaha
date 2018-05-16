@@ -158,18 +158,18 @@ EditorForm::EditorForm() {
 }
 
 /*virtual*/ void EditorForm::OnAfterRender() {
-//    SDL_Surface *surface = raw_pics_->FindPicOrNull("mon3.png");
-//    if (!texture_) {
-//        texture_ = SDL_CreateTextureFromSurface(renderer(), surface);
-//    }
-//
-//    SDL_Rect dst = {
-//        0,
-//        GetRetainTopH(),
-//        surface->w,
-//        surface->h,
-//    };
-//    SDL_RenderCopy(renderer(), texture_, nullptr, &dst);
+    SDL_Surface *surface = raw_pics_->FindPicOrNull("mon3.png");
+    if (!texture_) {
+        texture_ = SDL_CreateTextureFromSurface(renderer(), surface);
+    }
+
+    SDL_Rect dst = {
+        0,
+        GetRetainTopH(),
+        surface->w,
+        surface->h,
+    };
+    SDL_RenderCopy(renderer(), texture_, nullptr, &dst);
     UIForm::OnAfterRender();
 }
 

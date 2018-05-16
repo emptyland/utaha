@@ -47,7 +47,7 @@ SDL_Surface *RawPicCollection::FindPicOrNull(const char *file) {
 
     auto surface = IMG_Load(file_name.c_str());
     if (!surface) {
-        LOG(ERROR) << "Can not load file: " << file << " " << SDL_GetError();
+        LOG(ERROR) << "Can not load file: " << file_name << " reason: " << IMG_GetError();
         return nullptr;
     }
     const auto alpha_mask = std::get<0>(iter->second);

@@ -20,7 +20,7 @@ bool UIStyleCollection::AddFont(const std::string &name,
                                 int size) {
     TTF_Font *font = TTF_OpenFont(ttf_file_path.c_str(), size);
     if (!font) {
-        LOG(ERROR) << "can not open font: " << ttf_file_path;
+        LOG(ERROR) << "Can not open font: " << ttf_file_path;
         return false;
     }
     auto iter = fonts_.find(name);
@@ -68,7 +68,7 @@ size_t UIStyleCollection::LoadFromFile(const char *file_name, std::string *err) 
 int UIStyleCollection::WarpAddFont(lua_State *L) {
     int argc = lua_gettop(L);
     if (argc != 3 + 1) { // this pinter is first argument.
-        luaL_error(L, "incorrect arguments number %d, need %d", argc, 3);
+        luaL_error(L, "Incorrect arguments number %d, need %d", argc, 3);
     }
 
     const char *name = luaL_checkstring(L, 2);
@@ -76,7 +76,7 @@ int UIStyleCollection::WarpAddFont(lua_State *L) {
     int size = luaL_checkint(L, 4);
 
     if (!AddFont(name, path, size)) {
-        luaL_error(L, "can not open ttf-font file: %s", path);
+        luaL_error(L, "Can not open ttf-font file: %s", path);
     }
 
     luabridge::push(L, this);
@@ -86,14 +86,14 @@ int UIStyleCollection::WarpAddFont(lua_State *L) {
 int UIStyleCollection::WarpSetFont(lua_State *L) {
     int argc = lua_gettop(L);
     if (argc != 2 + 1) { // this pinter is first argument.
-        luaL_error(L, "incorrect arguments number %d, need %d", argc, 2);
+        luaL_error(L, "Incorrect arguments number %d, need %d", argc, 2);
     }
 
     const char *name = luaL_checkstring(L, 2);
     const char *font_name = luaL_checkstring(L, 3);
 
     if (!SetFont(name, font_name)) {
-        luaL_error(L, "can not font named: %s", font_name);
+        luaL_error(L, "Can not font named: %s", font_name);
     }
 
     luabridge::push(L, this);
@@ -103,7 +103,7 @@ int UIStyleCollection::WarpSetFont(lua_State *L) {
 int UIStyleCollection::WarpSetColor(lua_State *L) {
     int argc = lua_gettop(L);
     if (argc != 2 + 1) { // this pinter is first argument.
-        luaL_error(L, "incorrect arguments number %d, need %d", argc, 2);
+        luaL_error(L, "Incorrect arguments number %d, need %d", argc, 2);
     }
 
     const char *name = luaL_checkstring(L, 2);
