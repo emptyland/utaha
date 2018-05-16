@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
     utaha::OnExitScope on_exit(utaha::ON_EXIT_SCOPE_INITIALIZER);
 
     std::unique_ptr<utaha::UIForm> form(utaha::CreateEditorForm());
-    if (!form->CreateWindow("Utaha-Editor", 800, 600)) {
+    if (!form->OpenWindow("Utaha-Editor", 800, 600)) {
         return -1;
     }
     auto result = form->Run();

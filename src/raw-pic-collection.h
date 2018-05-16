@@ -30,6 +30,7 @@ public:
     DISALLOW_IMPLICIT_CONSTRUCTORS(RawPicCollection);
 private:
     void SetDirWarp(const char *dir);
+    SDL_Surface *ProcessAlphaMask(SDL_Surface *surface, uint32_t alpha_mask);
 
     std::string dir_;
     std::map<std::string, std::tuple<uint32_t, SDL_Surface *>> surfaces_;

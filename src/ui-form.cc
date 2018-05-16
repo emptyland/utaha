@@ -1,4 +1,6 @@
 #include "ui-form.h"
+#include "ui-flat-menu-group.h"
+#include "ui-flat-status-bar.h"
 #include "ui-component.h"
 #include SDL_H
 #include SDL_IMAGE_H
@@ -54,9 +56,25 @@ UIForm::UIForm() {
 }
 
 /*virtual*/ void UIForm::OnBeforeRender() {
+    if (main_menu_) {
+        main_menu_->OnRender(renderer_);
+    }
+    if (status_bar_) {
+        status_bar_->OnRender(renderer_);
+    }
 }
 
 /*virtual*/ void UIForm::OnEvent(SDL_Event *e) {
+    bool is_break = false;
+    if (main_menu_) {
+        if (main_menu_->OnEvent(e, &is_break) == 1) {
+            return;
+        }
+    }
+    if (status_bar_) {
+        status_bar_->OnEvent(e, &is_break);
+    }
+
     switch (e->type) {
         case SDL_WINDOWEVENT:
             if (e->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
@@ -105,38 +123,24 @@ bool UIForm::OpenWindow(const char *title, int w, int h) {
 
 int UIForm::Run() {
     bool quit = false;
-    bool is_break = false;
     SDL_Event e;
     while(!quit) {
         while(SDL_PollEvent(&e) != 0) {
             if(e.type == SDL_QUIT) {
                 quit = true;
             }
-            if (main_menu_) {
-                main_menu_->OnEvent(&e, &is_break);
-            }
-            if (status_bar_) {
-                status_bar_->OnEvent(&e, &is_break);
-            }
-            this->OnEvent(&e);
+            OnEvent(&e);
         }
 
         SDL_SetRenderDrawColor(renderer_, 0, 0, 0, 0xFF);
         SDL_RenderClear(renderer_);
 
-        this->OnAfterRender();
+        OnAfterRender();
         root_.OnRender(renderer_);
-        this->OnBeforeRender();
-
-        if (main_menu_) {
-            main_menu_->OnRender(renderer_);
-        }
-        if (status_bar_) {
-            status_bar_->OnRender(renderer_);
-        }
+        OnBeforeRender();
         SDL_RenderPresent(renderer_);
     }
-    this->OnQuit();
+    OnQuit();
     return 0;
 }
 

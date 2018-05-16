@@ -49,10 +49,11 @@ UIFlatMenuGroup::UIFlatMenuGroup(TTF_Font *font)
             for (const auto &column : columns_) {
                 if (event->button.x >= column.x &&
                     event->button.x <= column.x + column.w && column.is_hot) {
-                    result = ProcessCmdIfNeeded(column.cmd_id, column.menu, is_break);
+                    ProcessCmdIfNeeded(column.cmd_id, column.menu, is_break);
                     if (*is_break) {
-                        return result;
+                        return 0;
                     }
+                    return 1;
                 }
             }
         }
@@ -62,8 +63,9 @@ UIFlatMenuGroup::UIFlatMenuGroup(TTF_Font *font)
         if (column.menu) {
             result = column.menu->OnEvent(event, is_break);
             if (*is_break) {
-                return result;
+                return 0;
             }
+            return result;
         }
     }
     return 0;

@@ -12,6 +12,8 @@ typedef union SDL_Event SDL_Event;
 namespace utaha {
 
 class UIComponent;
+class UIFlatMenuGroup;
+class UIFlatStatusBar;
 
 class UIForm : public InteractiveListenner {
 public:
@@ -37,8 +39,8 @@ public:
     int GetRetainTopH() const;
     int GetRetainBottomH() const;
 
-    DEF_PTR_PROP_RW_NOTNULL1(UIComponent, main_menu);
-    DEF_PTR_PROP_RW_NOTNULL1(UIComponent, status_bar);
+    DEF_PTR_PROP_RW_NOTNULL1(UIFlatMenuGroup, main_menu);
+    DEF_PTR_PROP_RW_NOTNULL1(UIFlatStatusBar, status_bar);
     DEF_PTR_PROP_RW_NOTNULL1(SDL_Renderer, renderer);
     DEF_PTR_GETTER_NOTNULL(SDL_Window, window);
 
@@ -46,8 +48,8 @@ public:
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIForm);
 private:
-    UIComponent *main_menu_ = nullptr;
-    UIComponent *status_bar_ = nullptr;
+    UIFlatMenuGroup *main_menu_ = nullptr;
+    UIFlatStatusBar *status_bar_ = nullptr;
     SDL_Window *window_ = nullptr;
     SDL_Renderer *renderer_ = nullptr;
     RootRenderEntity root_;

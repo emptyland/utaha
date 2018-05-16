@@ -225,6 +225,7 @@
 		23C9A3E61D7022EE00DAA480 = {
 			isa = PBXGroup;
 			children = (
+				23F89EB920ABD06B00EDC6A9 /* Megumi */,
 				23FD3C7E20888C7800975CBB /* Frameworks */,
 				23B83F5C1D757F9200DBC418 /* Third-party */,
 				23C9A3F91D70230C00DAA480 /* Include */,
@@ -306,6 +307,14 @@
 			);
 			name = Include;
 			path = ../src;
+			sourceTree = "<group>";
+		};
+		23F89EB920ABD06B00EDC6A9 /* Megumi */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Megumi;
+			path = ../src/megumi;
 			sourceTree = "<group>";
 		};
 		23FD3C7E20888C7800975CBB /* Frameworks */ = {

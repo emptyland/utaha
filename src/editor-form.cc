@@ -5,6 +5,7 @@
 #include "ui-style-collection.h"
 #include "ui-component-factory.h"
 #include "ui-component-builder.h"
+#include "raw-pic-collection.h"
 #include "lua-utils.h"
 #include "script-executor.h"
 #include "glog/logging.h"
@@ -20,8 +21,7 @@ public:
                           bool *is_break) override;
 
     virtual int OnInit() override;
-//    virtual void OnEvent(SDL_Event *e) override;
-//    virtual void OnAfterRender() override;
+    virtual void OnAfterRender() override;
 //    virtual void OnBeforeRender() override;
     virtual void OnQuit() override;
 
@@ -29,6 +29,8 @@ public:
 private:
     UIStyleCollection *styles_ = nullptr;
     UIComponentFactory *factory_ = nullptr;
+    RawPicCollection *raw_pics_ = nullptr;
+    SDL_Texture *texture_ = nullptr;
 }; // class EditorForm
 
 #define DEFINE_CMD_ID(M) \
@@ -73,7 +75,6 @@ EditorForm::EditorForm() {
         } break;
 
         case EditorFormR::ID_FILE_SAVE_ALL: {
-            //LOG(INFO) << "save all";
             auto grid = static_cast<UIFlatStatusBar *>(status_bar())->mutable_grid(0);
             grid->set_text("Ok");
             grid->set_bg_color({0, 255, 0, 255});
@@ -126,9 +127,9 @@ EditorForm::EditorForm() {
         return -1;
     }
 
-    auto main_menu = result["mainMenu"].cast<UIComponent *>();
+    auto main_menu = result["mainMenu"].cast<UIFlatMenuGroup *>();
     set_main_menu(DCHECK_NOTNULL(main_menu));
-    auto status_bar = result["statusBar"].cast<UIComponent *>();
+    auto status_bar = result["statusBar"].cast<UIFlatStatusBar *>();
     set_status_bar(DCHECK_NOTNULL(status_bar));
 
     int w, h;
@@ -136,12 +137,40 @@ EditorForm::EditorForm() {
     status_bar->mutable_rect()->w = w;
     status_bar->mutable_rect()->y = h - status_bar->rect().h;
 
+    raw_pics_ = new RawPicCollection();
+    size_t num_raw_pics = 0;
+    if ((num_raw_pics = raw_pics_->LoadWithBootstrapScript("res/raw-pic-load.lua",
+                                                           &err)) == 0) {
+        LOG(ERROR) << "No any raw pictures loaded!. " << err;
+        return -1;
+    } else {
+        char buf[64];
+        snprintf(buf, arraysize(buf), "raw: %lu", num_raw_pics);
+        status_bar->mutable_grid(1)->set_text(buf);
+    }
     return UIForm::OnInit();
 }
 
 /*virtual*/ void EditorForm::OnQuit() {
     delete factory_; factory_ = nullptr;
     delete styles_; styles_ = nullptr;
+    delete raw_pics_; raw_pics_ = nullptr;
+}
+
+/*virtual*/ void EditorForm::OnAfterRender() {
+//    SDL_Surface *surface = raw_pics_->FindPicOrNull("mon3.png");
+//    if (!texture_) {
+//        texture_ = SDL_CreateTextureFromSurface(renderer(), surface);
+//    }
+//
+//    SDL_Rect dst = {
+//        0,
+//        GetRetainTopH(),
+//        surface->w,
+//        surface->h,
+//    };
+//    SDL_RenderCopy(renderer(), texture_, nullptr, &dst);
+    UIForm::OnAfterRender();
 }
 
 } // namespace utaha

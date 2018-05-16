@@ -20,7 +20,7 @@ public:
         ASSERT_TRUE(err.empty()) << err;
         factory_ = CreateUIComponentStyleFactory(style_);
         form_ = new UIForm();
-        form_->CreateWindow("test", 1, 1);
+        form_->OpenWindow("test", 1, 1);
         builder_ = new UIComponentBuilder(factory_, form_, form_);
     }
 

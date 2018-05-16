@@ -17,6 +17,9 @@ local statusBar = builder:beginFlatStatusBar("main-status-bar")
     :addGrid(60)
         :text("Ready")
     :endGrid()
+    :addGrid(120)
+        :text("----")
+    :endGrid()
 :endStatusBar()
 
 return { mainMenu = mainMenu, statusBar = statusBar }

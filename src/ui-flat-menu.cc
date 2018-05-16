@@ -47,6 +47,7 @@ UIFlatMenu::UIFlatMenu(TTF_Font *font)
                     if (*is_break) {
                         return 0;
                     }
+                    return 1;
                 }
             }
         }

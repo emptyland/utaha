@@ -13,6 +13,9 @@ TEST(RawPicCollectionTest, Sanity) {
 
     auto pic = pics.FindPicOrNull("mon1.png");
     ASSERT_NE(nullptr, pic);
+
+    pic = pics.FindPicOrNull("mon3.png");
+    ASSERT_NE(nullptr, pic);
 }
 
 } // namespace utaha
