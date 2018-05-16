@@ -2,8 +2,8 @@
 #include "glog/logging.h"
 #include "lua-utils.h"
 #include "script-executor.h"
-#include <SDL2/SDL.h>
-#include <SDL2_image/SDL_image.h>
+#include SDL_H
+#include SDL_IMAGE_H
 
 namespace utaha {
 

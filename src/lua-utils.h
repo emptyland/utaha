@@ -33,8 +33,8 @@ namespace d = detail;
 
 #define LUA_DEF_CONST_ENUM(name, value) name = value,
 #define LUA_DEF_CONST_ID(macro_name, macro_value) { \
-        .name = #macro_name,                        \
-        .value = (macro_value),                     \
+        #macro_name,                        \
+        (macro_value),                     \
     },
 
 struct LuaConstantId {

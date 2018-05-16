@@ -1,6 +1,6 @@
 #include "ui-flat-check-box.h"
 #include "glog/logging.h"
-#include <SDL2_ttf/SDL_ttf.h>
+#include SDL_TTF_H
 
 namespace utaha {
 
@@ -52,10 +52,10 @@ UIFlatCheckBox::UIFlatCheckBox(TTF_Font *font)
     SDL_SetRenderDrawColor(renderer, box_color_.r, box_color_.g, box_color_.b,
                            box_color_.a);
     SDL_Rect box_rc = {
-        .x = rect().x + h_padding_size_,
-        .y = rect().y + (rect().h - box_size_) / 2,
-        .w = box_size_,
-        .h = box_size_,
+        rect().x + h_padding_size_,
+        rect().y + (rect().h - box_size_) / 2,
+        box_size_,
+        box_size_,
     };
     SDL_RenderDrawRect(renderer, &box_rc);
     if (checked_) {
@@ -68,12 +68,12 @@ UIFlatCheckBox::UIFlatCheckBox(TTF_Font *font)
         // Nothing
     }
 
-    const SDL_Rect src = {.x = 0, .y = 0, .w = label_w_, .h = label_h_};
+    const SDL_Rect src = {0, 0, label_w_, label_h_};
     SDL_Rect dst = {
-        .x = rect().x + h_padding_size_ * 2 + box_size_,
-        .y = rect().y + v_padding_size_,
-        .w = label_w_,
-        .h = label_h_,
+        rect().x + h_padding_size_ * 2 + box_size_,
+        rect().y + v_padding_size_,
+        label_w_,
+        label_h_,
     };
     SDL_SetRenderDrawColor(renderer, font_color_.r, font_color_.g, font_color_.b,
                            font_color_.a);

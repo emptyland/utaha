@@ -31,7 +31,7 @@ public:
     virtual void OnBeforeRender();
     virtual void OnQuit();
 
-    bool CreateWindow(const char *title, int w, int h);
+    bool OpenWindow(const char *title, int w, int h);
     int Run();
 
     int GetRetainTopH() const;

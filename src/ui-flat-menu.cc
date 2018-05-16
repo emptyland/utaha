@@ -1,6 +1,6 @@
 #include "ui-flat-menu.h"
 #include "glog/logging.h"
-#include <SDL2_ttf/SDL_ttf.h>
+#include SDL_TTF_H
 
 namespace utaha {
 
@@ -74,10 +74,10 @@ UIFlatMenu::UIFlatMenu(TTF_Font *font)
                 SDL_SetRenderDrawColor(renderer, hot_color_.r, hot_color_.g,
                                        hot_color_.b, hot_color_.a);
                 SDL_Rect item_rect = {
-                    .x = rect().x,
-                    .y = item.y,
-                    .w = rect().w,
-                    .h = item.h,
+                    rect().x,
+                    item.y,
+                    rect().w,
+                    item.h,
                 };
                 SDL_RenderFillRect(renderer, &item_rect);
             }
@@ -129,23 +129,21 @@ bool UIFlatMenu::Popup(int x, int y, SDL_Renderer *renderer) {
 }
 
 UIFlatMenu *UIFlatMenu::AddItem(const char *name, int cmd_id, void *param) {
-    Item item = {
-        .kind        = Item::MENU_ITEM,
-        .state       = Item::STATE_NORMAL,
-        .name        = name,
-        .cmd_id      = cmd_id,
-        .param       = param,
-        .is_selected = false,
-    };
+	Item item;
+	item.kind = Item::MENU_ITEM;
+	item.state = Item::STATE_NORMAL;
+	item.name = name;
+	item.cmd_id = cmd_id;
+	item.param = param;
+	item.is_selected = false;
     items_.emplace_back(item);
     is_changed_ = true;
     return this;
 }
 
 UIFlatMenu *UIFlatMenu::AddDiv() {
-    Item item = {
-        .kind = Item::MENU_DIV,
-    };
+	Item item;
+	item.kind = Item::MENU_DIV;
     items_.emplace_back(item);
     is_changed_ = true;
     return this;
@@ -188,16 +186,16 @@ SDL_Texture *UIFlatMenu::CreateTexture(int x, int y, SDL_Renderer *renderer) {
             continue;
         }
         SDL_Rect src = {
-            .x = 0,
-            .y = 0,
-            .w = surface->w,
-            .h = surface->h,
+            0,
+            0,
+            surface->w,
+            surface->h,
         };
         SDL_Rect dst = {
-            .x = padding_size_,
-            .y = dy + padding_size_,
-            .w = surface->w,
-            .h = surface->h,
+            padding_size_,
+            dy + padding_size_,
+            surface->w,
+            surface->h,
         };
         dy += (surface->h + padding_size_ * 2);
         SDL_BlitSurface(surface, &src, total, &dst);

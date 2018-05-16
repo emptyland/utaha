@@ -33,3 +33,14 @@ assets
 third-party
 xcode/utaha.xcodeproj/project.xcworkspace/xcshareddata
 xcode/utaha.xcodeproj/xcuserdata
+
+vs/x64
+vs/.vs
+vs/Debug
+vs/debug
+vs/Release
+vs/release
+vs/utaha.vcxproj.user
+
+*.idb
+*.pdb

@@ -2,7 +2,7 @@
 #define UTAHA_RENDER_ENTITY_H_
 
 #include "base.h"
-#include <SDL2/SDL.h>
+#include SDL_H
 
 namespace utaha {
 

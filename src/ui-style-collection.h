@@ -2,7 +2,7 @@
 #define UTAHA_UI_STYLE_COLLECTION_H_
 
 #include "base.h"
-#include <SDL2/SDL.h>
+#include SDL_H
 #include <unordered_map>
 #include <string>
 #include <tuple>
@@ -64,15 +64,11 @@ public:
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIStyleCollection);
 private:
-    static inline Value ForInt(int val) { return {.ival = val}; }
-    static inline Value ForFloat(float val) { return {.fval = val}; }
-    static inline Value ForFont(TTF_Font *font) { return {.font = font}; }
-    static inline Value ForColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
-        return {.color = {.r = r, .g = g, .b = b, .a = a}};
-    }
-    static inline Value ForSize(int w, int h) {
-        return {.size = {.w = w, .h = h}};
-    }
+	static inline Value ForInt(int val);
+	static inline Value ForFloat(float val);
+	static inline Value ForFont(TTF_Font *font);
+	static inline Value ForColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+	static inline Value ForSize(int w, int h);
 
     int WarpAddFont(lua_State *L);
     int WarpSetFont(lua_State *L);
@@ -158,6 +154,33 @@ bool UIStyleCollection::FindSize(const std::string &name, int *w, int *h) const 
         *h = iter->second.size.h;
     }
     return true;
+}
+
+/*static*/ inline UIStyleCollection::Value UIStyleCollection::ForInt(int val) {
+	Value v;
+	v.ival = val;
+	return v;
+}
+
+/*static*/ inline UIStyleCollection::Value UIStyleCollection::ForFloat(float val) {
+	Value v;
+	v.fval = val;
+	return v;
+}
+/*static*/ inline UIStyleCollection::Value UIStyleCollection::ForFont(TTF_Font *font) {
+	Value v;
+	v.font = font;
+	return v;
+}
+/*static*/ inline UIStyleCollection::Value UIStyleCollection::ForColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
+	Value v;
+	v.color = { r, g, b, a };
+	return v;
+}
+/*static*/ inline UIStyleCollection::Value UIStyleCollection::ForSize(int w, int h) {
+	Value v;
+	v.size = { w, h };
+	return v;
 }
 
 } // namespace utaha
