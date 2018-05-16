@@ -60,7 +60,7 @@ public:
 
     static int BindTo(lua_State *L);
 
-    const char *LoadFromFile(const char *file_name);
+    size_t LoadFromFile(const char *file_name, std::string *err);
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIStyleCollection);
 private:

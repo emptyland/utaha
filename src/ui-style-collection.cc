@@ -1,5 +1,6 @@
 #include "ui-style-collection.h"
 #include "glog/logging.h"
+#include "script-executor.h"
 #include "lua-utils.h"
 #include <SDL2_ttf/SDL_ttf.h>
 
@@ -30,22 +31,22 @@ bool UIStyleCollection::AddFont(const std::string &name,
     return true;
 }
 
-const char *UIStyleCollection::LoadFromFile(const char *file_name) {
-    lua_State *L = LuaUtils::GeneralOpenLua();
-    if (!L) {
-        return "Can not open lua!";
-    }
-    BindTo(L);
+size_t UIStyleCollection::LoadFromFile(const char *file_name, std::string *err) {
+    ScriptScope scripts(SCRIPTS.ptr());
 
-    auto pointer_stub = this;
-    luabridge::getGlobalNamespace(L)
+    auto stub = this;
+    const char *e = nullptr;
+    scripts.ExecStandaloneFile([this, &stub](lua_State *L) {
+        BindTo(L);
+        luabridge::getGlobalNamespace(L)
         .beginNamespace(kLuaNamespace)
-            .addVariable("styleCollection", &pointer_stub, false)
+            .addVariable("styleCollection", &stub, false)
         .endNamespace();
-    const char *err = LuaUtils::ProtectedDoFile(L, file_name);
-    lua_close(L);
-    L = nullptr;
-    return err;
+    }, file_name, &e);
+    if (e) {
+        err->assign(e);
+    }
+    return values_.size();
 }
 
 /*static*/ int UIStyleCollection::BindTo(lua_State *L) {

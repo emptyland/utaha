@@ -12,8 +12,8 @@ RawPicCollection::RawPicCollection() {
 
 RawPicCollection::~RawPicCollection() {
     for (const auto &pair : surfaces_) {
-        if (pair.second) {
-            SDL_FreeSurface(pair.second);
+        if (std::get<1>(pair.second)) {
+            SDL_FreeSurface(std::get<1>(pair.second));
         }
     }
 }
@@ -23,7 +23,11 @@ void RawPicCollection::AddFile(const char *file) {
     if (iter != surfaces_.end()) {
         return;
     }
-    surfaces_.emplace(file, nullptr);
+    surfaces_.emplace(file, std::make_tuple(0xff, nullptr));
+}
+
+void RawPicCollection::AddFileWithMask(const char *file, uint32_t alpha_mask) {
+    // TODO:
 }
 
 SDL_Surface *RawPicCollection::FindPicOrNull(const char *file) {
@@ -31,8 +35,8 @@ SDL_Surface *RawPicCollection::FindPicOrNull(const char *file) {
     if (iter == surfaces_.end()) {
         return nullptr;
     }
-    if (iter->second) {
-        return iter->second;
+    if (std::get<1>(iter->second)) {
+        return std::get<1>(iter->second);
     }
 
     std::string file_name(dir_);
@@ -45,7 +49,8 @@ SDL_Surface *RawPicCollection::FindPicOrNull(const char *file) {
     if (!surface) {
         LOG(ERROR) << "Can not load file: " << file << " " << SDL_GetError();
     } else {
-        surfaces_.emplace(file, surface);
+        surfaces_.emplace(file, std::make_tuple(std::get<0>(iter->second),
+                                                surface));
     }
     return surface;
 }

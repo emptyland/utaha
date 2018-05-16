@@ -89,8 +89,9 @@ EditorForm::EditorForm() {
     ScriptScope scripts(SCRIPTS.ptr());
 
     styles_ = new UIStyleCollection();
-    auto err = styles_->LoadFromFile("res/styles.lua");
-    if (err) {
+    std::string err;
+    styles_->LoadFromFile("res/styles.lua", &err);
+    if (!err.empty()) {
         LOG(ERROR) << "Can not load styles file. " << err;
         return -1;
     }
@@ -101,7 +102,7 @@ EditorForm::EditorForm() {
     }
 
     UIComponentBuilder *builder = new UIComponentBuilder(factory_, this, this);
-    err = nullptr;
+    const char *e = nullptr;
     auto L = scripts.ExecStandaloneFile([&builder](lua_State *L){
         UIComponentBuilder::BindTo(L);
 
@@ -112,9 +113,9 @@ EditorForm::EditorForm() {
 
         LuaUtils::InitConstantId(L, utaha::kLuaNamespace, "R", editor_form_id,
                                  arraysize(editor_form_id));
-    }, "res/form-layouts.lua", &err);
-    if (err) {
-        LOG(ERROR) << "Can not create form layout. " << err;
+    }, "res/form-layouts.lua", &e);
+    if (e) {
+        LOG(ERROR) << "Can not create form layout. " << e;
         return -1;
     }
 
@@ -124,8 +125,6 @@ EditorForm::EditorForm() {
                    << lua_typename(L, result.type());
         return -1;
     }
-
-
 
     auto main_menu = result["mainMenu"].cast<UIComponent *>();
     set_main_menu(DCHECK_NOTNULL(main_menu));

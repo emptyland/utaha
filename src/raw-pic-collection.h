@@ -4,6 +4,7 @@
 #include "base.h"
 #include <string>
 #include <map>
+#include <tuple>
 
 typedef struct SDL_Surface SDL_Surface;
 typedef struct lua_State lua_State;
@@ -16,6 +17,7 @@ public:
     ~RawPicCollection();
 
     void AddFile(const char *file);
+    void AddFileWithMask(const char *file, uint32_t alpha_mask);
     SDL_Surface *FindPicOrNull(const char *file);
 
     DEF_VAL_PROP_RMW(std::string, dir);
@@ -30,7 +32,7 @@ private:
     void SetDirWarp(const char *dir);
 
     std::string dir_;
-    std::map<std::string, SDL_Surface *> surfaces_;
+    std::map<std::string, std::tuple<uint32_t, SDL_Surface *>> surfaces_;
 }; // class RawPicCollection
 
 } // namespace utaha

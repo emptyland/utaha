@@ -9,8 +9,9 @@ class UIComponentFactoryTest : public ::testing::Test {
 public:
     virtual void SetUp() override {
         style_ = new UIStyleCollection();
-        auto err = style_->LoadFromFile("tests/001-styles-demo1.lua");
-        ASSERT_EQ(nullptr, err) << err;
+        std::string err;
+        style_->LoadFromFile("tests/001-styles-demo1.lua", &err);
+        ASSERT_TRUE(err.empty()) << err;
         factory_ = CreateUIComponentStyleFactory(style_);
     }
 
