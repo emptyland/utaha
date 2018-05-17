@@ -40,6 +40,7 @@ public:
     DEF_VAL_PROP_RW(bool, debug_mode);
 
     Row *AddRow(Alignment horizontal_aligment);
+    UIComponent *FindComponentOrNull(const char *name);
 
     void UpdateRect();
 

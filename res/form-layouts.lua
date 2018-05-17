@@ -14,7 +14,7 @@ local mainMenu = builder:beginFlatMenuGroup("main-menu")
 
 local statusBar = builder:beginFlatStatusBar("main-status-bar")
     :h(22)
-    :addGrid(60)
+    :addGrid(70)
         :text("Ready")
     :endGrid()
     :addGrid(120)
@@ -22,4 +22,40 @@ local statusBar = builder:beginFlatStatusBar("main-status-bar")
     :endGrid()
 :endStatusBar()
 
-return { mainMenu = mainMenu, statusBar = statusBar }
+local picGridSelector = builder:beginPicGridSelector("grid-selector")
+    :gridSizeW(48)
+    :gridSizeH(64)
+:endPicGridSelector()
+
+local gridSizeWInputBox = builder:beginFlatInputBox("grid-size-w-input")
+    :text(48)
+    :maxInput(100)
+    :h(22)
+    :w(120)
+:endInputBox()
+
+local gridSizeHInputBox = builder:beginFlatInputBox("grid-size-w-input")
+    :text(64)
+    :maxInput(100)
+    :h(22)
+    :w(120)
+:endInputBox()
+
+local rightLayout = builder:beginLayout()
+    :paddingSize(1)
+    :verticalAlignment(alignment.ALIGN_LEFT_OR_TOP)
+    :horizontalAligment(alignment.ALIGN_RIGHT_OR_BOTTOM)
+    :beginRow(alignment.ALIGN_LEFT_OR_TOP)
+        :add(gridSizeWInputBox)
+        :add(gridSizeHInputBox)
+    :endRow()
+    :beginRow(alignment.ALIGN_LEFT_OR_TOP)
+        :add(picGridSelector)
+    :endRow()
+:endLayout()
+
+return {
+    mainMenu = mainMenu,
+    statusBar = statusBar,
+    rightLayout = rightLayout
+}

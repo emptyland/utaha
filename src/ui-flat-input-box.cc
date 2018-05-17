@@ -1,4 +1,5 @@
 #include "ui-flat-input-box.h"
+#include "text-input-mode-controller.h"
 #include "glog/logging.h"
 #include SDL_TTF_H
 
@@ -16,16 +17,34 @@ UIFlatInputBox::UIFlatInputBox(TTF_Font *font)
         return 0;
     }
 
-    int result = UIComponent::OnEvent(event, is_break);
-    if (*is_break) {
-        return result;
+    if (event->type == SDL_MOUSEBUTTONDOWN) {
+        if (InRect(rect(), event->button.x, event->button.y)) {
+            if (!is_focused()) {
+                set_is_focused(true);
+                TIMC->OpenTextInputMode();
+            }
+        } else {
+            if (is_focused()) {
+                set_is_focused(false);
+                TIMC->CloseTextInputMode();
+            }
+        }
     }
-    if (is_focused()) {
-        SDL_StartTextInput();
-    } else {
-        SDL_StopTextInput();
+    if (event->type == SDL_MOUSEBUTTONUP) {
+        if (InRect(rect(), event->button.x, event->button.y) &&
+            is_focused()) {
+
+        } else {
+            if (is_focused()) {
+                set_is_focused(false);
+                TIMC->CloseTextInputMode();
+            }
+        }
     }
 
+    if (!is_focused()) {
+        return 0;
+    }
     if (event->type == SDL_TEXTINPUT) {
         //Not copy or pasting
         if(!((event->text.text[ 0 ] == 'c' || event->text.text[ 0 ] == 'C' ) &&

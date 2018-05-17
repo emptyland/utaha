@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <tuple>
+#include <vector>
 
 typedef struct SDL_Surface SDL_Surface;
 typedef struct lua_State lua_State;
@@ -19,6 +20,8 @@ public:
     void AddFile(const char *file);
     void AddFileWithMask(const char *file, uint32_t alpha_mask);
     SDL_Surface *FindPicOrNull(const char *file);
+
+    size_t GetAllFileNames(std::vector<std::string> *names);
 
     DEF_VAL_PROP_RMW(std::string, dir);
 

@@ -64,15 +64,15 @@ UIForm::UIForm() {
     }
 }
 
-/*virtual*/ void UIForm::OnEvent(SDL_Event *e) {
-    bool is_break = false;
+/*virtual*/ void UIForm::OnEvent(SDL_Event *e, bool *is_break) {
     if (main_menu_) {
-        if (main_menu_->OnEvent(e, &is_break) == 1) {
+        if (main_menu_->OnEvent(e, is_break) == 1) {
+            *is_break = true;
             return;
         }
     }
     if (status_bar_) {
-        status_bar_->OnEvent(e, &is_break);
+        status_bar_->OnEvent(e, is_break);
     }
 
     switch (e->type) {
@@ -124,12 +124,15 @@ bool UIForm::OpenWindow(const char *title, int w, int h) {
 int UIForm::Run() {
     bool quit = false;
     SDL_Event e;
+
     while(!quit) {
         while(SDL_PollEvent(&e) != 0) {
             if(e.type == SDL_QUIT) {
                 quit = true;
             }
-            OnEvent(&e);
+
+            bool is_break = false;
+            OnEvent(&e, &is_break);
         }
 
         SDL_SetRenderDrawColor(renderer_, 0, 0, 0, 0xFF);

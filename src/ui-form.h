@@ -28,7 +28,7 @@ public:
                           bool *is_break) override;
 
     virtual int  OnInit();
-    virtual void OnEvent(SDL_Event *e);
+    virtual void OnEvent(SDL_Event *e, bool *is_break);
     virtual void OnAfterRender();
     virtual void OnBeforeRender();
     virtual void OnQuit();

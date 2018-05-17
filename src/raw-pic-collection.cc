@@ -60,6 +60,14 @@ SDL_Surface *RawPicCollection::FindPicOrNull(const char *file) {
     return surface;
 }
 
+size_t RawPicCollection::GetAllFileNames(std::vector<std::string> *names) {
+    names->clear();
+    for (auto pair : surfaces_) {
+        names->push_back(pair.first);
+    }
+    return names->size();
+}
+
 size_t
 RawPicCollection::LoadWithBootstrapScript(const char *bootstrap_script_file,
                                           std::string *err) {

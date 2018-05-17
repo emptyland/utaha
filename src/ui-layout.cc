@@ -106,6 +106,17 @@ UILayout::Row *UILayout::AddRow(Alignment horizontal_aligment) {
     return row;
 }
 
+UIComponent *UILayout::FindComponentOrNull(const char *name) {
+    for (auto row : rows_) {
+        for (auto component : row->components_) {
+            if (component->name().compare(name) == 0) {
+                return component;
+            }
+        }
+    }
+    return nullptr;
+}
+
 int UILayout::CalculateMaxRowWidth() {
     int w = 0;
     for (auto row : rows_) {

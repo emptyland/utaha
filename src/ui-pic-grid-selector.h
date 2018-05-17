@@ -20,6 +20,7 @@ public:
     DEF_VAL_PROP_RW(int, grid_size_h);
     DEF_VAL_GETTER(int, selected_x);
     DEF_VAL_GETTER(int, selected_y);
+    DEF_PTR_GETTER(SDL_Surface, pic);
 
     bool is_selected() const { return selected_y_ > -1 && selected_x_ > -1; }
     void unselected() { selected_x_ = -1; selected_y_ = -1; }

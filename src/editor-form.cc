@@ -2,6 +2,8 @@
 #include "ui-flat-status-bar.h"
 #include "ui-flat-menu-group.h"
 #include "ui-flat-menu.h"
+#include "ui-pic-grid-selector.h"
+#include "ui-layout.h"
 #include "ui-style-collection.h"
 #include "ui-component-factory.h"
 #include "ui-component-builder.h"
@@ -21,6 +23,7 @@ public:
                           bool *is_break) override;
 
     virtual int OnInit() override;
+    virtual void OnEvent(SDL_Event *e, bool *is_break) override;
     virtual void OnAfterRender() override;
 //    virtual void OnBeforeRender() override;
     virtual void OnQuit() override;
@@ -31,6 +34,11 @@ private:
     UIComponentFactory *factory_ = nullptr;
     RawPicCollection *raw_pics_ = nullptr;
     SDL_Texture *texture_ = nullptr;
+
+    UILayout *right_layout_ = nullptr;
+
+    std::vector<std::string> raw_files_;
+    int current_raw_file_ = 0;
 }; // class EditorForm
 
 #define DEFINE_CMD_ID(M) \
@@ -131,6 +139,8 @@ EditorForm::EditorForm() {
     set_main_menu(DCHECK_NOTNULL(main_menu));
     auto status_bar = result["statusBar"].cast<UIFlatStatusBar *>();
     set_status_bar(DCHECK_NOTNULL(status_bar));
+    right_layout_ = result["rightLayout"].cast<UILayout *>();
+    right_layout_->set_debug_mode(true);
 
     int w, h;
     SDL_GetWindowSize(window(), &w, &h);
@@ -148,28 +158,39 @@ EditorForm::EditorForm() {
         snprintf(buf, arraysize(buf), "raw: %lu", num_raw_pics);
         status_bar->mutable_grid(1)->set_text(buf);
     }
+    raw_pics_->GetAllFileNames(&raw_files_);
+
     return UIForm::OnInit();
 }
 
+/*virtual*/ void EditorForm::OnEvent(SDL_Event *e, bool *is_break) {
+    UIForm::OnEvent(e, is_break);
+    if (*is_break) {
+        return;
+    }
+
+    right_layout_->OnEvent(e, is_break);
+}
+
 /*virtual*/ void EditorForm::OnQuit() {
+    delete right_layout_; right_layout_ = nullptr;
     delete factory_; factory_ = nullptr;
     delete styles_; styles_ = nullptr;
     delete raw_pics_; raw_pics_ = nullptr;
 }
 
 /*virtual*/ void EditorForm::OnAfterRender() {
-    SDL_Surface *surface = raw_pics_->FindPicOrNull("mon3.png");
-    if (!texture_) {
-        texture_ = SDL_CreateTextureFromSurface(renderer(), surface);
-    }
+    if (right_layout_) {
+        UIPicGridSelector *selector = static_cast<UIPicGridSelector *>(right_layout_->FindComponentOrNull("grid-selector"));
+        if (selector && !selector->pic()) {
+            selector->SetPic(raw_pics_->FindPicOrNull("tile1.png"), false);
+            selector->mutable_rect()->w = selector->pic()->w;
+            selector->mutable_rect()->h = selector->pic()->h;
+            right_layout_->UpdateRect();
+        }
 
-    SDL_Rect dst = {
-        0,
-        GetRetainTopH(),
-        surface->w,
-        surface->h,
-    };
-    SDL_RenderCopy(renderer(), texture_, nullptr, &dst);
+        right_layout_->OnRender(renderer());
+    }
     UIForm::OnAfterRender();
 }
 

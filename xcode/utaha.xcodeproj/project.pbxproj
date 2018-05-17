@@ -69,6 +69,8 @@
 		23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785F208DBB3600A8EA4F /* root-render-entity.cc */; };
 		23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C67862208DC4FD00A8EA4F /* sample-render-entity.cc */; };
 		23C9E67C1D9CFB9B0078DFFF /* lua-utils.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C9E67A1D9CFB9B0078DFFF /* lua-utils.cc */; };
+		23F34A8020AD2C3F00C3D7A4 /* text-input-mode-controller.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23F34A7F20AD2C3F00C3D7A4 /* text-input-mode-controller.cc */; };
+		23F34A8120AD2C3F00C3D7A4 /* text-input-mode-controller.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23F34A7F20AD2C3F00C3D7A4 /* text-input-mode-controller.cc */; };
 		23FD3C8020888C7800975CBB /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23FD3C7F20888C7800975CBB /* SDL2.framework */; };
 		23FD3C8220888C7B00975CBB /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23FD3C8120888C7B00975CBB /* SDL2_image.framework */; };
 		23FD3C8420888D3600975CBB /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23FD3C8320888D3600975CBB /* SDL2_ttf.framework */; };
@@ -160,6 +162,8 @@
 		23C9E67E1D9CFC450078DFFF /* RefCountedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RefCountedObject.h; path = "../src/lua-bridge/RefCountedObject.h"; sourceTree = "<group>"; };
 		23C9E67F1D9CFC450078DFFF /* RefCountedPtr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RefCountedPtr.h; path = "../src/lua-bridge/RefCountedPtr.h"; sourceTree = "<group>"; };
 		23E1D75D208889CB00F9EF96 /* editor-main.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "editor-main.cc"; sourceTree = "<group>"; };
+		23F34A7E20AD2AC100C3D7A4 /* text-input-mode-controller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "text-input-mode-controller.h"; sourceTree = "<group>"; };
+		23F34A7F20AD2C3F00C3D7A4 /* text-input-mode-controller.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "text-input-mode-controller.cc"; sourceTree = "<group>"; };
 		23FD3C7F20888C7800975CBB /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		23FD3C8120888C7B00975CBB /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		23FD3C8320888D3600975CBB /* SDL2_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_ttf.framework; path = ../../../../../Library/Frameworks/SDL2_ttf.framework; sourceTree = "<group>"; };
@@ -271,6 +275,7 @@
 				23A3FC4320A93FE300474E12 /* on-exit-scope.cc */,
 				23A3FC4720A9740700474E12 /* script-executor.cc */,
 				23A3FC4F20AACC1200474E12 /* raw-pic-collection.cc */,
+				23F34A7F20AD2C3F00C3D7A4 /* text-input-mode-controller.cc */,
 			);
 			name = Sources;
 			path = ../src;
@@ -304,6 +309,7 @@
 				23A3FC4220A93F6300474E12 /* on-exit-scope.h */,
 				23A3FC4620A9445B00474E12 /* script-executor.h */,
 				23A3FC4E20AACB4D00474E12 /* raw-pic-collection.h */,
+				23F34A7E20AD2AC100C3D7A4 /* text-input-mode-controller.h */,
 			);
 			name = Include;
 			path = ../src;
@@ -428,6 +434,7 @@
 				237E91502094616500176FA8 /* ui-flat-button.cc in Sources */,
 				237E91632094628800176FA8 /* test-main.cc in Sources */,
 				237E91512094616500176FA8 /* ui-flat-input-box.cc in Sources */,
+				23F34A8120AD2C3F00C3D7A4 /* text-input-mode-controller.cc in Sources */,
 				237E91522094616500176FA8 /* ui-flat-menu-group.cc in Sources */,
 				237E91532094616500176FA8 /* ui-flat-menu.cc in Sources */,
 				237E91542094616500176FA8 /* ui-layout.cc in Sources */,
@@ -467,6 +474,7 @@
 				23A3FC3D20A59C7000474E12 /* ui-form.cc in Sources */,
 				23A3FC3920A2EF3800474E12 /* ui-flat-check-box.cc in Sources */,
 				23C9E67C1D9CFB9B0078DFFF /* lua-utils.cc in Sources */,
+				23F34A8020AD2C3F00C3D7A4 /* text-input-mode-controller.cc in Sources */,
 				23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
