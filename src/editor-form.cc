@@ -2,6 +2,7 @@
 #include "ui-flat-status-bar.h"
 #include "ui-flat-menu-group.h"
 #include "ui-flat-menu.h"
+#include "ui-flat-input-box.h"
 #include "ui-pic-grid-selector.h"
 #include "ui-layout.h"
 #include "ui-style-collection.h"
@@ -14,6 +15,8 @@
 
 namespace utaha {
 
+class RawPicController;
+
 class EditorForm : public UIForm {
 public:
     EditorForm();
@@ -21,11 +24,11 @@ public:
 
     virtual int OnCommand(UIComponent *sender, int cmd_id, void *param,
                           bool *is_break) override;
+    virtual int OnEditChanged(UIComponent *sender, bool *is_break) override;
 
     virtual int OnInit() override;
     virtual void OnEvent(SDL_Event *e, bool *is_break) override;
     virtual void OnAfterRender() override;
-//    virtual void OnBeforeRender() override;
     virtual void OnQuit() override;
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(EditorForm);
@@ -37,8 +40,7 @@ private:
 
     UILayout *right_layout_ = nullptr;
 
-    std::vector<std::string> raw_files_;
-    int current_raw_file_ = 0;
+    RawPicController *raw_pic_ctrl_ = nullptr;
 }; // class EditorForm
 
 #define DEFINE_CMD_ID(M) \
@@ -52,6 +54,63 @@ struct EditorFormR {
         DEFINE_CMD_ID(LUA_DEF_CONST_ENUM)
     };
 };
+
+////////////////////////////////////////////////////////////////////////////////
+// class RawPicController
+////////////////////////////////////////////////////////////////////////////////
+
+class RawPicController {
+public:
+    RawPicController() = default;
+    ~RawPicController() = default;
+
+    DEF_PTR_PROP_RW_NOTNULL2(UIPicGridSelector, selector);
+    DEF_PTR_PROP_RW_NOTNULL2(RawPicCollection, raw_pics);
+    DEF_VAL_PROP_RMW(std::vector<std::string>, raw_files);
+
+    bool NextFile() {
+        current_raw_file_ = (current_raw_file_ + 1) % raw_files_.size();
+        return SetCurrentPic(raw_files_[current_raw_file_]);
+    }
+
+    bool PrevFile() {
+        if (current_raw_file_ == 0) {
+            current_raw_file_ = raw_files_.size() - 1;
+        } else {
+            --current_raw_file_;
+        }
+        return SetCurrentPic(raw_files_[current_raw_file_]);
+    }
+
+    std::string CurrentFile() { return raw_files_[current_raw_file_]; }
+
+    bool Reset() {
+        current_raw_file_ = 0;
+        return SetCurrentPic(raw_files_[current_raw_file_]);
+    }
+
+    DISALLOW_IMPLICIT_CONSTRUCTORS(RawPicController);
+private:
+    bool SetCurrentPic(const std::string &file) {
+        SDL_Surface *surface = raw_pics_->FindPicOrNull(file.c_str());
+        if (!surface) {
+            return false;
+        }
+        selector_->SetPic(surface, false);
+        selector_->mutable_rect()->w = surface->w;
+        selector_->mutable_rect()->h = surface->h;
+        return true;
+    }
+
+    UIPicGridSelector *selector_;
+    std::vector<std::string> raw_files_;
+    size_t current_raw_file_ = 0;
+    RawPicCollection *raw_pics_ = nullptr;
+}; // class RawPicController
+
+////////////////////////////////////////////////////////////////////////////////
+//
+////////////////////////////////////////////////////////////////////////////////
 
 static const LuaConstantId editor_form_id[] = {
     DEFINE_CMD_ID(LUA_DEF_CONST_ID)
@@ -77,19 +136,35 @@ EditorForm::EditorForm() {
             break;
 
         case EditorFormR::ID_EDIT_MAP: {
-            auto grid = static_cast<UIFlatStatusBar *>(status_bar())->mutable_grid(0);
-            grid->set_text("Ready");
-            grid->set_bg_color({0, 255, 255, 255});
+
         } break;
 
         case EditorFormR::ID_FILE_SAVE_ALL: {
-            auto grid = static_cast<UIFlatStatusBar *>(status_bar())->mutable_grid(0);
-            grid->set_text("Ok");
-            grid->set_bg_color({0, 255, 0, 255});
+
         } break;
 
         default:
             break;
+    }
+    return 0;
+}
+
+/*virtual*/ int EditorForm::OnEditChanged(UIComponent *sender, bool *is_break) {
+    if (sender->name().compare("grid-size-w-input") == 0) {
+        auto edit = down_cast<UIFlatInputBox>(sender);
+        int grid_w = atoi(edit->text().c_str());
+        if (grid_w > 0) {
+            raw_pic_ctrl_->selector()->set_grid_size_w(grid_w);
+            raw_pic_ctrl_->selector()->unselected();
+        }
+    }
+    if (sender->name().compare("grid-size-h-input") == 0) {
+        auto edit = down_cast<UIFlatInputBox>(sender);
+        int grid_h = atoi(edit->text().c_str());
+        if (grid_h > 0) {
+            raw_pic_ctrl_->selector()->set_grid_size_h(grid_h);
+            raw_pic_ctrl_->selector()->unselected();
+        }
     }
     return 0;
 }
@@ -158,8 +233,23 @@ EditorForm::EditorForm() {
         snprintf(buf, arraysize(buf), "raw: %lu", num_raw_pics);
         status_bar->mutable_grid(1)->set_text(buf);
     }
-    raw_pics_->GetAllFileNames(&raw_files_);
 
+    raw_pic_ctrl_ = new RawPicController();
+    raw_pics_->GetAllFileNames(raw_pic_ctrl_->mutable_raw_files());
+    raw_pic_ctrl_->set_raw_pics(raw_pics_);
+
+    UIPicGridSelector *selector =
+        static_cast<UIPicGridSelector *>(
+            right_layout_->FindComponentOrNull("grid-selector"));
+    if (!selector) {
+        LOG(ERROR) << "Can not find component named: grid-selector";
+        return -1;
+    }
+    raw_pic_ctrl_->set_selector(selector);
+    raw_pic_ctrl_->Reset();
+    status_bar->mutable_grid(2)->set_text(raw_pic_ctrl_->CurrentFile());
+
+    right_layout_->UpdateRect();
     return UIForm::OnInit();
 }
 
@@ -169,10 +259,34 @@ EditorForm::EditorForm() {
         return;
     }
 
+    switch (e->type) {
+        case SDL_KEYDOWN:
+            break;
+
+        case SDL_KEYUP:
+            if (raw_pic_ctrl_->selector()->is_focused()) {
+                if (e->key.keysym.sym == SDLK_UP) {
+                    raw_pic_ctrl_->PrevFile();
+                    status_bar()->mutable_grid(2)
+                        ->set_text(raw_pic_ctrl_->CurrentFile());
+                }
+                if (e->key.keysym.sym == SDLK_DOWN) {
+                    raw_pic_ctrl_->NextFile();
+                    status_bar()->mutable_grid(2)
+                        ->set_text(raw_pic_ctrl_->CurrentFile());
+                }
+            }
+            break;
+
+        default:
+            break;
+    }
+
     right_layout_->OnEvent(e, is_break);
 }
 
 /*virtual*/ void EditorForm::OnQuit() {
+    delete raw_pic_ctrl_; raw_pic_ctrl_ = nullptr;
     delete right_layout_; right_layout_ = nullptr;
     delete factory_; factory_ = nullptr;
     delete styles_; styles_ = nullptr;
@@ -181,14 +295,6 @@ EditorForm::EditorForm() {
 
 /*virtual*/ void EditorForm::OnAfterRender() {
     if (right_layout_) {
-        UIPicGridSelector *selector = static_cast<UIPicGridSelector *>(right_layout_->FindComponentOrNull("grid-selector"));
-        if (selector && !selector->pic()) {
-            selector->SetPic(raw_pics_->FindPicOrNull("tile1.png"), false);
-            selector->mutable_rect()->w = selector->pic()->w;
-            selector->mutable_rect()->h = selector->pic()->h;
-            right_layout_->UpdateRect();
-        }
-
         right_layout_->OnRender(renderer());
     }
     UIForm::OnAfterRender();

@@ -1,4 +1,5 @@
 #include "ui-flat-input-box.h"
+#include "interactive-listenner.h"
 #include "text-input-mode-controller.h"
 #include "glog/logging.h"
 #include SDL_TTF_H
@@ -54,6 +55,7 @@ UIFlatInputBox::UIFlatInputBox(TTF_Font *font)
             if (text_w_ < rect().w - padding_size_ * 2 - 4 && text_.length() < max_input_) {
                 text_.append(event->text.text);
                 is_changed_ = true;
+                listenner()->OnEditChanged(this, is_break);
             }
         }
     }
@@ -63,6 +65,7 @@ UIFlatInputBox::UIFlatInputBox(TTF_Font *font)
             //lop off character
             text_.pop_back();
             is_changed_ = true;
+            listenner()->OnEditChanged(this, is_break);
         }
     }
     return 0;

@@ -87,12 +87,12 @@ UIPicGridSelector::UIPicGridSelector() {
 
 bool UIPicGridSelector::SetPic(SDL_Surface *pic, bool ownership) {
     DCHECK_NOTNULL(pic);
-    if (grid_size_h_ <= 0 || pic->h % grid_size_h_) {
+    if (grid_size_h_ <= 0 /*|| pic->h % grid_size_h_*/) {
         LOG(ERROR) << "Incorrect pic size or grid_size_h: " << pic->h << ", "
                    << grid_size_h_;
         return false;
     }
-    if (grid_size_w_ <= 0 || pic->w % grid_size_w_) {
+    if (grid_size_w_ <= 0 /*|| pic->w % grid_size_w_*/) {
         LOG(ERROR) << "Incorrect pic size or grid_size_w: " << pic->w << ", "
                    << grid_size_w_;
         return false;

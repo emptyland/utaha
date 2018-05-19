@@ -2,6 +2,7 @@
 #define UTAHA_BASE_H_
 
 #include <stddef.h>
+#include <assert.h>
 
 namespace utaha {
 
@@ -33,6 +34,16 @@ char (&ArraySizeHelper(const T (&array)[N]))[N];
 #endif
 
 #define arraysize(array) (sizeof(::utaha::ArraySizeHelper(array)))
+
+/**
+ * Safaty down cast
+ */
+template<class T, class F>
+inline T *down_cast(F *from) {
+    assert(dynamic_cast<T *>(from) && "Can not cast to.");
+    return static_cast<T *>(from);
+}
+
 
 /**
  * define getter/mutable_getter/setter

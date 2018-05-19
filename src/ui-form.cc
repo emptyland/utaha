@@ -45,6 +45,10 @@ UIForm::UIForm() {
     return 0;
 }
 
+/*virtual*/ int UIForm::OnEditChanged(UIComponent *sender, bool *is_break) {
+    return 0;
+}
+
 /*virtual*/ int UIForm::OnInit() {
     return 0;
 }

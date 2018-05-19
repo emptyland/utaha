@@ -15,7 +15,7 @@ TextInputModeController::~TextInputModeController() {
 void TextInputModeController::OpenTextInputMode() {
     if (++demand_ == 1) {
         SDL_StartTextInput();
-        LOG(INFO) << "Start text input!";
+        DLOG(INFO) << "Start text input!";
     }
 }
 
@@ -25,7 +25,7 @@ void TextInputModeController::CloseTextInputMode() {
     }
     if (--demand_ == 0) {
         SDL_StopTextInput();
-        LOG(INFO) << "Stop text input!";
+        DLOG(INFO) << "Stop text input!";
     }
 }
 

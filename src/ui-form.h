@@ -26,6 +26,7 @@ public:
                             bool *is_break) override;
     virtual int OnCommand(UIComponent *sender, int cmd_id, void *param,
                           bool *is_break) override;
+    virtual int OnEditChanged(UIComponent *sender, bool *is_break) override;
 
     virtual int  OnInit();
     virtual void OnEvent(SDL_Event *e, bool *is_break);
