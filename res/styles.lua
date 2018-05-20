@@ -9,7 +9,7 @@ style
 
 -- Flat Menu Styles
     :setFont("FlatMenu.font",          "font.normal")
-    :setColor("FlatMenu.bg.color",     0x00000080)
+    :setColor("FlatMenu.bg.color",     0x000000ff)
     :setColor("FlatMenu.hot.color",    0x007bffff)
     :setColor("FlatMenu.font.color",   0xffffffff)
     :setColor("FlatMenu.border.color", 0xffffffff)
@@ -41,6 +41,14 @@ style
     :setColor("FlatInputBox.border.color",  0xffffffff)
     :setInt("FlatInputBox.padding.size",    4)
 
+-- Flat Label Styles
+    :setFont("FlatLabel.font",          "font.normal")
+    :setColor("FlatLabel.bg.color",     0x0f0f0fff)
+    :setColor("FlatLabel.font.color",   0xffffffff)
+    :setColor("FlatLabel.border.color", 0x00000000)
+    :setInt("FlatLabel.padding.h.size", 10)
+    :setInt("FlatLabel.padding.v.size", 2)
+
 -- Flat Check Box Styles
     :setFont("FlatCheckBox.font",          "font.normal")
     :setColor("FlatCheckBox.font.color",   0xffffffff)
@@ -49,11 +57,11 @@ style
     :setInt("FlatCheckBox.padding.v.size", 2)
 
 -- Flat Status Bar Styles
-    :setFont("FlatStatusBar.font",         "font.normal")
-    :setColor("FlatStatusBar.font.color",  0xffffffff)
-    :setColor("FlatStatusBar.bg.color",    0x007bffff)
+    :setFont("FlatStatusBar.font",          "font.normal")
+    :setColor("FlatStatusBar.font.color",   0xffffffff)
+    :setColor("FlatStatusBar.bg.color",     0x007bffff)
     :setColor("FlatStatusBar.border.color", 0xffffffff)
-    :setInt("FlatStatusBar.padding.size",  10)
+    :setInt("FlatStatusBar.padding.size",   10)
 
 -- Pic Grid Selector Styles
     :setColor("PicGridSelector.grid.color",     0x00ff00ff)

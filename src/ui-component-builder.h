@@ -18,6 +18,7 @@ class UIFlatMenuGroupColumnBuilder;
 class UIFlatMenuBuilder;
 class UIFlatButtonBuilder;
 class UIFlatInputBoxBuilder;
+class UIFlatLabelBuilder;
 class UIFlatCheckBoxBuilder;
 class UIFlatStatusBarBuilder;
 class UIFlatStatusBarGridBuilder;
@@ -29,6 +30,7 @@ class UIFlatMenuGroup;
 class UIFlatMenu;
 class UIFlatButton;
 class UIFlatInputBox;
+class UIFlatLabel;
 class UIFlatCheckBox;
 class UIFlatStatusBar;
 class UIFlatStatusBarGrid;
@@ -47,6 +49,8 @@ public:
     UIFlatMenuBuilder *BeginFlatMenu(const char *name);
     UIFlatButtonBuilder *BeginFlatButton(const char *name);
     UIFlatInputBoxBuilder *BeginFlatInputBox(const char *name);
+    UIFlatLabelBuilder *BeginFlatLabel(const char *name);
+    UIFlatLabel *LetFlatLabel(const char *name, const char *text);
     UIFlatCheckBoxBuilder *BeginFlatCheckBox(const char *name);
     UIFlatStatusBarBuilder *BeginFlatStatusBar(const char *name);
     UIPicGridSelectorBuilder *BeginPicGridSelector(const char *name);
@@ -167,6 +171,22 @@ public:
 }; // class UIFlatInputBoxBuilder
 
 
+class UIFlatLabelBuilder : public UIComponentBuilderBase<UIFlatLabel> {
+public:
+    inline UIFlatLabelBuilder(UIFlatLabel *component,
+                              UIComponentFactory *factory)
+        : UIComponentBuilderBase(component, factory) {}
+    inline ~UIFlatLabelBuilder() = default;
+
+    UIFlatLabelBuilder *LetText(const char *text);
+    UIFlatLabelBuilder *LetFontColor(int color);
+    UIFlatLabelBuilder *LetBgColor(int color);
+    UIFlatLabel *EndLabel();
+
+    DISALLOW_IMPLICIT_CONSTRUCTORS(UIFlatLabelBuilder);
+}; // class UIFlatLabelBuilder
+
+
 class UIFlatCheckBoxBuilder : public UIComponentBuilderBase<UIFlatCheckBox> {
 public:
     inline UIFlatCheckBoxBuilder(UIFlatCheckBox *component,
@@ -175,6 +195,7 @@ public:
     inline ~UIFlatCheckBoxBuilder() = default;
 
     UIFlatCheckBoxBuilder *LetLabel(const char *text);
+    UIFlatCheckBoxBuilder *LetValue(bool checked);
     UIFlatCheckBoxBuilder *LetX(int x);
     UIFlatCheckBoxBuilder *LetY(int y);
     UIFlatCheckBoxBuilder *LetW(int w);

@@ -3,6 +3,7 @@
 #include "ui-flat-menu.h"
 #include "ui-flat-menu-group.h"
 #include "ui-flat-input-box.h"
+#include "ui-flat-label.h"
 #include "ui-flat-check-box.h"
 #include "ui-flat-status-bar.h"
 #include "ui-pic-grid-selector.h"
@@ -21,6 +22,7 @@ public:
     virtual UIFlatMenu *CreateFlatMenu(const std::string &name) override;
     virtual UIFlatMenuGroup *CreateFlatMenuGroup(const std::string &name) override;
     virtual UIFlatInputBox *CreateFlatInputBox(const std::string &name) override;
+    virtual UIFlatLabel *CreateFlatLabel(const std::string &name) override;
     virtual UIFlatCheckBox *CreateFlatCheckBox(const std::string &name) override;
     virtual UIFlatStatusBar *CreateFlatStatusBar(const std::string &name) override;
     virtual UIPicGridSelector *CreatePicGridSelector(const std::string &name) override;
@@ -63,6 +65,13 @@ static const char FLAT_INPUT_BOX_BORDER_COLOR[]  = "FlatInputBox.border.color";
 static const char FLAT_INPUT_BOX_BG_COLOR[]      = "FlatInputBox.bg.color";
 static const char FLAT_INPUT_BOX_PADDING_SIZE[]  = "FlatInputBox.padding.size";
 
+static const char FLAT_LABEL_FONT[]           = "FlatLabel.font";
+static const char FLAT_LABEL_BG_COLOR[]       = "FlatLabel.bg.color";
+static const char FLAT_LABEL_FONT_COLOR[]     = "FlatLabel.font.color";
+static const char FLAT_LABEL_BORDER_COLOR[]   = "FlatLabel.border.color";
+static const char FLAT_LABEL_PADDING_H_SIZE[] = "FlatLabel.padding.h.size";
+static const char FLAT_LABEL_PADDING_V_SIZE[] = "FlatLabel.padding.v.size";
+
 static const char FLAT_CHECK_BOX_FONT[]           = "FlatCheckBox.font";
 static const char FLAT_CHECK_BOX_FONT_COLOR[]     = "FlatCheckBox.font.color";
 static const char FLAT_CHECK_BOX_BOX_COLOR[]      = "FlatCheckBox.box.color";
@@ -94,7 +103,7 @@ UIComponentStyleFactory::CreateFlatButton(const std::string &name) {
     bool ok = true;
     TTF_Font *font = style_->FindFont(FLAT_BUTTON_FONT, &ok);
     if (!ok) {
-        LOG(ERROR) << "can not find font: " << FLAT_BUTTON_FONT;
+        LOG(ERROR) << "Can not find font: " << FLAT_BUTTON_FONT;
         return nullptr;
     }
     std::unique_ptr<UIFlatButton> component(new UIFlatButton(font));
@@ -102,28 +111,28 @@ UIComponentStyleFactory::CreateFlatButton(const std::string &name) {
     component->set_id(NextId());
     if (!style_->FindColor(FLAT_BUTTON_PRESSED_COLOR,
                            component->mutable_pressed_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_BUTTON_PRESSED_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_BUTTON_PRESSED_COLOR;
         return nullptr;
     }
     if (!style_->FindColor(FLAT_BUTTON_NORMAL_COLOR,
                            component->mutable_normal_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_BUTTON_NORMAL_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_BUTTON_NORMAL_COLOR;
         return nullptr;
     }
     if (!style_->FindColor(FLAT_BUTTON_HOT_COLOR,
                            component->mutable_hot_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_BUTTON_HOT_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_BUTTON_HOT_COLOR;
         return nullptr;
     }
     if (!style_->FindColor(FLAT_BUTTON_FONT_COLOR,
                            component->mutable_font_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_BUTTON_FONT_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_BUTTON_FONT_COLOR;
         return nullptr;
     }
     if (!style_->FindSize(FLAT_BUTTON_DEFAULT_SIZE,
                           &component->mutable_rect()->w,
                           &component->mutable_rect()->h)) {
-        LOG(ERROR) << "can not find size: " << FLAT_BUTTON_DEFAULT_SIZE;
+        LOG(ERROR) << "Can not find size: " << FLAT_BUTTON_DEFAULT_SIZE;
         return nullptr;
     }
     return component.release();
@@ -134,7 +143,7 @@ UIComponentStyleFactory::CreateFlatMenu(const std::string &name) {
     bool ok = true;
     TTF_Font *font = style_->FindFont(FLAT_MENU_FONT, &ok);
     if (!ok) {
-        LOG(ERROR) << "can not find font: " << FLAT_MENU_FONT;
+        LOG(ERROR) << "Can not find font: " << FLAT_MENU_FONT;
         return nullptr;
     }
 
@@ -143,27 +152,27 @@ UIComponentStyleFactory::CreateFlatMenu(const std::string &name) {
     component->set_id(NextId());
 
     if (!style_->FindColor(FLAT_MENU_BG_COLOR, component->mutable_bg_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_MENU_BG_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_MENU_BG_COLOR;
         return nullptr;
     }
     if (!style_->FindColor(FLAT_MENU_HOT_COLOR,
                            component->mutable_hot_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_MENU_HOT_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_MENU_HOT_COLOR;
         return nullptr;
     }
     if (!style_->FindColor(FLAT_MENU_FONT_COLOR,
                            component->mutable_font_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_MENU_FONT_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_MENU_FONT_COLOR;
         return nullptr;
     }
     if (!style_->FindColor(FLAT_MENU_BORDER_COLOR,
                            component->mutable_border_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_MENU_BORDER_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_MENU_BORDER_COLOR;
         return nullptr;
     }
     component->set_padding_size(style_->FindInt(FLAT_MENU_PADDING_SIZE, &ok));
     if (!ok) {
-        LOG(ERROR) << "can not find int value: " << FLAT_MENU_PADDING_SIZE;
+        LOG(ERROR) << "Can not find int value: " << FLAT_MENU_PADDING_SIZE;
         return nullptr;
     }
     return component.release();
@@ -174,7 +183,7 @@ UIComponentStyleFactory::CreateFlatMenuGroup(const std::string &name) {
     bool ok = true;
     TTF_Font *font = style_->FindFont(FLAT_MENU_GROUP_FONT, &ok);
     if (!ok) {
-        LOG(ERROR) << "can not find font: " << FLAT_MENU_GROUP_FONT;
+        LOG(ERROR) << "Can not find font: " << FLAT_MENU_GROUP_FONT;
         return nullptr;
     }
 
@@ -184,34 +193,34 @@ UIComponentStyleFactory::CreateFlatMenuGroup(const std::string &name) {
 
     if (!style_->FindColor(FLAT_MENU_GROUP_BG_COLOR,
                            component->mutable_bg_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_MENU_GROUP_BG_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_MENU_GROUP_BG_COLOR;
         return nullptr;
     }
     if (!style_->FindColor(FLAT_MENU_GROUP_HOT_COLOR,
                            component->mutable_hot_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_MENU_GROUP_HOT_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_MENU_GROUP_HOT_COLOR;
         return nullptr;
     }
     if (!style_->FindColor(FLAT_MENU_GROUP_FONT_COLOR,
                            component->mutable_font_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_MENU_GROUP_FONT_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_MENU_GROUP_FONT_COLOR;
         return nullptr;
     }
     if (!style_->FindColor(FLAT_MENU_GROUP_BORDER_COLOR,
                            component->mutable_border_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_MENU_GROUP_BORDER_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_MENU_GROUP_BORDER_COLOR;
         return nullptr;
     }
     component->set_h_padding_size(style_->FindInt(FLAT_MENU_GROUP_PADDING_H_SIZE,
                                                   &ok));
     if (!ok) {
-        LOG(ERROR) << "can not find int value: " << FLAT_MENU_GROUP_PADDING_H_SIZE;
+        LOG(ERROR) << "Can not find int value: " << FLAT_MENU_GROUP_PADDING_H_SIZE;
         return nullptr;
     }
     component->set_v_padding_size(style_->FindInt(FLAT_MENU_GROUP_PADDING_V_SIZE,
                                                   &ok));
     if (!ok) {
-        LOG(ERROR) << "can not find int value: " << FLAT_MENU_GROUP_PADDING_V_SIZE;
+        LOG(ERROR) << "Can not find int value: " << FLAT_MENU_GROUP_PADDING_V_SIZE;
         return nullptr;
     }
 
@@ -223,7 +232,7 @@ UIComponentStyleFactory::CreateFlatInputBox(const std::string &name) {
     bool ok = true;
     TTF_Font *font = style_->FindFont(FLAT_INPUT_BOX_FONT, &ok);
     if (!ok) {
-        LOG(ERROR) << "can not find font: " << FLAT_INPUT_BOX_FONT;
+        LOG(ERROR) << "Can not find font: " << FLAT_INPUT_BOX_FONT;
         return nullptr;
     }
 
@@ -234,38 +243,80 @@ UIComponentStyleFactory::CreateFlatInputBox(const std::string &name) {
     if (!style_->FindSize(FLAT_INPUT_BOX_DEFAULT_SIZE,
                           &component->mutable_rect()->w,
                           &component->mutable_rect()->h)) {
-        LOG(ERROR) << "can not find size: " << FLAT_INPUT_BOX_DEFAULT_SIZE;
+        LOG(ERROR) << "Can not find size: " << FLAT_INPUT_BOX_DEFAULT_SIZE;
         return nullptr;
     }
     component->set_max_input(style_->FindInt(FLAT_INPUT_BOX_DEFAULT_MAX_INPUT,
                                              &ok));
     if (!ok) {
-        LOG(ERROR) << "can not find int value: "
+        LOG(ERROR) << "Can not find int value: "
                    << FLAT_INPUT_BOX_DEFAULT_MAX_INPUT;
         return nullptr;
     }
     if (!style_->FindColor(FLAT_INPUT_BOX_BG_COLOR,
                            component->mutable_bg_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_INPUT_BOX_BG_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_INPUT_BOX_BG_COLOR;
         return nullptr;
     }
     if (!style_->FindColor(FLAT_INPUT_BOX_FONT_COLOR,
                            component->mutable_font_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_INPUT_BOX_FONT_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_INPUT_BOX_FONT_COLOR;
         return nullptr;
     }
     if (!style_->FindColor(FLAT_INPUT_BOX_BORDER_COLOR,
                            component->mutable_border_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_INPUT_BOX_BORDER_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_INPUT_BOX_BORDER_COLOR;
         return nullptr;
     }
     component->set_padding_size(style_->FindInt(FLAT_INPUT_BOX_PADDING_SIZE,
                                                 &ok));
     if (!ok) {
-        LOG(ERROR) << "can not find int value: " << FLAT_INPUT_BOX_PADDING_SIZE;
+        LOG(ERROR) << "Can not find int value: " << FLAT_INPUT_BOX_PADDING_SIZE;
         return nullptr;
     }
 
+    return component.release();
+}
+
+UIFlatLabel *UIComponentStyleFactory::CreateFlatLabel(const std::string &name) {
+    bool ok = true;
+    TTF_Font *font = style_->FindFont(FLAT_LABEL_FONT, &ok);
+    if (!ok) {
+        LOG(ERROR) << "Can not find font: " << FLAT_LABEL_FONT;
+        return nullptr;
+    }
+
+    std::unique_ptr<UIFlatLabel> component(new UIFlatLabel(font));
+    component->set_name(name);
+    component->set_id(NextId());
+
+    if (!style_->FindColor(FLAT_LABEL_BG_COLOR,
+                           component->mutable_bg_color())) {
+        LOG(ERROR) << "Can not find color: " << FLAT_LABEL_BG_COLOR;
+        return nullptr;
+    }
+    if (!style_->FindColor(FLAT_LABEL_FONT_COLOR,
+                           component->mutable_font_color())) {
+        LOG(ERROR) << "Can not find color: " << FLAT_LABEL_FONT_COLOR;
+        return nullptr;
+    }
+    if (!style_->FindColor(FLAT_LABEL_BORDER_COLOR,
+                           component->mutable_border_color())) {
+        LOG(ERROR) << "Can not find color: " << FLAT_LABEL_BORDER_COLOR;
+        return nullptr;
+    }
+    component->set_h_padding_size(style_->FindInt(FLAT_LABEL_PADDING_H_SIZE,
+                                                  &ok));
+    if (!ok) {
+        LOG(ERROR) << "Can not find int value: " << FLAT_LABEL_PADDING_H_SIZE;
+        return nullptr;
+    }
+    component->set_v_padding_size(style_->FindInt(FLAT_LABEL_PADDING_V_SIZE,
+                                                  &ok));
+    if (!ok) {
+        LOG(ERROR) << "Can not find int value: " << FLAT_LABEL_PADDING_V_SIZE;
+        return nullptr;
+    }
     return component.release();
 }
 
@@ -274,7 +325,7 @@ UIComponentStyleFactory::CreateFlatCheckBox(const std::string &name) {
     bool ok = true;
     TTF_Font *font = style_->FindFont(FLAT_CHECK_BOX_FONT, &ok);
     if (!ok) {
-        LOG(ERROR) << "can not find font: " << FLAT_CHECK_BOX_FONT;
+        LOG(ERROR) << "Can not find font: " << FLAT_CHECK_BOX_FONT;
         return nullptr;
     }
 
@@ -284,26 +335,26 @@ UIComponentStyleFactory::CreateFlatCheckBox(const std::string &name) {
 
     if (!style_->FindColor(FLAT_CHECK_BOX_FONT_COLOR,
                            component->mutable_font_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_CHECK_BOX_FONT_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_CHECK_BOX_FONT_COLOR;
         return nullptr;
     }
     if (!style_->FindColor(FLAT_CHECK_BOX_BOX_COLOR,
                            component->mutable_box_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_CHECK_BOX_BOX_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_CHECK_BOX_BOX_COLOR;
         return nullptr;
     }
 
     component->set_h_padding_size(style_->FindInt(FLAT_CHECK_BOX_PADDING_H_SIZE,
                                                   &ok));
     if (!ok) {
-        LOG(ERROR) << "can not find int value: "
+        LOG(ERROR) << "Can not find int value: "
                    << FLAT_CHECK_BOX_PADDING_H_SIZE;
         return nullptr;
     }
     component->set_v_padding_size(style_->FindInt(FLAT_CHECK_BOX_PADDING_V_SIZE,
                                                   &ok));
     if (!ok) {
-        LOG(ERROR) << "can not find int value: "
+        LOG(ERROR) << "Can not find int value: "
                    << FLAT_CHECK_BOX_PADDING_V_SIZE;
         return nullptr;
     }
@@ -316,7 +367,7 @@ UIComponentStyleFactory::CreateFlatStatusBar(const std::string &name) {
     bool ok = true;
     TTF_Font *font = style_->FindFont(FLAT_STATUS_BAR_FONT, &ok);
     if (!ok) {
-        LOG(ERROR) << "can not find font: " << FLAT_STATUS_BAR_FONT;
+        LOG(ERROR) << "Can not find font: " << FLAT_STATUS_BAR_FONT;
         return nullptr;
     }
 
@@ -326,23 +377,23 @@ UIComponentStyleFactory::CreateFlatStatusBar(const std::string &name) {
 
     if (!style_->FindColor(FLAT_STATUS_BAR_FONT_COLOR,
                            component->mutable_font_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_STATUS_BAR_FONT_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_STATUS_BAR_FONT_COLOR;
         return nullptr;
     }
     if (!style_->FindColor(FLAT_STATUS_BAR_BG_COLOR,
                            component->mutable_bg_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_STATUS_BAR_BG_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_STATUS_BAR_BG_COLOR;
         return nullptr;
     }
     if (!style_->FindColor(FLAT_STATUS_BAR_BORDER_COLOR,
                            component->mutable_border_color())) {
-        LOG(ERROR) << "can not find color: " << FLAT_STATUS_BAR_BORDER_COLOR;
+        LOG(ERROR) << "Can not find color: " << FLAT_STATUS_BAR_BORDER_COLOR;
         return nullptr;
     }
     component->set_padding_size(style_->FindInt(FLAT_STATUS_BAR_PADDING_SIZE,
                                                 &ok));
     if (!ok) {
-        LOG(ERROR) << "can not find int value: " << FLAT_STATUS_BAR_PADDING_SIZE;
+        LOG(ERROR) << "Can not find int value: " << FLAT_STATUS_BAR_PADDING_SIZE;
         return nullptr;
     }
     return component.release();
@@ -356,12 +407,12 @@ UIComponentStyleFactory::CreatePicGridSelector(const std::string &name) {
 
     if (!style_->FindColor(PIC_GRID_SELECTOR_GRID_COLOR,
                            component->mutable_grid_color())) {
-        LOG(ERROR) << "can not find color: " << PIC_GRID_SELECTOR_GRID_COLOR;
+        LOG(ERROR) << "Can not find color: " << PIC_GRID_SELECTOR_GRID_COLOR;
         return nullptr;
     }
     if (!style_->FindColor(PIC_GRID_SELECTOR_SELECTED_COLOR,
                            component->mutable_selected_color())) {
-        LOG(ERROR) << "can not find color: " << PIC_GRID_SELECTOR_SELECTED_COLOR;
+        LOG(ERROR) << "Can not find color: " << PIC_GRID_SELECTOR_SELECTED_COLOR;
         return nullptr;
     }
     return component.release();

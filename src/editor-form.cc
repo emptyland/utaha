@@ -39,15 +39,20 @@ private:
     SDL_Texture *texture_ = nullptr;
 
     UILayout *right_layout_ = nullptr;
+    UILayout *tile_layout_ = nullptr;
 
     RawPicController *raw_pic_ctrl_ = nullptr;
 }; // class EditorForm
 
 #define DEFINE_CMD_ID(M) \
-    M(ID_EDIT_CONSTRUCTION, 100) \
-    M(ID_EDIT_SPIRIT,       200) \
-    M(ID_EDIT_MAP,          300) \
-    M(ID_FILE_SAVE_ALL,     400)
+    M(ID_FILE_TILE, 100) \
+    M(ID_FILE_SPIRIT,       200) \
+    M(ID_FILE_MAP,          300) \
+    M(ID_FILE_SAVE_ALL,     400) \
+    M(ID_TILE_NEW,          110) \
+    M(ID_TILE_COMMIT,       120) \
+    M(ID_TILE_NEXT,         130) \
+    M(ID_TILE_PREV,         140)
 
 struct EditorFormR {
     enum ID: int {
@@ -129,18 +134,22 @@ EditorForm::EditorForm() {
 /*virtual*/ int EditorForm::OnCommand(UIComponent *sender, int cmd_id, void *param,
                                       bool *is_break) {
     switch (cmd_id) {
-        case EditorFormR::ID_EDIT_CONSTRUCTION:
+        case EditorFormR::ID_FILE_TILE:
             break;
 
-        case EditorFormR::ID_EDIT_SPIRIT:
+        case EditorFormR::ID_FILE_SPIRIT:
             break;
 
-        case EditorFormR::ID_EDIT_MAP: {
+        case EditorFormR::ID_FILE_MAP: {
 
         } break;
 
         case EditorFormR::ID_FILE_SAVE_ALL: {
 
+        } break;
+
+        case EditorFormR::ID_TILE_NEW: {
+            LOG(INFO) << "Tile New...";
         } break;
 
         default:
@@ -215,7 +224,7 @@ EditorForm::EditorForm() {
     auto status_bar = result["statusBar"].cast<UIFlatStatusBar *>();
     set_status_bar(DCHECK_NOTNULL(status_bar));
     right_layout_ = result["rightLayout"].cast<UILayout *>();
-    right_layout_->set_debug_mode(true);
+    tile_layout_ = result["tileLayout"].cast<UILayout *>();
 
     int w, h;
     SDL_GetWindowSize(window(), &w, &h);
@@ -249,7 +258,10 @@ EditorForm::EditorForm() {
     raw_pic_ctrl_->Reset();
     status_bar->mutable_grid(2)->set_text(raw_pic_ctrl_->CurrentFile());
 
+    UIForm::main_menu()->UpdateRect();
+    UIForm::status_bar()->UpdateRect();
     right_layout_->UpdateRect();
+    tile_layout_->UpdateRect();
     return UIForm::OnInit();
 }
 
@@ -269,11 +281,13 @@ EditorForm::EditorForm() {
                     raw_pic_ctrl_->PrevFile();
                     status_bar()->mutable_grid(2)
                         ->set_text(raw_pic_ctrl_->CurrentFile());
+                    right_layout_->UpdateRect();
                 }
                 if (e->key.keysym.sym == SDLK_DOWN) {
                     raw_pic_ctrl_->NextFile();
                     status_bar()->mutable_grid(2)
                         ->set_text(raw_pic_ctrl_->CurrentFile());
+                    right_layout_->UpdateRect();
                 }
             }
             break;
@@ -282,6 +296,7 @@ EditorForm::EditorForm() {
             break;
     }
 
+    tile_layout_->OnEvent(e, is_break);
     right_layout_->OnEvent(e, is_break);
 }
 
@@ -296,6 +311,9 @@ EditorForm::EditorForm() {
 /*virtual*/ void EditorForm::OnAfterRender() {
     if (right_layout_) {
         right_layout_->OnRender(renderer());
+    }
+    if (tile_layout_) {
+        tile_layout_->OnRender(renderer());
     }
     UIForm::OnAfterRender();
 }

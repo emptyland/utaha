@@ -20,7 +20,6 @@ UIFlatMenu::UIFlatMenu(TTF_Font *font)
     if (!is_show()) {
         return 0;
     }
-
     if (event->type == SDL_MOUSEMOTION) {
         if (InRect(rect(), event->motion.x, event->motion.y)) {
             for (auto &item : items_) {

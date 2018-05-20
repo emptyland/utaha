@@ -6,6 +6,7 @@
 #include "ui-flat-input-box.h"
 #include "ui-flat-check-box.h"
 #include "ui-flat-status-bar.h"
+#include "ui-flat-label.h"
 #include "ui-pic-grid-selector.h"
 #include "ui-layout.h"
 #include "lua-utils.h"
@@ -58,11 +59,33 @@ UIFlatButtonBuilder *UIComponentBuilder::BeginFlatButton(const char *name) {
 UIFlatInputBoxBuilder *UIComponentBuilder::BeginFlatInputBox(const char *name) {
     auto component = factory_->CreateFlatInputBox(name);
     if (!component) {
-        LOG(ERROR) << "Can not create <CreateFlatInputBox>!";
+        LOG(ERROR) << "Can not create <FlatInputBox>!";
         return nullptr;
     }
     component->AddListenner(listenner_);
     return new UIFlatInputBoxBuilder(component, factory_);
+}
+
+UIFlatLabelBuilder *UIComponentBuilder::BeginFlatLabel(const char *name) {
+    auto component = factory_->CreateFlatLabel(name);
+    if (!component) {
+        LOG(ERROR) << "Can not create <FlatLabel>!";
+        return nullptr;
+    }
+    component->AddListenner(listenner_);
+    return new UIFlatLabelBuilder(component, factory_);
+}
+
+UIFlatLabel *UIComponentBuilder::LetFlatLabel(const char *name,
+                                              const char *text) {
+    auto component = factory_->CreateFlatLabel(name);
+    if (!component) {
+        LOG(ERROR) << "Can not create <FlatLabel>!";
+        return nullptr;
+    }
+    component->AddListenner(listenner_);
+    component->set_text(text);
+    return component;
 }
 
 UIFlatCheckBoxBuilder *UIComponentBuilder::BeginFlatCheckBox(const char *name) {
@@ -110,6 +133,8 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
                 .addFunction("beginFlatMenu", &UIComponentBuilder::BeginFlatMenu)
                 .addFunction("beginFlatButton", &UIComponentBuilder::BeginFlatButton)
                 .addFunction("beginFlatInputBox", &UIComponentBuilder::BeginFlatInputBox)
+                .addFunction("beginFlatLabel", &UIComponentBuilder::BeginFlatLabel)
+                .addFunction("flatLabel", &UIComponentBuilder::LetFlatLabel)
                 .addFunction("beginFlatCheckBox", &UIComponentBuilder::BeginFlatCheckBox)
                 .addFunction("beginFlatStatusBar", &UIComponentBuilder::BeginFlatStatusBar)
                 .addFunction("beginPicGridSelector", &UIComponentBuilder::BeginPicGridSelector)
@@ -146,8 +171,15 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
                 .addFunction("h", &UIFlatInputBoxBuilder::LetH)
                 .addFunction("endInputBox", &UIFlatInputBoxBuilder::EndInputBox)
             .endClass()
+            .beginClass<UIFlatLabelBuilder>("FlatLabelBuilder")
+                .addFunction("text", &UIFlatLabelBuilder::LetText)
+                .addFunction("fontColor", &UIFlatLabelBuilder::LetFontColor)
+                .addFunction("bgColor", &UIFlatLabelBuilder::LetBgColor)
+                .addFunction("endLabel", &UIFlatLabelBuilder::EndLabel)
+            .endClass()
             .beginClass<UIFlatCheckBoxBuilder>("FlatCheckBoxBuilder")
                 .addFunction("label", &UIFlatCheckBoxBuilder::LetLabel)
+                .addFunction("value", &UIFlatCheckBoxBuilder::LetValue)
                 .addFunction("x", &UIFlatCheckBoxBuilder::LetX)
                 .addFunction("y", &UIFlatCheckBoxBuilder::LetY)
                 .addFunction("w", &UIFlatCheckBoxBuilder::LetW)
@@ -192,6 +224,7 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
             .deriveClass<UIFlatMenu, UIComponent>("FlatMenu").endClass()
             .deriveClass<UIFlatButton, UIComponent>("FlatButton").endClass()
             .deriveClass<UIFlatInputBox, UIComponent>("FlatInputBox").endClass()
+            .deriveClass<UIFlatLabel, UIComponent>("FlatLabel").endClass()
             .deriveClass<UIFlatCheckBox, UIComponent>("FlatCheckBox").endClass()
             .deriveClass<UIFlatStatusBar, UIComponent>("FlatStatusBar").endClass()
             .deriveClass<UIPicGridSelector, UIComponent>("PicGridSelector").endClass()
@@ -406,6 +439,31 @@ UIFlatInputBox *UIFlatInputBoxBuilder::EndInputBox() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// class UIFlatLabelBuilder
+////////////////////////////////////////////////////////////////////////////////
+
+UIFlatLabelBuilder *UIFlatLabelBuilder::LetText(const char *text) {
+    component()->set_text(text);
+    return this;
+}
+
+UIFlatLabelBuilder *UIFlatLabelBuilder::LetFontColor(int color) {
+    component()->set_font_color(ToColor(color));
+    return this;
+}
+
+UIFlatLabelBuilder *UIFlatLabelBuilder::LetBgColor(int color) {
+    component()->set_bg_color(ToColor(color));
+    return this;
+}
+
+UIFlatLabel *UIFlatLabelBuilder::EndLabel() {
+    auto result = component();
+    delete this;
+    return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // class UIPicGridSelectorBuilder
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -440,6 +498,11 @@ UIPicGridSelector *UIPicGridSelectorBuilder::EndPicGridSelector() {
 
 UIFlatCheckBoxBuilder *UIFlatCheckBoxBuilder::LetLabel(const char *text) {
     component()->set_label(text);
+    return this;
+}
+
+UIFlatCheckBoxBuilder *UIFlatCheckBoxBuilder::LetValue(bool checked) {
+    component()->set_checked(checked);
     return this;
 }
 

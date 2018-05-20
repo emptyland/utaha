@@ -70,6 +70,7 @@ UIForm::UIForm() {
 
 /*virtual*/ void UIForm::OnEvent(SDL_Event *e, bool *is_break) {
     if (main_menu_) {
+        //main_menu_->OnEvent(e, is_break);
         if (main_menu_->OnEvent(e, is_break) == 1) {
             *is_break = true;
             return;

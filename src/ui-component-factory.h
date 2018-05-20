@@ -10,6 +10,7 @@ class UIFlatButton;
 class UIFlatMenu;
 class UIFlatMenuGroup;
 class UIFlatInputBox;
+class UIFlatLabel;
 class UIFlatCheckBox;
 class UIFlatStatusBar;
 class UIPicGridSelector;
@@ -24,6 +25,7 @@ public:
     virtual UIFlatMenu *CreateFlatMenu(const std::string &name) = 0;
     virtual UIFlatMenuGroup *CreateFlatMenuGroup(const std::string &name) = 0;
     virtual UIFlatInputBox *CreateFlatInputBox(const std::string &name) = 0;
+    virtual UIFlatLabel *CreateFlatLabel(const std::string &name) = 0;
     virtual UIFlatCheckBox *CreateFlatCheckBox(const std::string &name) = 0;
     virtual UIFlatStatusBar *CreateFlatStatusBar(const std::string &name) = 0;
     virtual UIPicGridSelector *CreatePicGridSelector(const std::string &name) = 0;

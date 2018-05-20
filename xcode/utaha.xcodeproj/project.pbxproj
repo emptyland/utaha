@@ -75,6 +75,8 @@
 		23FD3C8220888C7B00975CBB /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23FD3C8120888C7B00975CBB /* SDL2_image.framework */; };
 		23FD3C8420888D3600975CBB /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23FD3C8320888D3600975CBB /* SDL2_ttf.framework */; };
 		23FD3C8620888D3900975CBB /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23FD3C8520888D3900975CBB /* SDL2_mixer.framework */; };
+		23FE797A20AFFB3A00048479 /* ui-flat-label.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23FE797920AFFB3A00048479 /* ui-flat-label.cc */; };
+		23FE797B20AFFB3A00048479 /* ui-flat-label.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23FE797920AFFB3A00048479 /* ui-flat-label.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -168,6 +170,8 @@
 		23FD3C8120888C7B00975CBB /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		23FD3C8320888D3600975CBB /* SDL2_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_ttf.framework; path = ../../../../../Library/Frameworks/SDL2_ttf.framework; sourceTree = "<group>"; };
 		23FD3C8520888D3900975CBB /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = ../../../../../Library/Frameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
+		23FE797820AFFAC700048479 /* ui-flat-label.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-flat-label.h"; sourceTree = "<group>"; };
+		23FE797920AFFB3A00048479 /* ui-flat-label.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-flat-label.cc"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -265,6 +269,7 @@
 				230822FF20908D7C003804EA /* ui-flat-menu.cc */,
 				23A3FC3820A2EF3800474E12 /* ui-flat-check-box.cc */,
 				23A3FC4B20A989F800474E12 /* ui-flat-status-bar.cc */,
+				23FE797920AFFB3A00048479 /* ui-flat-label.cc */,
 				23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */,
 				230822FB20900BE2003804EA /* ui-layout.cc */,
 				23044E20209326D2001924AA /* ui-component-factory.cc */,
@@ -299,6 +304,7 @@
 				230822FE20908D33003804EA /* ui-flat-menu.h */,
 				23A3FC3720A2EEEE00474E12 /* ui-flat-check-box.h */,
 				23A3FC4A20A9895C00474E12 /* ui-flat-status-bar.h */,
+				23FE797820AFFAC700048479 /* ui-flat-label.h */,
 				23A3FC3320A0453700474E12 /* ui-pic-grid-selector.h */,
 				230822FA20900BA9003804EA /* ui-layout.h */,
 				23044E1F2093264D001924AA /* ui-component-factory.h */,
@@ -435,6 +441,7 @@
 				237E91632094628800176FA8 /* test-main.cc in Sources */,
 				237E91512094616500176FA8 /* ui-flat-input-box.cc in Sources */,
 				23F34A8120AD2C3F00C3D7A4 /* text-input-mode-controller.cc in Sources */,
+				23FE797B20AFFB3A00048479 /* ui-flat-label.cc in Sources */,
 				237E91522094616500176FA8 /* ui-flat-menu-group.cc in Sources */,
 				237E91532094616500176FA8 /* ui-flat-menu.cc in Sources */,
 				237E91542094616500176FA8 /* ui-layout.cc in Sources */,
@@ -474,6 +481,7 @@
 				23A3FC3D20A59C7000474E12 /* ui-form.cc in Sources */,
 				23A3FC3920A2EF3800474E12 /* ui-flat-check-box.cc in Sources */,
 				23C9E67C1D9CFB9B0078DFFF /* lua-utils.cc in Sources */,
+				23FE797A20AFFB3A00048479 /* ui-flat-label.cc in Sources */,
 				23F34A8020AD2C3F00C3D7A4 /* text-input-mode-controller.cc in Sources */,
 				23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */,
 			);

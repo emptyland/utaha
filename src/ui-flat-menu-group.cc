@@ -65,7 +65,9 @@ UIFlatMenuGroup::UIFlatMenuGroup(TTF_Font *font)
             if (*is_break) {
                 return 0;
             }
-            return result;
+            if (result) {
+                return result;
+            }
         }
     }
     return 0;
