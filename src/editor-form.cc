@@ -3,6 +3,7 @@
 #include "ui-flat-menu-group.h"
 #include "ui-flat-menu.h"
 #include "ui-flat-input-box.h"
+#include "ui-flat-check-box.h"
 #include "ui-pic-grid-selector.h"
 #include "ui-layout.h"
 #include "ui-style-collection.h"
@@ -16,9 +17,16 @@
 namespace utaha {
 
 class RawPicController;
+class TileController;
 
 class EditorForm : public UIForm {
 public:
+    enum Mode {
+        EDIT_TILE,
+        EDIT_SPIRIT,
+        EDIT_MAP,
+    };
+
     EditorForm();
     virtual ~EditorForm();
 
@@ -41,7 +49,9 @@ private:
     UILayout *right_layout_ = nullptr;
     UILayout *tile_layout_ = nullptr;
 
+    Mode mode_ = EDIT_TILE;
     RawPicController *raw_pic_ctrl_ = nullptr;
+    TileController   *tile_ctrl_ = nullptr;
 }; // class EditorForm
 
 #define DEFINE_CMD_ID(M) \
@@ -114,6 +124,29 @@ private:
 }; // class RawPicController
 
 ////////////////////////////////////////////////////////////////////////////////
+// class TileController
+////////////////////////////////////////////////////////////////////////////////
+class TileController {
+public:
+    TileController() = default;
+    ~TileController() = default;
+
+    DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, tile_id_ib);
+    DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, clipping_ib);
+
+    void AddPassMaskCb(UIFlatCheckBox *cb) {
+        pass_mask_cbs_.push_back(DCHECK_NOTNULL(cb));
+    }
+
+    DISALLOW_IMPLICIT_CONSTRUCTORS(TileController);
+private:
+    UIFlatInputBox *tile_id_ib_;
+    UIFlatInputBox *clipping_ib_;
+    std::vector<UIFlatCheckBox *> pass_mask_cbs_;
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -131,18 +164,20 @@ EditorForm::EditorForm() {
 /*virtual*/ EditorForm::~EditorForm() {
 }
 
-/*virtual*/ int EditorForm::OnCommand(UIComponent *sender, int cmd_id, void *param,
-                                      bool *is_break) {
+/*virtual*/ int EditorForm::OnCommand(UIComponent *sender, int cmd_id,
+                                      void *param, bool *is_break) {
     switch (cmd_id) {
         case EditorFormR::ID_FILE_TILE:
+            mode_ = EDIT_TILE;
             break;
 
         case EditorFormR::ID_FILE_SPIRIT:
+            mode_ = EDIT_SPIRIT;
             break;
 
-        case EditorFormR::ID_FILE_MAP: {
-
-        } break;
+        case EditorFormR::ID_FILE_MAP:
+            mode_ = EDIT_MAP;
+            break;
 
         case EditorFormR::ID_FILE_SAVE_ALL: {
 
@@ -233,8 +268,8 @@ EditorForm::EditorForm() {
 
     raw_pics_ = new RawPicCollection();
     size_t num_raw_pics = 0;
-    if ((num_raw_pics = raw_pics_->LoadWithBootstrapScript("res/raw-pic-load.lua",
-                                                           &err)) == 0) {
+    if ((num_raw_pics = raw_pics_->LoadWithBootstrapScript(
+        "res/raw-pic-load.lua", &err)) == 0) {
         LOG(ERROR) << "No any raw pictures loaded!. " << err;
         return -1;
     } else {
@@ -243,20 +278,41 @@ EditorForm::EditorForm() {
         status_bar->mutable_grid(1)->set_text(buf);
     }
 
-    raw_pic_ctrl_ = new RawPicController();
-    raw_pics_->GetAllFileNames(raw_pic_ctrl_->mutable_raw_files());
-    raw_pic_ctrl_->set_raw_pics(raw_pics_);
+    {
+        raw_pic_ctrl_ = new RawPicController();
+        raw_pics_->GetAllFileNames(raw_pic_ctrl_->mutable_raw_files());
+        raw_pic_ctrl_->set_raw_pics(raw_pics_);
 
-    UIPicGridSelector *selector =
-        static_cast<UIPicGridSelector *>(
-            right_layout_->FindComponentOrNull("grid-selector"));
-    if (!selector) {
-        LOG(ERROR) << "Can not find component named: grid-selector";
-        return -1;
+        UIPicGridSelector *selector =
+            down_cast<UIPicGridSelector>(
+                right_layout_->FindComponentOrNull("grid-selector"));
+        raw_pic_ctrl_->set_selector(selector);
+        raw_pic_ctrl_->Reset();
+        status_bar->mutable_grid(2)->set_text(raw_pic_ctrl_->CurrentFile());
     }
-    raw_pic_ctrl_->set_selector(selector);
-    raw_pic_ctrl_->Reset();
-    status_bar->mutable_grid(2)->set_text(raw_pic_ctrl_->CurrentFile());
+
+    {
+        tile_ctrl_ = new TileController();
+        auto tile_id_ib = down_cast<UIFlatInputBox>(
+            tile_layout_->FindComponentOrNull("tile-id"));
+        tile_ctrl_->set_tile_id_ib(tile_id_ib);
+        auto clipping_ib = down_cast<UIFlatInputBox>(
+            tile_layout_->FindComponentOrNull("tile-clipping"));
+        tile_ctrl_->set_clipping_ib(clipping_ib);
+
+        auto cb = down_cast<UIFlatCheckBox>(
+            tile_layout_->FindComponentOrNull("walk-pass"));
+        tile_ctrl_->AddPassMaskCb(cb);
+        cb = down_cast<UIFlatCheckBox>(
+            tile_layout_->FindComponentOrNull("fly-pass"));
+        tile_ctrl_->AddPassMaskCb(cb);
+        cb = down_cast<UIFlatCheckBox>(
+            tile_layout_->FindComponentOrNull("bullet-pass"));
+        tile_ctrl_->AddPassMaskCb(cb);
+        cb = down_cast<UIFlatCheckBox>(
+            tile_layout_->FindComponentOrNull("magic-pass"));
+        tile_ctrl_->AddPassMaskCb(cb);
+    }
 
     UIForm::main_menu()->UpdateRect();
     UIForm::status_bar()->UpdateRect();
@@ -296,8 +352,22 @@ EditorForm::EditorForm() {
             break;
     }
 
-    tile_layout_->OnEvent(e, is_break);
-    right_layout_->OnEvent(e, is_break);
+    switch (mode_) {
+        case EDIT_TILE:
+            right_layout_->OnEvent(e, is_break);
+            tile_layout_->OnEvent(e, is_break);
+            break;
+
+        case EDIT_SPIRIT:
+            right_layout_->OnEvent(e, is_break);
+            break;
+
+        case EDIT_MAP:
+            break;
+
+        default:
+            break;
+    }
 }
 
 /*virtual*/ void EditorForm::OnQuit() {
@@ -309,12 +379,24 @@ EditorForm::EditorForm() {
 }
 
 /*virtual*/ void EditorForm::OnAfterRender() {
-    if (right_layout_) {
-        right_layout_->OnRender(renderer());
+    switch (mode_) {
+        case EDIT_TILE:
+            right_layout_->OnRender(renderer());
+            tile_layout_->OnRender(renderer());
+            break;
+
+        case EDIT_SPIRIT:
+            right_layout_->OnRender(renderer());
+            break;
+
+        case EDIT_MAP:
+            break;
+
+        default:
+            break;
     }
-    if (tile_layout_) {
-        tile_layout_->OnRender(renderer());
-    }
+
+
     UIForm::OnAfterRender();
 }
 
