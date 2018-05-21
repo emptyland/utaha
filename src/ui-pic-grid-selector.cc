@@ -123,6 +123,35 @@ bool UIPicGridSelector::LoadPicFromFile(const char *file_path) {
     return SetPic(pic, true);
 }
 
+SDL_Surface *UIPicGridSelector::CutSelectedSurface(int clipping) {
+    int h = grid_size_h_;
+    if (clipping > 0) {
+        h -= clipping;
+    } else if (clipping < 0) {
+        h -= (-clipping);
+    }
+    SDL_Surface *grid = SDL_CreateRGBSurfaceWithFormat(0, grid_size_w_, h, 32,
+                                                       SDL_PIXELFORMAT_RGBA8888);
+    if (!grid) {
+        LOG(ERROR) << "Can not create surface." << SDL_GetError();
+        return nullptr;
+    }
+
+    SDL_Rect src = {
+        selected_x_ * grid_size_w_,
+        selected_y_ * grid_size_h_,
+        grid_size_w_,
+        h,
+    };
+    if (clipping > 0) {
+        src.y += clipping;
+    } else if (clipping < 0) {
+        src.h -= clipping;
+    }
+    SDL_UpperBlit(pic_, &src, grid, nullptr);
+    return grid;
+}
+
 SDL_Rect UIPicGridSelector::GetPicRect() const {
     SDL_Rect rc;
     rc.x = rect().x + (rect().w - pic_->w) / 2;

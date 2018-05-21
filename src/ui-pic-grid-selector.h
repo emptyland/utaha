@@ -2,6 +2,7 @@
 #define UTAHA_UI_PIC_GRID_SELECTOR_H_
 
 #include "ui-component.h"
+#include <tuple>
 
 namespace utaha {
 
@@ -25,8 +26,12 @@ public:
     bool is_selected() const { return selected_y_ > -1 && selected_x_ > -1; }
     void unselected() { selected_x_ = -1; selected_y_ = -1; }
 
+    int selected_index() { return selected_y_ * max_h_grids_ + selected_x_; }
+
     bool SetPic(SDL_Surface *pic, bool ownership);
     bool LoadPicFromFile(const char *file_path);
+
+    SDL_Surface *CutSelectedSurface(int clipping);
 
     SDL_Rect GetPicRect() const;
 private:

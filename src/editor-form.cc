@@ -10,6 +10,9 @@
 #include "ui-component-factory.h"
 #include "ui-component-builder.h"
 #include "raw-pic-collection.h"
+#include "grid-pic-storage.h"
+#include "indexed-tile-storage.h"
+#include "indexed-tile.h"
 #include "lua-utils.h"
 #include "script-executor.h"
 #include "glog/logging.h"
@@ -52,10 +55,13 @@ private:
     Mode mode_ = EDIT_TILE;
     RawPicController *raw_pic_ctrl_ = nullptr;
     TileController   *tile_ctrl_ = nullptr;
+
+    IndexedTileStorage *tiles_ = nullptr;
+    GridPicStorage *tiles_tex_ = nullptr;
 }; // class EditorForm
 
 #define DEFINE_CMD_ID(M) \
-    M(ID_FILE_TILE, 100) \
+    M(ID_FILE_TILE,         100) \
     M(ID_FILE_SPIRIT,       200) \
     M(ID_FILE_MAP,          300) \
     M(ID_FILE_SAVE_ALL,     400) \
@@ -133,15 +139,76 @@ public:
 
     DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, tile_id_ib);
     DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, clipping_ib);
+    DEF_PTR_PROP_RW_NOTNULL2(IndexedTileStorage, tiles);
+    DEF_PTR_PROP_RW_NOTNULL2(GridPicStorage, tiles_tex);
 
     void AddPassMaskCb(UIFlatCheckBox *cb) {
         pass_mask_cbs_.push_back(DCHECK_NOTNULL(cb));
     }
 
+    void NewTile() {
+        if (tile_) {
+            delete tile_; tile_ = nullptr;
+        } else {
+            tile_ = new IndexedTile();
+        }
+
+        char buf[128];
+        snprintf(buf, arraysize(buf), "%d", tiles_->next_id());
+        tile_id_ib_->set_text(buf);
+        tile_id_ib_->changed();
+    }
+
+    void CommitTile(const std::string &file_name, UIPicGridSelector *selector) {
+        if (!tile_) {
+            return;
+        }
+        if (!selector->is_selected()) {
+            return;
+        }
+
+        int clipping = atoi(clipping_ib_->text().c_str());
+        int tex_id = 0;
+        bool ok = true;
+        if (!tiles_tex_->FindOrNullGrid(file_name,
+                                        selector->selected_index(), &tex_id)) {
+            tex_id = tiles_tex_->PutGrid(file_name,
+                                         selector->selected_index(),
+                                         selector->CutSelectedSurface(clipping),
+                                         &ok);
+        }
+
+        uint32_t passable = 0;
+        if (pass_mask_cbs_[0]->checked()) {
+            passable |= IndexedTile::kWalkPass;
+        }
+        if (pass_mask_cbs_[1]->checked()) {
+            passable |= IndexedTile::kFlyPass;
+        }
+        if (pass_mask_cbs_[2]->checked()) {
+            passable |= IndexedTile::kBulletPass;
+        }
+        if (pass_mask_cbs_[3]->checked()) {
+            passable |= IndexedTile::kMagicPass;
+        }
+        tile_->set_passable(passable);
+        tile_->set_id(tiles_->next_id());
+        tile_->set_tex_id(tex_id);
+
+        tiles_->PutTile(tile_, &ok);
+        if (ok) {
+            tiles_->NextId();
+        }
+        tile_ = nullptr;
+    }
+
     DISALLOW_IMPLICIT_CONSTRUCTORS(TileController);
 private:
-    UIFlatInputBox *tile_id_ib_;
-    UIFlatInputBox *clipping_ib_;
+    UIFlatInputBox *tile_id_ib_ = nullptr;
+    UIFlatInputBox *clipping_ib_ = nullptr;
+    IndexedTile *tile_ = nullptr;
+    IndexedTileStorage *tiles_ = nullptr;
+    GridPicStorage *tiles_tex_ = nullptr;
     std::vector<UIFlatCheckBox *> pass_mask_cbs_;
 };
 
@@ -179,13 +246,27 @@ EditorForm::EditorForm() {
             mode_ = EDIT_MAP;
             break;
 
-        case EditorFormR::ID_FILE_SAVE_ALL: {
+        case EditorFormR::ID_FILE_SAVE_ALL:
+            if (!tiles_tex_->StoreToFile()) {
+                LOG(ERROR) << "Store tiles texture fail!";
+            }
+            if (!tiles_->StoreToFile()) {
+                LOG(ERROR) << "Store tiles fail!";
+            }
+            break;
 
-        } break;
+        case EditorFormR::ID_TILE_NEW:
+            tile_ctrl_->NewTile();
+            break;
 
-        case EditorFormR::ID_TILE_NEW: {
-            LOG(INFO) << "Tile New...";
-        } break;
+        case EditorFormR::ID_TILE_COMMIT:
+            if (!raw_pic_ctrl_->selector()->is_selected()) {
+                LOG(ERROR) << "Raw pic grid has not selected!";
+                break;
+            }
+            tile_ctrl_->CommitTile(raw_pic_ctrl_->CurrentFile(),  raw_pic_ctrl_->selector());
+            tile_ctrl_->NewTile();
+            break;
 
         default:
             break;
@@ -279,6 +360,22 @@ EditorForm::EditorForm() {
     }
 
     {
+        tiles_tex_ = new GridPicStorage();
+        tiles_tex_->set_dir("assets");
+        tiles_tex_->set_name("tiles-tex");
+        tiles_tex_->set_grid_w(48);
+        tiles_tex_->set_grid_h(48);
+        // TODO: tiles_tex_->LoadFromFile();
+    }
+
+    {
+        tiles_ = new IndexedTileStorage(1000);
+        tiles_->set_dir("assets");
+        tiles_->set_grid_pic_name(tiles_tex_->name());
+        // TODO: tiles_->LoadFromFile();
+    }
+
+    {
         raw_pic_ctrl_ = new RawPicController();
         raw_pics_->GetAllFileNames(raw_pic_ctrl_->mutable_raw_files());
         raw_pic_ctrl_->set_raw_pics(raw_pics_);
@@ -312,6 +409,9 @@ EditorForm::EditorForm() {
         cb = down_cast<UIFlatCheckBox>(
             tile_layout_->FindComponentOrNull("magic-pass"));
         tile_ctrl_->AddPassMaskCb(cb);
+
+        tile_ctrl_->set_tiles(tiles_);
+        tile_ctrl_->set_tiles_tex(tiles_tex_);
     }
 
     UIForm::main_menu()->UpdateRect();
@@ -372,10 +472,13 @@ EditorForm::EditorForm() {
 
 /*virtual*/ void EditorForm::OnQuit() {
     delete raw_pic_ctrl_; raw_pic_ctrl_ = nullptr;
+    delete tile_ctrl_; tile_ctrl_ = nullptr;
     delete right_layout_; right_layout_ = nullptr;
     delete factory_; factory_ = nullptr;
     delete styles_; styles_ = nullptr;
     delete raw_pics_; raw_pics_ = nullptr;
+    delete tiles_; tiles_ = nullptr;
+    delete tiles_tex_; tiles_tex_ = nullptr;
 }
 
 /*virtual*/ void EditorForm::OnAfterRender() {

@@ -58,6 +58,13 @@ bool IndexedTileStorage::LoadFromFile() {
         if (!ok) {
             delete tile;
         }
+
+        if (tile_id > next_id_) {
+            next_id_ = tile_id;
+        }
+    }
+    if (next_id_ != 0) {
+        NextId();
     }
     fclose(f); f = nullptr;
     return true;
@@ -104,14 +111,14 @@ int IndexedTileStorage::PutTile(IndexedTile *tile, bool *ok) {
     auto iter = tiles_.find(tile->id());
     if (iter != tiles_.end()) {
         *ok = false;
-        return iter->first;
+        delete iter->second;
+    } else {
+        *ok = true;
     }
-
     tiles_[tile->id()] = tile;
     if (gen_id) {
         NextId();
     }
-    *ok = true;
     return tile->id();
 }
 

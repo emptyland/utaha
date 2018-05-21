@@ -25,10 +25,17 @@ public:
     bool LoadFromFile();
     bool StoreToFile();
 
-    int FindOrInsertGrid(const std::string &original_file, int original_idx,
-                         SDL_Surface *grid, bool *ok);
+    int PutGrid(const std::string &original_file, int original_idx,
+                SDL_Surface *grid, bool *ok);
+
     int AddGrid(SDL_Surface *grid, bool *ok);
-    //bool DeleteGrid(int index);
+
+    SDL_Surface *FindOrNullGrid(const std::string &original_file,
+                                int original_idx, int *index) const;
+
+    bool Exists(const std::string &original_file, int original_idx) const {
+        return FindOrNullGrid(original_file, original_idx, nullptr) != nullptr;
+    }
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(GridPicStorage);
 private:

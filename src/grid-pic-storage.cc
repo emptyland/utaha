@@ -165,15 +165,16 @@ bool GridPicStorage::StoreToFile() {
     return true;
 }
 
-int GridPicStorage::FindOrInsertGrid(const std::string &original_file,
-                                     int original_idx, SDL_Surface *grid,
-                                     bool *ok) {
+int GridPicStorage::PutGrid(const std::string &original_file,
+                            int original_idx, SDL_Surface *grid, bool *ok) {
     char key[FILENAME_MAX];
     snprintf(key, arraysize(key), "%s/%d", original_file.c_str(), original_idx);
 
     auto iter = original_.find(key);
     if (iter != original_.end()) {
         *ok = false;
+        SDL_FreeSurface(grid_pics_[iter->second]);
+        grid_pics_[iter->second] = grid;
         return iter->second;
     }
 
@@ -184,8 +185,23 @@ int GridPicStorage::FindOrInsertGrid(const std::string &original_file,
     return index;
 }
 
+SDL_Surface *GridPicStorage::FindOrNullGrid(const std::string &original_file,
+                                            int original_idx, int *index) const {
+    char key[FILENAME_MAX];
+    snprintf(key, arraysize(key), "%s/%d", original_file.c_str(), original_idx);
+
+    auto iter = original_.find(key);
+    if (iter == original_.end()) {
+        return nullptr;
+    }
+    if (index) {
+        *index = iter->second;
+    }
+    return grid_pics_[iter->second];
+}
+
 int GridPicStorage::AddGrid(SDL_Surface *grid, bool *ok) {
-    return FindOrInsertGrid("[unknown]", rand() % 10000, grid, ok);
+    return PutGrid("[unknown]", rand() % 10000, grid, ok);
 }
 
 } // namespace utaha

@@ -22,6 +22,8 @@ public:
     DEF_VAL_PROP_RW(int, max_input);
     DEF_VAL_PROP_RW(int, padding_size);
 
+    void changed() { is_changed_ = true; }
+
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIFlatInputBox);
 private:
     bool CreateOrSetText(SDL_Renderer *renderer);
