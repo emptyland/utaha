@@ -65,6 +65,11 @@
 		23A3FC5020AACC1200474E12 /* raw-pic-collection.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4F20AACC1200474E12 /* raw-pic-collection.cc */; };
 		23A3FC5120AACC1200474E12 /* raw-pic-collection.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC4F20AACC1200474E12 /* raw-pic-collection.cc */; };
 		23A3FC5320AAD79000474E12 /* raw-pic-collection-test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC5220AAD79000474E12 /* raw-pic-collection-test.cc */; };
+		23A6E83520B258B200815541 /* indexed-tile.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A6E83420B258B200815541 /* indexed-tile.cc */; };
+		23A6E83620B258B200815541 /* indexed-tile.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A6E83420B258B200815541 /* indexed-tile.cc */; };
+		23A6E83920B25C7E00815541 /* indexed-tile-storage.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A6E83820B25C7E00815541 /* indexed-tile-storage.cc */; };
+		23A6E83A20B25C7E00815541 /* indexed-tile-storage.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A6E83820B25C7E00815541 /* indexed-tile-storage.cc */; };
+		23A6E83C20B2C92F00815541 /* indexed-tile-storage-test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A6E83B20B2C92F00815541 /* indexed-tile-storage-test.cc */; };
 		23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785B208DB72E00A8EA4F /* render-entity.cc */; };
 		23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785F208DBB3600A8EA4F /* root-render-entity.cc */; };
 		23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C67862208DC4FD00A8EA4F /* sample-render-entity.cc */; };
@@ -150,6 +155,11 @@
 		23A3FC4E20AACB4D00474E12 /* raw-pic-collection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "raw-pic-collection.h"; sourceTree = "<group>"; };
 		23A3FC4F20AACC1200474E12 /* raw-pic-collection.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "raw-pic-collection.cc"; sourceTree = "<group>"; };
 		23A3FC5220AAD79000474E12 /* raw-pic-collection-test.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "raw-pic-collection-test.cc"; sourceTree = "<group>"; };
+		23A6E83320B258A500815541 /* indexed-tile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "indexed-tile.h"; sourceTree = "<group>"; };
+		23A6E83420B258B200815541 /* indexed-tile.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "indexed-tile.cc"; sourceTree = "<group>"; };
+		23A6E83720B25C6900815541 /* indexed-tile-storage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "indexed-tile-storage.h"; sourceTree = "<group>"; };
+		23A6E83820B25C7E00815541 /* indexed-tile-storage.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "indexed-tile-storage.cc"; sourceTree = "<group>"; };
+		23A6E83B20B2C92F00815541 /* indexed-tile-storage-test.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "indexed-tile-storage-test.cc"; sourceTree = "<group>"; };
 		23B83F6B1D78524800DBC418 /* datatype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = datatype.h; sourceTree = "<group>"; };
 		23B83F6D1D79177200DBC418 /* base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base.h; sourceTree = "<group>"; };
 		23C6785A208DB6BA00A8EA4F /* render-entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "render-entity.h"; sourceTree = "<group>"; };
@@ -220,6 +230,7 @@
 				237E916520947C5F00176FA8 /* ui-component-factory-test.cc */,
 				238F6CE0209958CF00791F67 /* ui-component-builder-test.cc */,
 				23A3FC5220AAD79000474E12 /* raw-pic-collection-test.cc */,
+				23A6E83B20B2C92F00815541 /* indexed-tile-storage-test.cc */,
 				23FE798020B1AF2100048479 /* grid-pic-storage-test.cc */,
 				237E91612094628800176FA8 /* test-main.cc */,
 			);
@@ -289,6 +300,8 @@
 				23A3FC4F20AACC1200474E12 /* raw-pic-collection.cc */,
 				23F34A7F20AD2C3F00C3D7A4 /* text-input-mode-controller.cc */,
 				23FE797D20B123E500048479 /* grid-pic-storage.cc */,
+				23A6E83420B258B200815541 /* indexed-tile.cc */,
+				23A6E83820B25C7E00815541 /* indexed-tile-storage.cc */,
 			);
 			name = Sources;
 			path = ../src;
@@ -325,6 +338,8 @@
 				23A3FC4E20AACB4D00474E12 /* raw-pic-collection.h */,
 				23F34A7E20AD2AC100C3D7A4 /* text-input-mode-controller.h */,
 				23FE797C20B123D200048479 /* grid-pic-storage.h */,
+				23A6E83320B258A500815541 /* indexed-tile.h */,
+				23A6E83720B25C6900815541 /* indexed-tile-storage.h */,
 			);
 			name = Include;
 			path = ../src;
@@ -440,7 +455,9 @@
 				23A3FC5120AACC1200474E12 /* raw-pic-collection.cc in Sources */,
 				238F6CE1209958CF00791F67 /* ui-component-builder-test.cc in Sources */,
 				237E916620947C5F00176FA8 /* ui-component-factory-test.cc in Sources */,
+				23A6E83620B258B200815541 /* indexed-tile.cc in Sources */,
 				23A3FC4920A9740700474E12 /* script-executor.cc in Sources */,
+				23A6E83C20B2C92F00815541 /* indexed-tile-storage-test.cc in Sources */,
 				237E914C2094616500176FA8 /* root-render-entity.cc in Sources */,
 				238F6CDF2099555B00791F67 /* ui-component-builder.cc in Sources */,
 				237E914D2094616500176FA8 /* sample-render-entity.cc in Sources */,
@@ -453,6 +470,7 @@
 				23FE797F20B123E500048479 /* grid-pic-storage.cc in Sources */,
 				23F34A8120AD2C3F00C3D7A4 /* text-input-mode-controller.cc in Sources */,
 				23FE797B20AFFB3A00048479 /* ui-flat-label.cc in Sources */,
+				23A6E83A20B25C7E00815541 /* indexed-tile-storage.cc in Sources */,
 				237E91522094616500176FA8 /* ui-flat-menu-group.cc in Sources */,
 				237E91532094616500176FA8 /* ui-flat-menu.cc in Sources */,
 				237E91542094616500176FA8 /* ui-layout.cc in Sources */,
@@ -482,10 +500,12 @@
 				23A3FC4020A9351400474E12 /* editor-form.cc in Sources */,
 				23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */,
 				2353C92B20940CF400C4B4EB /* ui-style-collection.cc in Sources */,
+				23A6E83920B25C7E00815541 /* indexed-tile-storage.cc in Sources */,
 				230822FC20900BE2003804EA /* ui-layout.cc in Sources */,
 				239F4813208F233B00FD09AD /* ui-flat-input-box.cc in Sources */,
 				2308230020908D7C003804EA /* ui-flat-menu.cc in Sources */,
 				239F4809208ED2EB00FD09AD /* interactive-entity.cc in Sources */,
+				23A6E83520B258B200815541 /* indexed-tile.cc in Sources */,
 				23044E1E2092CDBD001924AA /* ui-flat-menu-group.cc in Sources */,
 				23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */,
 				23A3FC4C20A989F800474E12 /* ui-flat-status-bar.cc in Sources */,

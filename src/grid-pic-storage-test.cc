@@ -42,11 +42,12 @@ TEST(GridPicStorageTest, Load) {
     GridPicStorage storage;
     storage.set_dir("tests/grid");
     storage.set_name("test1");
-    storage.set_grid_w(48);
-    storage.set_grid_h(48);
 
     ASSERT_TRUE(storage.LoadFromFile());
     EXPECT_EQ(storage.pitch(), storage.grid_pics().size());
+
+    EXPECT_EQ(48, storage.grid_w());
+    EXPECT_EQ(48, storage.grid_h());
 }
 
 } // namespace utaha
