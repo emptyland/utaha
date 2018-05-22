@@ -26,12 +26,17 @@ bool GridPicStorage::LoadFromFile() {
     std::string meta_file(dir_);
     meta_file.append("/").append(name_).append(".metadata");
 
+    if (access(meta_file.c_str(), F_OK) != 0) {
+        return true;
+    }
+
     FILE *f = fopen(meta_file.c_str(), "rb");
     if (!f) {
         PLOG(ERROR) << "Can not open file: " << meta_file;
         return false;
     }
-    fscanf(f, "%d\t%d\n", &grid_w_, &grid_h_);
+    size_t n_grids = 0;
+    fscanf(f, "%d\t%d\t%zd\n", &grid_w_, &grid_h_, &n_grids);
     if (ferror(f)) {
         PLOG(ERROR) << "Can not read file: " << meta_file;
         fclose(f);
@@ -78,6 +83,9 @@ bool GridPicStorage::LoadFromFile() {
 
     for (int y = 0; y < whole->h / grid_h_; y++) {
         for (int x = 0; x < whole->w / grid_w_; x++) {
+            if (n_grids == 0) {
+                goto final;
+            }
             SDL_Surface *grid = SDL_CreateRGBSurface(0, grid_w_, grid_h_, 32,
                                                      COLOR_R_MASK, COLOR_G_MASK,
                                                      COLOR_B_MASK, COLOR_A_MASK);
@@ -90,8 +98,11 @@ bool GridPicStorage::LoadFromFile() {
             SDL_Rect src = { x * grid_w_, y * grid_h_, grid_w_, grid_h_, };
             SDL_UpperBlit(whole, &src, grid, nullptr);
             grid_pics_.push_back(grid);
+
+            --n_grids;
         }
     }
+final:
     SDL_FreeSurface(whole);
     return true;
 }
@@ -114,7 +125,7 @@ bool GridPicStorage::StoreToFile() {
         PLOG(ERROR) << "Can not open file: " << meta_file;
         return false;
     }
-    fprintf(f, "%d\t%d\n", grid_w_, grid_h_);
+    fprintf(f, "%d\t%d\t%zd\n", grid_w_, grid_h_, grid_pics_.size());
     fclose(f); f = nullptr;
 
     std::string idx_file(dir_);

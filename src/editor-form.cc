@@ -9,6 +9,7 @@
 #include "ui-style-collection.h"
 #include "ui-component-factory.h"
 #include "ui-component-builder.h"
+#include "universal-profile.h"
 #include "raw-pic-collection.h"
 #include "grid-pic-storage.h"
 #include "indexed-tile-storage.h"
@@ -30,7 +31,7 @@ public:
         EDIT_MAP,
     };
 
-    EditorForm();
+    explicit EditorForm(const UniversalProfile *profile);
     virtual ~EditorForm();
 
     virtual int OnCommand(UIComponent *sender, int cmd_id, void *param,
@@ -44,6 +45,7 @@ public:
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(EditorForm);
 private:
+    const UniversalProfile *profile_;
     UIStyleCollection *styles_ = nullptr;
     UIComponentFactory *factory_ = nullptr;
     RawPicCollection *raw_pics_ = nullptr;
@@ -142,16 +144,79 @@ public:
     DEF_PTR_PROP_RW_NOTNULL2(IndexedTileStorage, tiles);
     DEF_PTR_PROP_RW_NOTNULL2(GridPicStorage, tiles_tex);
 
+    const IndexedTile *current_tile() const { return tile_; }
+
+    size_t UpdateTileIds() { return tiles_->GetAllTileIdentifiers(&tile_ids_); }
+
+    void Reset() {
+        auto n_tiles = UpdateTileIds();
+        if (n_tiles == 0) {
+            NewTile();
+        } else {
+            current_tile_p_ = 0;
+        }
+    }
+
+    void NextTile() {
+        current_tile_p_ = (current_tile_p_ + 1) % tile_ids_.size();
+        SetCurrentTile();
+    }
+
+    void PrevTile() {
+        if (current_tile_p_ == 0) {
+            current_tile_p_ = tile_ids_.size() - 1;
+        } else {
+            --current_tile_p_;
+        }
+        SetCurrentTile();
+    }
+
+    void SetCurrentTile() {
+        int tile_id = tile_ids_[current_tile_p_];
+        if (new_tile_) {
+            delete tile_;
+        }
+        tile_ = tiles_->FindMutableOrNull(tile_id);
+        new_tile_ = false;
+
+        char buf[128];
+        snprintf(buf, arraysize(buf), "%d", tile_->id());
+        tile_id_ib_->set_text(buf);
+        tile_id_ib_->changed();
+
+        if (tile_->walk_pass()) {
+            pass_mask_cbs_[0]->set_checked(true);
+        } else {
+            pass_mask_cbs_[0]->set_checked(false);
+        }
+        if (tile_->fly_pass()) {
+            pass_mask_cbs_[1]->set_checked(true);
+        } else {
+            pass_mask_cbs_[1]->set_checked(false);
+        }
+        if (tile_->bullet_pass()) {
+            pass_mask_cbs_[2]->set_checked(true);
+        } else {
+            pass_mask_cbs_[2]->set_checked(false);
+        }
+        if (tile_->magic_pass()) {
+            pass_mask_cbs_[3]->set_checked(true);
+        } else {
+            pass_mask_cbs_[3]->set_checked(false);
+        }
+    }
+
     void AddPassMaskCb(UIFlatCheckBox *cb) {
         pass_mask_cbs_.push_back(DCHECK_NOTNULL(cb));
     }
 
     void NewTile() {
-        if (tile_) {
-            delete tile_; tile_ = nullptr;
-        } else {
-            tile_ = new IndexedTile();
+        if (new_tile_ && tile_) {
+            delete tile_;
+            tile_ = nullptr;
         }
+        tile_ = new IndexedTile();
+        new_tile_ = true;
 
         char buf[128];
         snprintf(buf, arraysize(buf), "%d", tiles_->next_id());
@@ -163,7 +228,48 @@ public:
         if (!tile_) {
             return;
         }
+        if (new_tile_) {
+            AddTile(file_name, selector);
+        } else {
+            UpdateTile(file_name, selector);
+        }
+    }
+
+    void UpdateTile(const std::string &file_name, UIPicGridSelector *selector) {
+        if (selector->is_selected()) {
+            int clipping = atoi(clipping_ib_->text().c_str());
+            int tex_id = 0;
+            bool ok = true;
+            if (!tiles_tex_->FindOrNullGrid(file_name,
+                                            selector->selected_index(), &tex_id)) {
+                tex_id = tiles_tex_->PutGrid(file_name,
+                                             selector->selected_index(),
+                                             selector->CutSelectedSurface(clipping),
+                                             &ok);
+            }
+            tile_->set_tex_id(tex_id);
+        }
+
+        uint32_t passable = 0;
+        if (pass_mask_cbs_[0]->checked()) {
+            passable |= IndexedTile::kWalkPass;
+        }
+        if (pass_mask_cbs_[1]->checked()) {
+            passable |= IndexedTile::kFlyPass;
+        }
+        if (pass_mask_cbs_[2]->checked()) {
+            passable |= IndexedTile::kBulletPass;
+        }
+        if (pass_mask_cbs_[3]->checked()) {
+            passable |= IndexedTile::kMagicPass;
+        }
+        tile_->set_passable(passable);
+        tile_->set_id(tiles_->next_id());
+    }
+
+    void AddTile(const std::string &file_name, UIPicGridSelector *selector) {
         if (!selector->is_selected()) {
+            LOG(ERROR) << "Not any grid be selected.";
             return;
         }
 
@@ -199,7 +305,9 @@ public:
         if (ok) {
             tiles_->NextId();
         }
-        tile_ = nullptr;
+        new_tile_ = false;
+        tile_ids_.push_back(tile_->id());
+        current_tile_p_ = tile_ids_.size() - 1;
     }
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(TileController);
@@ -207,9 +315,12 @@ private:
     UIFlatInputBox *tile_id_ib_ = nullptr;
     UIFlatInputBox *clipping_ib_ = nullptr;
     IndexedTile *tile_ = nullptr;
+    bool new_tile_ = false;
     IndexedTileStorage *tiles_ = nullptr;
     GridPicStorage *tiles_tex_ = nullptr;
     std::vector<UIFlatCheckBox *> pass_mask_cbs_;
+    std::vector<int> tile_ids_;
+    size_t current_tile_p_ = 0;
 };
 
 
@@ -221,11 +332,12 @@ static const LuaConstantId editor_form_id[] = {
     DEFINE_CMD_ID(LUA_DEF_CONST_ID)
 };
 
-UIForm *CreateEditorForm() {
-    return new EditorForm();
+UIForm *CreateEditorForm(const UniversalProfile *profile) {
+    return new EditorForm(profile);
 }
 
-EditorForm::EditorForm() {
+EditorForm::EditorForm(const UniversalProfile *profile)
+    : profile_(DCHECK_NOTNULL(profile)) {
 }
 
 /*virtual*/ EditorForm::~EditorForm() {
@@ -253,6 +365,14 @@ EditorForm::EditorForm() {
             if (!tiles_->StoreToFile()) {
                 LOG(ERROR) << "Store tiles fail!";
             }
+            break;
+
+        case EditorFormR::ID_TILE_NEXT:
+            tile_ctrl_->NextTile();
+            break;
+
+        case EditorFormR::ID_TILE_PREV:
+            tile_ctrl_->PrevTile();
             break;
 
         case EditorFormR::ID_TILE_NEW:
@@ -299,7 +419,7 @@ EditorForm::EditorForm() {
 
     styles_ = new UIStyleCollection();
     std::string err;
-    styles_->LoadFromFile("res/styles.lua", &err);
+    styles_->LoadFromFile(profile_->editor_styles_file().c_str(), &err);
     if (!err.empty()) {
         LOG(ERROR) << "Can not load styles file. " << err;
         return -1;
@@ -322,7 +442,7 @@ EditorForm::EditorForm() {
 
         LuaUtils::InitConstantId(L, utaha::kLuaNamespace, "R", editor_form_id,
                                  arraysize(editor_form_id));
-    }, "res/form-layouts.lua", &e);
+    }, profile_->editor_layout_file().c_str(), &e);
     if (e) {
         LOG(ERROR) << "Can not create form layout. " << e;
         return -1;
@@ -350,7 +470,7 @@ EditorForm::EditorForm() {
     raw_pics_ = new RawPicCollection();
     size_t num_raw_pics = 0;
     if ((num_raw_pics = raw_pics_->LoadWithBootstrapScript(
-        "res/raw-pic-load.lua", &err)) == 0) {
+        profile_->raw_pic_load_file().c_str(), &err)) == 0) {
         LOG(ERROR) << "No any raw pictures loaded!. " << err;
         return -1;
     } else {
@@ -361,18 +481,24 @@ EditorForm::EditorForm() {
 
     {
         tiles_tex_ = new GridPicStorage();
-        tiles_tex_->set_dir("assets");
+        tiles_tex_->set_dir(profile_->assets_dir());
         tiles_tex_->set_name("tiles-tex");
         tiles_tex_->set_grid_w(48);
         tiles_tex_->set_grid_h(48);
-        // TODO: tiles_tex_->LoadFromFile();
+        if (!tiles_tex_->LoadFromFile()) {
+            LOG(ERROR) << "Can not laod: " << tiles_tex_->name();
+            return -1;
+        }
     }
 
     {
         tiles_ = new IndexedTileStorage(1000);
-        tiles_->set_dir("assets");
+        tiles_->set_dir(profile_->assets_dir());
         tiles_->set_grid_pic_name(tiles_tex_->name());
-        // TODO: tiles_->LoadFromFile();
+        if (!tiles_->LoadFromFile()) {
+            LOG(ERROR) << "Can not laod tiles.";
+            return -1;
+        }
     }
 
     {
@@ -412,6 +538,7 @@ EditorForm::EditorForm() {
 
         tile_ctrl_->set_tiles(tiles_);
         tile_ctrl_->set_tiles_tex(tiles_tex_);
+        tile_ctrl_->Reset();
     }
 
     UIForm::main_menu()->UpdateRect();

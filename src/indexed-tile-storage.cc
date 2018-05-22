@@ -24,6 +24,10 @@ bool IndexedTileStorage::LoadFromFile() {
     std::string metadata_file(dir_);
     metadata_file.append("/").append(kName).append(".metadata");
 
+    if (access(metadata_file.c_str(), F_OK) != 0) {
+        return true;
+    }
+
     FILE *f = fopen(metadata_file.c_str(), "rb");
     if (!f) {
         PLOG(ERROR) << "Ca not open file: " << metadata_file;

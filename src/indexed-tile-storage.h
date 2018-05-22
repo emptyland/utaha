@@ -3,6 +3,7 @@
 
 #include "base.h"
 #include <map>
+#include <vector>
 #include <string>
 
 namespace utaha {
@@ -28,6 +29,8 @@ public:
     inline const IndexedTile *FindOrNull(int tile_id) const;
     inline IndexedTile *FindMutableOrNull(int tile_id);
 
+    inline size_t GetAllTileIdentifiers(std::vector<int> *ids) const;
+
     int NextId() { return next_id_ += 10; }
 
     static const char kName[];
@@ -49,6 +52,15 @@ inline const IndexedTile *IndexedTileStorage::FindOrNull(int tile_id) const {
 inline IndexedTile *IndexedTileStorage::FindMutableOrNull(int tile_id) {
     auto iter = tiles_.find(tile_id);
     return iter == tiles_.end() ? nullptr : iter->second;
+}
+
+inline size_t
+IndexedTileStorage::GetAllTileIdentifiers(std::vector<int> *ids) const {
+    ids->clear();
+    for (const auto &pair : tiles_) {
+        ids->push_back(pair.first);
+    }
+    return ids->size();
 }
 
 } // namespace utaha

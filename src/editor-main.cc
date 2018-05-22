@@ -1,5 +1,6 @@
 #include "ui-form.h"
 #include "on-exit-scope.h"
+#include "universal-profile.h"
 #include "glog/logging.h"
 #include SDL_H
 #include SDL_IMAGE_H
@@ -7,7 +8,7 @@
 #include <stdio.h>
 
 namespace utaha {
-    extern UIForm *CreateEditorForm();
+    extern UIForm *CreateEditorForm(const UniversalProfile *profile);
 }
 
 #if defined(UTAHA_OS_WINDOWS)
@@ -53,7 +54,14 @@ int main(int argc, char *argv[]) {
 
     utaha::OnExitScope on_exit(utaha::ON_EXIT_SCOPE_INITIALIZER);
 
-    std::unique_ptr<utaha::UIForm> form(utaha::CreateEditorForm());
+    utaha::UniversalProfile profile;
+    std::string err;
+    profile.LoadFromFile("res/profile.lua", &err);
+    if (!err.empty()) {
+        LOG(FATAL) << "Can not load profile file!" << err;
+    }
+
+    std::unique_ptr<utaha::UIForm> form(utaha::CreateEditorForm(&profile));
     if (!form->OpenWindow("Utaha-Editor", 1024, 768)) {
         return -1;
     }
