@@ -20,30 +20,29 @@ UIFlatInputBox::UIFlatInputBox(TTF_Font *font)
 
     if (event->type == SDL_MOUSEBUTTONDOWN) {
         if (InRect(rect(), event->button.x, event->button.y)) {
-            if (!is_focused()) {
-                set_is_focused(true);
+            if (!focused()) {
+                set_focused(true);
                 TIMC->OpenTextInputMode();
             }
         } else {
-            if (is_focused()) {
-                set_is_focused(false);
+            if (focused()) {
+                set_focused(false);
                 TIMC->CloseTextInputMode();
             }
         }
     }
     if (event->type == SDL_MOUSEBUTTONUP) {
-        if (InRect(rect(), event->button.x, event->button.y) &&
-            is_focused()) {
+        if (InRect(rect(), event->button.x, event->button.y) && focused()) {
 
         } else {
-            if (is_focused()) {
-                set_is_focused(false);
+            if (focused()) {
+                set_focused(false);
                 TIMC->CloseTextInputMode();
             }
         }
     }
 
-    if (!is_focused()) {
+    if (!focused()) {
         return 0;
     }
     if (event->type == SDL_TEXTINPUT) {
@@ -94,7 +93,7 @@ UIFlatInputBox::UIFlatInputBox(TTF_Font *font)
         };
         SDL_RenderCopy(renderer, texture_, &src, &dst);
     }
-    if (is_focused() && SDL_GetTicks() % 1000 >= 500) {
+    if (focused() && SDL_GetTicks() % 1000 >= 500) {
         SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
 
         SDL_Rect cursor_rect {

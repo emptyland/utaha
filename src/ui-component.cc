@@ -22,14 +22,14 @@ UIComponent::UIComponent()
     }
     if (event->type == SDL_MOUSEBUTTONDOWN) {
         if (InRect(rect_, event->button.x, event->button.y)) {
-            is_focused_ = true;
+            focused_ = true;
         } else {
-            is_focused_ = false;
+            focused_ = false;
         }
     }
     if (event->type == SDL_MOUSEBUTTONUP) {
         if (InRect(rect_, event->button.x, event->button.y) &&
-            is_focused_) {
+            focused_) {
             if (listenner_) {
                 if (event->button.clicks == 0x1) {
                     listenner_->OnClick(this, is_break);
@@ -38,7 +38,7 @@ UIComponent::UIComponent()
                 }
             }
         } else {
-            is_focused_ = false;
+            focused_ = false;
         }
     }
 

@@ -36,7 +36,7 @@ UIFlatButton::UIFlatButton(TTF_Font *font)
     if (event->type == SDL_MOUSEBUTTONUP) {
         if (InRect(rect(), event->button.x, event->button.y)) {
             state_ = STATE_HOT;
-            ProcessCmdIfNeeded(static_cast<int>(id()), nullptr, is_break);
+            ProcessCmdIfNeeded(cmd_id_, nullptr, is_break);
             if (*is_break) {
                 return 0;
             }
@@ -58,9 +58,6 @@ UIFlatButton::UIFlatButton(TTF_Font *font)
             LOG(ERROR) << SDL_GetError();
             return -1;
         }
-        text_w_ = surface->w;
-        text_h_ = surface->h;
-
         texture_ = SDL_CreateTextureFromSurface(renderer, surface);
         SDL_FreeSurface(surface); surface = nullptr;
         if (!texture_) {
@@ -92,15 +89,16 @@ UIFlatButton::UIFlatButton(TTF_Font *font)
             break;
     }
     SDL_RenderFillRect(renderer, mutable_rect());
-    SDL_Rect src = {0, 0, text_w_, text_h_};
+    int tex_w = 0, tex_h = 0;
+    SDL_QueryTexture(texture_, nullptr, nullptr, &tex_w, &tex_h);
     SDL_Rect dst = {
-        rect().x + (rect().w - text_w_) / 2,
-        rect().y + (rect().h - text_h_) / 2,
-        text_w_,
-        text_h_,
+        rect().x + (rect().w - tex_w) / 2,
+        rect().y + (rect().h - tex_h) / 2,
+        tex_w,
+        tex_h,
     };
 
-    SDL_RenderCopy(renderer, texture_, &src, &dst);
+    SDL_RenderCopy(renderer, texture_, nullptr, &dst);
     return 0;
 }
 

@@ -34,6 +34,7 @@ class UIFlatLabel;
 class UIFlatCheckBox;
 class UIFlatStatusBar;
 class UIFlatStatusBarGrid;
+class UIFlatPicView;
 class UIPicGridSelector;
 class UILayout;
 class UILayoutRow;
@@ -51,6 +52,7 @@ public:
     UIFlatInputBoxBuilder *BeginFlatInputBox(const char *name);
     UIFlatLabelBuilder *BeginFlatLabel(const char *name);
     UIFlatLabel *LetFlatLabel(const char *name, const char *text);
+    UIFlatPicView *LetFlatPicView(const char *name);
     UIFlatCheckBoxBuilder *BeginFlatCheckBox(const char *name);
     UIFlatStatusBarBuilder *BeginFlatStatusBar(const char *name);
     UIPicGridSelectorBuilder *BeginPicGridSelector(const char *name);
@@ -142,6 +144,7 @@ public:
     inline ~UIFlatButtonBuilder() = default;
 
     UIFlatButtonBuilder *LetText(const char *text);
+    UIFlatButtonBuilder *LetCmdId(int cmd_id);
     UIFlatButtonBuilder *LetX(int x);
     UIFlatButtonBuilder *LetY(int y);
     UIFlatButtonBuilder *LetW(int w);
@@ -252,6 +255,7 @@ public:
         : UIComponentBuilderBase(component, factory) {}
     inline ~UIPicGridSelectorBuilder() = default;
 
+    UIPicGridSelectorBuilder *LetCmdId(int cmd_id);
     UIPicGridSelectorBuilder *LetGridSizeW(int w);
     UIPicGridSelectorBuilder *LetGridSizeH(int h);
     UIPicGridSelector *EndPicGridSelectorFromFile(const char *file);

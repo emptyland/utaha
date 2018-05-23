@@ -26,7 +26,7 @@ UIFlatCheckBox::UIFlatCheckBox(TTF_Font *font)
     }
 
     if (event->type == SDL_MOUSEBUTTONUP) {
-        if (is_focused() && InRect(rect(), event->button.x, event->button.y)) {
+        if (focused() && InRect(rect(), event->button.x, event->button.y)) {
             checked_ = !checked_;
         }
     }

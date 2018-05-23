@@ -63,6 +63,10 @@ style
     :setColor("FlatStatusBar.border.color", 0xffffffff)
     :setInt("FlatStatusBar.padding.size",   10)
 
+-- Flat Pic View
+    :setColor("FlatPicView.border.color", 0xffffffff)
+    :setInt("FlatPicView.padding.size",   10)
+
 -- Pic Grid Selector Styles
     :setColor("PicGridSelector.grid.color",     0x00ff00ff)
     :setColor("PicGridSelector.selected.color", 0x80ff008f)

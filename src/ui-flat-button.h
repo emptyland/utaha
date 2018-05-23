@@ -22,6 +22,7 @@ public:
     virtual int OnEvent(SDL_Event *event, bool *is_break) override;
     virtual int OnRender(SDL_Renderer *renderer) override;
 
+    DEF_VAL_PROP_RW(int, cmd_id);
     DEF_VAL_PROP_RMW(SDL_Color, normal_color);
     DEF_VAL_PROP_RMW(SDL_Color, pressed_color);
     DEF_VAL_PROP_RMW(SDL_Color, hot_color);
@@ -30,7 +31,7 @@ public:
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIFlatButton);
 private:
-
+    int cmd_id_ = 0;
     State state_ = STATE_NORMAL;
     SDL_Color pressed_color_ = {0, 0, 0, 0};
     SDL_Color normal_color_  = {0, 0, 0, 0};
@@ -38,8 +39,6 @@ private:
     SDL_Color font_color_    = {0, 0, 0, 0};
     std::string text_;
     SDL_Texture *texture_ = nullptr;
-    int text_w_ = 0;
-    int text_h_ = 0;
     TTF_Font *font_;
 }; // class UIFlatButton
 

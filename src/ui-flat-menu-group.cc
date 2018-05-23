@@ -31,7 +31,7 @@ UIFlatMenuGroup::UIFlatMenuGroup(TTF_Font *font)
 
     if (event->type == SDL_MOUSEMOTION ||
         event->type == SDL_MOUSEBUTTONDOWN) {
-        if (is_focused() &&
+        if (focused() &&
             InRect(rect(), event->button.x, event->button.y)) {
             for (auto &column : columns_) {
                 if (event->button.x >= column.x &&
@@ -44,7 +44,7 @@ UIFlatMenuGroup::UIFlatMenuGroup(TTF_Font *font)
         }
     }
     if (event->type == SDL_MOUSEBUTTONUP) {
-        if (is_focused() &&
+        if (focused() &&
             InRect(rect(), event->button.x, event->button.y)) {
             for (const auto &column : columns_) {
                 if (event->button.x >= column.x &&
@@ -99,7 +99,7 @@ UIFlatMenuGroup::UIFlatMenuGroup(TTF_Font *font)
                            bg_color_.a);
     SDL_RenderFillRect(renderer, mutable_rect());
     for (const auto &column : columns_) {
-        if (is_focused() && column.is_hot) {
+        if (focused() && column.is_hot) {
             SDL_SetRenderDrawColor(renderer, hot_color_.r, hot_color_.g,
                                    hot_color_.b, hot_color_.a);
             SDL_Rect col_rect = {

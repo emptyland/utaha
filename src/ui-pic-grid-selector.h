@@ -13,6 +13,7 @@ public:
     virtual int OnEvent(SDL_Event *event, bool *is_break) override;
     virtual int OnRender(SDL_Renderer *renderer) override;
 
+    DEF_VAL_PROP_RW(int, cmd_id);
     DEF_VAL_GETTER(int, max_h_grids);
     DEF_VAL_GETTER(int, max_v_grids);
     DEF_VAL_PROP_RMW(SDL_Color, grid_color);
@@ -35,6 +36,7 @@ public:
 
     SDL_Rect GetPicRect() const;
 private:
+    int cmd_id_ = 0;
     SDL_Color grid_color_ = {0, 0, 0, 0};
     SDL_Color selected_color_ = {0, 0, 0, 0};
     SDL_Texture *texture_ = nullptr;

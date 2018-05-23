@@ -34,13 +34,18 @@ UIPicGridSelector::UIPicGridSelector() {
     }
 
     if (event->type == SDL_MOUSEBUTTONUP) {
-        //LOG(INFO) << "button: " << (int)event->button.button;
-        if (is_focused() &&
+        if (focused() &&
             event->button.clicks == 1 &&
             event->button.button == 1 &&
             InRect(rc, event->button.x, event->button.y)) {
             selected_x_ = (event->button.x - rc.x) / grid_size_w_;
             selected_y_ = (event->button.y - rc.y) / grid_size_h_;
+            ProcessCmdIfNeeded(cmd_id_, nullptr, is_break);
+        }
+
+        if (focused() && event->button.clicks == 1 && event->button.button == 3) {
+            unselected();
+            ProcessCmdIfNeeded(cmd_id_, nullptr, is_break);
         }
     }
     return 0;

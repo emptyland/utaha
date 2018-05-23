@@ -17,7 +17,7 @@ public:
     DEF_VAL_PROP_RW(int64_t, id);
     DEF_VAL_PROP_RW(std::string, name);
     DEF_VAL_PROP_RW(bool, is_show);
-    DEF_VAL_PROP_RW(bool, is_focused);
+    DEF_VAL_PROP_RW(bool, focused);
     DEF_VAL_PROP_RMW(SDL_Rect, rect);
 
     int ProcessCmdIfNeeded(int cmd_id, void *param, bool *is_break);
@@ -27,7 +27,7 @@ private:
     int64_t id_ = 0;
     std::string name_;
     bool is_show_ = true;
-    bool is_focused_ = false;
+    bool focused_ = false;
     SDL_Rect rect_;
 };
 

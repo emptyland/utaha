@@ -6,6 +6,7 @@
 #include "ui-flat-label.h"
 #include "ui-flat-check-box.h"
 #include "ui-flat-status-bar.h"
+#include "ui-flat-pic-view.h"
 #include "ui-pic-grid-selector.h"
 #include "ui-style-collection.h"
 #include "glog/logging.h"
@@ -25,6 +26,7 @@ public:
     virtual UIFlatLabel *CreateFlatLabel(const std::string &name) override;
     virtual UIFlatCheckBox *CreateFlatCheckBox(const std::string &name) override;
     virtual UIFlatStatusBar *CreateFlatStatusBar(const std::string &name) override;
+    virtual UIFlatPicView *CreateFlatPicView(const std::string &name) override;
     virtual UIPicGridSelector *CreatePicGridSelector(const std::string &name) override;
     
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIComponentStyleFactory);
@@ -83,6 +85,9 @@ static const char FLAT_STATUS_BAR_FONT_COLOR[]     = "FlatStatusBar.font.color";
 static const char FLAT_STATUS_BAR_BG_COLOR[]       = "FlatStatusBar.bg.color";
 static const char FLAT_STATUS_BAR_BORDER_COLOR[]   = "FlatStatusBar.border.color";
 static const char FLAT_STATUS_BAR_PADDING_SIZE[]   = "FlatStatusBar.padding.size";
+
+static const char FLAT_PIC_VIEW_BORDER_COLOR[]   = "FlatPicView.border.color";
+static const char FLAT_PIC_VIEW_PADDING_SIZE[]   = "FlatPicView.padding.size";
 
 static const char PIC_GRID_SELECTOR_GRID_COLOR[] = "PicGridSelector.grid.color";
 static const char PIC_GRID_SELECTOR_SELECTED_COLOR[] = "PicGridSelector.selected.color";
@@ -394,6 +399,26 @@ UIComponentStyleFactory::CreateFlatStatusBar(const std::string &name) {
                                                 &ok));
     if (!ok) {
         LOG(ERROR) << "Can not find int value: " << FLAT_STATUS_BAR_PADDING_SIZE;
+        return nullptr;
+    }
+    return component.release();
+}
+
+/*virtual*/ UIFlatPicView *
+UIComponentStyleFactory::CreateFlatPicView(const std::string &name) {
+    std::unique_ptr<UIFlatPicView> component(new UIFlatPicView());
+    component->set_name(name);
+    component->set_id(NextId());
+
+    if (!style_->FindColor(FLAT_PIC_VIEW_BORDER_COLOR,
+                           component->mutable_border_color())) {
+        LOG(ERROR) << "Can not find color: " << FLAT_PIC_VIEW_BORDER_COLOR;
+        return nullptr;
+    }
+    bool ok = true;
+    component->set_padding_size(style_->FindInt(FLAT_PIC_VIEW_PADDING_SIZE, &ok));
+    if (!ok) {
+        LOG(ERROR) << "Can not find int value: " << FLAT_PIC_VIEW_PADDING_SIZE;
         return nullptr;
     }
     return component.release();

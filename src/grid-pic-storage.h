@@ -32,6 +32,13 @@ public:
 
     SDL_Surface *FindOrNullGrid(const std::string &original_file,
                                 int original_idx, int *index) const;
+    SDL_Surface *FindOrNullGrid(int index) const {
+        if (index < 0 || index >= grid_pics_.size()) {
+            return nullptr;
+        } else {
+            return grid_pics_[index];
+        }
+    }
 
     bool Exists(const std::string &original_file, int original_idx) const {
         return FindOrNullGrid(original_file, original_idx, nullptr) != nullptr;

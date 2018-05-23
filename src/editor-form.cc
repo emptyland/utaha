@@ -5,6 +5,7 @@
 #include "ui-flat-input-box.h"
 #include "ui-flat-check-box.h"
 #include "ui-pic-grid-selector.h"
+#include "ui-flat-pic-view.h"
 #include "ui-layout.h"
 #include "ui-style-collection.h"
 #include "ui-component-factory.h"
@@ -70,7 +71,9 @@ private:
     M(ID_TILE_NEW,          110) \
     M(ID_TILE_COMMIT,       120) \
     M(ID_TILE_NEXT,         130) \
-    M(ID_TILE_PREV,         140)
+    M(ID_TILE_PREV,         140) \
+    M(ID_SELECTOR_UNSELECT, 150) \
+    M(ID_SELECTOR_SELECTED, 160)
 
 struct EditorFormR {
     enum ID: int {
@@ -141,6 +144,7 @@ public:
 
     DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, tile_id_ib);
     DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, clipping_ib);
+    DEF_PTR_PROP_RW_NOTNULL2(UIFlatPicView, picked_grid);
     DEF_PTR_PROP_RW_NOTNULL2(IndexedTileStorage, tiles);
     DEF_PTR_PROP_RW_NOTNULL2(GridPicStorage, tiles_tex);
 
@@ -154,6 +158,7 @@ public:
             NewTile();
         } else {
             current_tile_p_ = 0;
+            SetCurrentTile();
         }
     }
 
@@ -204,6 +209,8 @@ public:
         } else {
             pass_mask_cbs_[3]->set_checked(false);
         }
+
+        picked_grid_->SetPic(tiles_tex_->FindOrNullGrid(tile_->tex_id()), false);
     }
 
     void AddPassMaskCb(UIFlatCheckBox *cb) {
@@ -222,6 +229,17 @@ public:
         snprintf(buf, arraysize(buf), "%d", tiles_->next_id());
         tile_id_ib_->set_text(buf);
         tile_id_ib_->changed();
+
+        picked_grid_->SetPic(nullptr, false);
+    }
+
+    void OnSelectRawGrid(UIPicGridSelector *selector) {
+        if (selector->is_selected()) {
+            int clipping = atoi(clipping_ib_->text().c_str());
+            picked_grid_->SetPic(selector->CutSelectedSurface(clipping), true);
+        } else {
+            picked_grid_->SetPic(nullptr, false);
+        }
     }
 
     void CommitTile(const std::string &file_name, UIPicGridSelector *selector) {
@@ -233,6 +251,7 @@ public:
         } else {
             UpdateTile(file_name, selector);
         }
+        picked_grid_->SetPic(tiles_tex_->FindOrNullGrid(tile_->tex_id()), false);
     }
 
     void UpdateTile(const std::string &file_name, UIPicGridSelector *selector) {
@@ -314,6 +333,7 @@ public:
 private:
     UIFlatInputBox *tile_id_ib_ = nullptr;
     UIFlatInputBox *clipping_ib_ = nullptr;
+    UIFlatPicView *picked_grid_ = nullptr;
     IndexedTile *tile_ = nullptr;
     bool new_tile_ = false;
     IndexedTileStorage *tiles_ = nullptr;
@@ -386,6 +406,14 @@ EditorForm::EditorForm(const UniversalProfile *profile)
             }
             tile_ctrl_->CommitTile(raw_pic_ctrl_->CurrentFile(),  raw_pic_ctrl_->selector());
             tile_ctrl_->NewTile();
+            break;
+
+        case EditorFormR::ID_SELECTOR_UNSELECT:
+            raw_pic_ctrl_->selector()->unselected();
+            break;
+
+        case EditorFormR::ID_SELECTOR_SELECTED:
+            tile_ctrl_->OnSelectRawGrid(raw_pic_ctrl_->selector());
             break;
 
         default:
@@ -522,6 +550,9 @@ EditorForm::EditorForm(const UniversalProfile *profile)
         auto clipping_ib = down_cast<UIFlatInputBox>(
             tile_layout_->FindComponentOrNull("tile-clipping"));
         tile_ctrl_->set_clipping_ib(clipping_ib);
+        auto picked_grid = down_cast<UIFlatPicView>(
+            tile_layout_->FindComponentOrNull("picked-grid"));
+        tile_ctrl_->set_picked_grid(picked_grid);
 
         auto cb = down_cast<UIFlatCheckBox>(
             tile_layout_->FindComponentOrNull("walk-pass"));
@@ -559,7 +590,7 @@ EditorForm::EditorForm(const UniversalProfile *profile)
             break;
 
         case SDL_KEYUP:
-            if (raw_pic_ctrl_->selector()->is_focused()) {
+            if (raw_pic_ctrl_->selector()->focused()) {
                 if (e->key.keysym.sym == SDLK_UP) {
                     raw_pic_ctrl_->PrevFile();
                     status_bar()->mutable_grid(2)
@@ -571,6 +602,14 @@ EditorForm::EditorForm(const UniversalProfile *profile)
                     status_bar()->mutable_grid(2)
                         ->set_text(raw_pic_ctrl_->CurrentFile());
                     right_layout_->UpdateRect();
+                }
+            }
+            if (tile_ctrl_->picked_grid()->focused()) {
+                if (e->key.keysym.sym == SDLK_UP) {
+                    tile_ctrl_->PrevTile();
+                }
+                if (e->key.keysym.sym == SDLK_DOWN) {
+                    tile_ctrl_->NextTile();
                 }
             }
             break;

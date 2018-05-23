@@ -72,6 +72,8 @@
 		23A6E83C20B2C92F00815541 /* indexed-tile-storage-test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A6E83B20B2C92F00815541 /* indexed-tile-storage-test.cc */; };
 		23A6E83F20B3A9DB00815541 /* universal-profile.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A6E83E20B3A9DB00815541 /* universal-profile.cc */; };
 		23A6E84020B3A9DB00815541 /* universal-profile.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A6E83E20B3A9DB00815541 /* universal-profile.cc */; };
+		23A6E84320B449CB00815541 /* ui-flat-pic-view.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A6E84220B449CB00815541 /* ui-flat-pic-view.cc */; };
+		23A6E84420B449CB00815541 /* ui-flat-pic-view.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A6E84220B449CB00815541 /* ui-flat-pic-view.cc */; };
 		23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785B208DB72E00A8EA4F /* render-entity.cc */; };
 		23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785F208DBB3600A8EA4F /* root-render-entity.cc */; };
 		23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C67862208DC4FD00A8EA4F /* sample-render-entity.cc */; };
@@ -164,6 +166,8 @@
 		23A6E83B20B2C92F00815541 /* indexed-tile-storage-test.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "indexed-tile-storage-test.cc"; sourceTree = "<group>"; };
 		23A6E83D20B3A9C500815541 /* universal-profile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "universal-profile.h"; sourceTree = "<group>"; };
 		23A6E83E20B3A9DB00815541 /* universal-profile.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "universal-profile.cc"; sourceTree = "<group>"; };
+		23A6E84120B449B600815541 /* ui-flat-pic-view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-flat-pic-view.h"; sourceTree = "<group>"; };
+		23A6E84220B449CB00815541 /* ui-flat-pic-view.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-flat-pic-view.cc"; sourceTree = "<group>"; };
 		23B83F6B1D78524800DBC418 /* datatype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = datatype.h; sourceTree = "<group>"; };
 		23B83F6D1D79177200DBC418 /* base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base.h; sourceTree = "<group>"; };
 		23C6785A208DB6BA00A8EA4F /* render-entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "render-entity.h"; sourceTree = "<group>"; };
@@ -293,6 +297,7 @@
 				23A3FC4B20A989F800474E12 /* ui-flat-status-bar.cc */,
 				23FE797920AFFB3A00048479 /* ui-flat-label.cc */,
 				23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */,
+				23A6E84220B449CB00815541 /* ui-flat-pic-view.cc */,
 				230822FB20900BE2003804EA /* ui-layout.cc */,
 				23044E20209326D2001924AA /* ui-component-factory.cc */,
 				2353C92720940B2200C4B4EB /* ui-component-style-factory.cc */,
@@ -331,6 +336,7 @@
 				23A3FC3720A2EEEE00474E12 /* ui-flat-check-box.h */,
 				23A3FC4A20A9895C00474E12 /* ui-flat-status-bar.h */,
 				23FE797820AFFAC700048479 /* ui-flat-label.h */,
+				23A6E84120B449B600815541 /* ui-flat-pic-view.h */,
 				23A3FC3320A0453700474E12 /* ui-pic-grid-selector.h */,
 				230822FA20900BA9003804EA /* ui-layout.h */,
 				23044E1F2093264D001924AA /* ui-component-factory.h */,
@@ -469,6 +475,7 @@
 				237E914D2094616500176FA8 /* sample-render-entity.cc in Sources */,
 				237E914E2094616500176FA8 /* interactive-entity.cc in Sources */,
 				237E914F2094616500176FA8 /* ui-component.cc in Sources */,
+				23A6E84420B449CB00815541 /* ui-flat-pic-view.cc in Sources */,
 				23FE798120B1AF2100048479 /* grid-pic-storage-test.cc in Sources */,
 				237E91502094616500176FA8 /* ui-flat-button.cc in Sources */,
 				237E91632094628800176FA8 /* test-main.cc in Sources */,
@@ -498,6 +505,7 @@
 				23044E21209326D2001924AA /* ui-component-factory.cc in Sources */,
 				23A3FC3520A045FB00474E12 /* ui-pic-grid-selector.cc in Sources */,
 				23A3FC4820A9740700474E12 /* script-executor.cc in Sources */,
+				23A6E84320B449CB00815541 /* ui-flat-pic-view.cc in Sources */,
 				23A3FC4420A93FE300474E12 /* on-exit-scope.cc in Sources */,
 				23A3FC5020AACC1200474E12 /* raw-pic-collection.cc in Sources */,
 				239F4810208EE17E00FD09AD /* ui-flat-button.cc in Sources */,

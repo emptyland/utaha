@@ -7,6 +7,7 @@
 #include "ui-flat-check-box.h"
 #include "ui-flat-status-bar.h"
 #include "ui-flat-label.h"
+#include "ui-flat-pic-view.h"
 #include "ui-pic-grid-selector.h"
 #include "ui-layout.h"
 #include "lua-utils.h"
@@ -88,6 +89,16 @@ UIFlatLabel *UIComponentBuilder::LetFlatLabel(const char *name,
     return component;
 }
 
+UIFlatPicView *UIComponentBuilder::LetFlatPicView(const char *name) {
+    auto component = factory_->CreateFlatPicView(name);
+    if (!component) {
+        LOG(ERROR) << "Can not create <FlatPicView>!";
+        return nullptr;
+    }
+    component->AddListenner(listenner_);
+    return component;
+}
+
 UIFlatCheckBoxBuilder *UIComponentBuilder::BeginFlatCheckBox(const char *name) {
     auto component = factory_->CreateFlatCheckBox(name);
     if (!component) {
@@ -135,6 +146,7 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
                 .addFunction("beginFlatInputBox", &UIComponentBuilder::BeginFlatInputBox)
                 .addFunction("beginFlatLabel", &UIComponentBuilder::BeginFlatLabel)
                 .addFunction("flatLabel", &UIComponentBuilder::LetFlatLabel)
+                .addFunction("flatPicView", &UIComponentBuilder::LetFlatPicView)
                 .addFunction("beginFlatCheckBox", &UIComponentBuilder::BeginFlatCheckBox)
                 .addFunction("beginFlatStatusBar", &UIComponentBuilder::BeginFlatStatusBar)
                 .addFunction("beginPicGridSelector", &UIComponentBuilder::BeginPicGridSelector)
@@ -156,6 +168,7 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
             .endClass()
             .beginClass<UIFlatButtonBuilder>("FlatButtonBuilder")
                 .addFunction("text", &UIFlatButtonBuilder::LetText)
+                .addFunction("cmdId", &UIFlatButtonBuilder::LetCmdId)
                 .addFunction("x", &UIFlatButtonBuilder::LetX)
                 .addFunction("y", &UIFlatButtonBuilder::LetY)
                 .addFunction("w", &UIFlatButtonBuilder::LetW)
@@ -202,6 +215,7 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
                 .addFunction("endGrid", &UIFlatStatusBarGridBuilder::EndGrid)
             .endClass()
             .beginClass<UIPicGridSelectorBuilder>("PicGridSelectorBuilder")
+                .addFunction("cmdId", &UIPicGridSelectorBuilder::LetCmdId)
                 .addFunction("gridSizeW", &UIPicGridSelectorBuilder::LetGridSizeW)
                 .addFunction("gridSizeH", &UIPicGridSelectorBuilder::LetGridSizeH)
                 .addFunction("endPicGridSelectorFromFile", &UIPicGridSelectorBuilder::EndPicGridSelectorFromFile)
@@ -227,6 +241,7 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
             .deriveClass<UIFlatLabel, UIComponent>("FlatLabel").endClass()
             .deriveClass<UIFlatCheckBox, UIComponent>("FlatCheckBox").endClass()
             .deriveClass<UIFlatStatusBar, UIComponent>("FlatStatusBar").endClass()
+            .deriveClass<UIFlatPicView, UIComponent>("FlatPicView").endClass()
             .deriveClass<UIPicGridSelector, UIComponent>("PicGridSelector").endClass()
             .beginClass<UILayout>("Layout").endClass()
         .endNamespace();
@@ -372,6 +387,11 @@ UIFlatButtonBuilder *UIFlatButtonBuilder::LetText(const char *text) {
     return this;
 }
 
+UIFlatButtonBuilder *UIFlatButtonBuilder::LetCmdId(int cmd_id) {
+    component()->set_cmd_id(cmd_id);
+    return this;
+}
+
 UIFlatButtonBuilder *UIFlatButtonBuilder::LetX(int x) {
     component()->mutable_rect()->x = x;
     return this;
@@ -466,6 +486,11 @@ UIFlatLabel *UIFlatLabelBuilder::EndLabel() {
 ////////////////////////////////////////////////////////////////////////////////
 // class UIPicGridSelectorBuilder
 ////////////////////////////////////////////////////////////////////////////////
+
+UIPicGridSelectorBuilder *UIPicGridSelectorBuilder::LetCmdId(int cmd_id) {
+    component()->set_cmd_id(cmd_id);
+    return this;
+}
 
 UIPicGridSelectorBuilder *UIPicGridSelectorBuilder::LetGridSizeW(int w) {
     component()->set_grid_size_w(w);
