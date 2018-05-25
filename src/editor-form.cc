@@ -397,7 +397,7 @@ public:
                     selector->selected_index(x, y),
                     selector->CutSelectedSurface(x, y, 0),
                     &ok);
-                spirit_->set_frame(static_cast<Direction>(j), i, tex_id);
+                spirit_->set_frame(kDirectionMap[j], i, tex_id);
             }
         }
         bool ok = true;
@@ -424,8 +424,16 @@ private:
     bool new_spirit_ = false;
     size_t current_spirit_p_ = 0;
     std::vector<int> spirit_ids_;
+
+    static const Direction kDirectionMap[MAX_DIR];
 }; // class SpiritController
 
+const Direction SpiritController::kDirectionMap[MAX_DIR] = {
+    DIR_N,
+    DIR_E,
+    DIR_S,
+    DIR_W,
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 //

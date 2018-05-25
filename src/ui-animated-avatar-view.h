@@ -44,6 +44,7 @@ private:
     bool ownership_ = false;
     bool changed_ = false;
     int i_frame_ = 0;
+    Uint32 latest_tick_ = 0;
     SDL_Texture *frame_[MAX_DIR][AnimatedAvatar::Animation::kNumFrames];
     SDL_Texture *labels_[MAX_DIR] = {0};
     const std::vector<SDL_Surface *> *grids_ = nullptr;

@@ -22,7 +22,6 @@
 		237E91492094616500176FA8 /* lua-utils.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C9E67A1D9CFB9B0078DFFF /* lua-utils.cc */; };
 		237E914B2094616500176FA8 /* render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785B208DB72E00A8EA4F /* render-entity.cc */; };
 		237E914C2094616500176FA8 /* root-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785F208DBB3600A8EA4F /* root-render-entity.cc */; };
-		237E914D2094616500176FA8 /* sample-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C67862208DC4FD00A8EA4F /* sample-render-entity.cc */; };
 		237E914E2094616500176FA8 /* interactive-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F4808208ED2EB00FD09AD /* interactive-entity.cc */; };
 		237E914F2094616500176FA8 /* ui-component.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F480C208ED5CF00FD09AD /* ui-component.cc */; };
 		237E91502094616500176FA8 /* ui-flat-button.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F480F208EE17E00FD09AD /* ui-flat-button.cc */; };
@@ -78,7 +77,6 @@
 		23A6E84420B449CB00815541 /* ui-flat-pic-view.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A6E84220B449CB00815541 /* ui-flat-pic-view.cc */; };
 		23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785B208DB72E00A8EA4F /* render-entity.cc */; };
 		23C67860208DBB3600A8EA4F /* root-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C6785F208DBB3600A8EA4F /* root-render-entity.cc */; };
-		23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C67862208DC4FD00A8EA4F /* sample-render-entity.cc */; };
 		23C9E67C1D9CFB9B0078DFFF /* lua-utils.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23C9E67A1D9CFB9B0078DFFF /* lua-utils.cc */; };
 		23EAD07820B656F400060DFA /* animated-avatar-test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23EAD07720B656F400060DFA /* animated-avatar-test.cc */; };
 		23EAD07B20B65AD500060DFA /* animated-avatar-storage.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23EAD07A20B65AD500060DFA /* animated-avatar-storage.cc */; };
@@ -183,8 +181,6 @@
 		23C6785B208DB72E00A8EA4F /* render-entity.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "render-entity.cc"; sourceTree = "<group>"; };
 		23C6785E208DBAE400A8EA4F /* root-render-entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "root-render-entity.h"; sourceTree = "<group>"; };
 		23C6785F208DBB3600A8EA4F /* root-render-entity.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "root-render-entity.cc"; sourceTree = "<group>"; };
-		23C67861208DC49000A8EA4F /* sample-render-entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "sample-render-entity.h"; sourceTree = "<group>"; };
-		23C67862208DC4FD00A8EA4F /* sample-render-entity.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "sample-render-entity.cc"; sourceTree = "<group>"; };
 		23C9A3EF1D7022EE00DAA480 /* utaha */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = utaha; sourceTree = BUILT_PRODUCTS_DIR; };
 		23C9A4001D70241E00DAA480 /* libglog.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libglog.a; path = "../third-party/libs/libglog.a"; sourceTree = "<group>"; };
 		23C9A4011D70241E00DAA480 /* libluajit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libluajit.a; path = "../third-party/libs/libluajit.a"; sourceTree = "<group>"; };
@@ -249,6 +245,97 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		23049B2D20B8411200696DCB /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				239F480B208ED57F00FD09AD /* ui-component.h */,
+				239F480C208ED5CF00FD09AD /* ui-component.cc */,
+				239F480E208EE14000FD09AD /* ui-flat-button.h */,
+				239F480F208EE17E00FD09AD /* ui-flat-button.cc */,
+				239F4811208F226A00FD09AD /* ui-flat-input-box.h */,
+				239F4812208F233B00FD09AD /* ui-flat-input-box.cc */,
+				23044E1C2092CD2E001924AA /* ui-flat-menu-group.h */,
+				23044E1D2092CDBD001924AA /* ui-flat-menu-group.cc */,
+				230822FE20908D33003804EA /* ui-flat-menu.h */,
+				230822FF20908D7C003804EA /* ui-flat-menu.cc */,
+				23A3FC3720A2EEEE00474E12 /* ui-flat-check-box.h */,
+				23A3FC3820A2EF3800474E12 /* ui-flat-check-box.cc */,
+				23A3FC4A20A9895C00474E12 /* ui-flat-status-bar.h */,
+				23A3FC4B20A989F800474E12 /* ui-flat-status-bar.cc */,
+				23FE797820AFFAC700048479 /* ui-flat-label.h */,
+				23FE797920AFFB3A00048479 /* ui-flat-label.cc */,
+				23A6E84120B449B600815541 /* ui-flat-pic-view.h */,
+				23A6E84220B449CB00815541 /* ui-flat-pic-view.cc */,
+				23A3FC3320A0453700474E12 /* ui-pic-grid-selector.h */,
+				23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */,
+				23EAD07F20B6BB4200060DFA /* ui-animated-avatar-view.h */,
+				23EAD08020B6BB6500060DFA /* ui-animated-avatar-view.cc */,
+				230822FA20900BA9003804EA /* ui-layout.h */,
+				230822FB20900BE2003804EA /* ui-layout.cc */,
+				23044E1F2093264D001924AA /* ui-component-factory.h */,
+				23044E20209326D2001924AA /* ui-component-factory.cc */,
+				238F6CDC209954ED00791F67 /* ui-component-builder.h */,
+				238F6CDD2099555B00791F67 /* ui-component-builder.cc */,
+				2353C92920940CB500C4B4EB /* ui-style-collection.h */,
+				2353C92A20940CF400C4B4EB /* ui-style-collection.cc */,
+				23A3FC3B20A5919A00474E12 /* ui-form.h */,
+				23A3FC3C20A59C7000474E12 /* ui-form.cc */,
+				2353C92720940B2200C4B4EB /* ui-component-style-factory.cc */,
+			);
+			name = UI;
+			path = ../src;
+			sourceTree = "<group>";
+		};
+		23049B2E20B8412300696DCB /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				23C6785A208DB6BA00A8EA4F /* render-entity.h */,
+				23C6785B208DB72E00A8EA4F /* render-entity.cc */,
+				23C6785E208DBAE400A8EA4F /* root-render-entity.h */,
+				23C6785F208DBB3600A8EA4F /* root-render-entity.cc */,
+				239F480A208ED43D00FD09AD /* interactive-listenner.h */,
+				239F4807208EC88D00FD09AD /* interactive-entity.h */,
+				239F4808208ED2EB00FD09AD /* interactive-entity.cc */,
+				23A3FC4120A93A5300474E12 /* lazy-instance.h */,
+				23A3FC4220A93F6300474E12 /* on-exit-scope.h */,
+				23A3FC4320A93FE300474E12 /* on-exit-scope.cc */,
+				23A3FC4620A9445B00474E12 /* script-executor.h */,
+				23A3FC4720A9740700474E12 /* script-executor.cc */,
+				23F34A7E20AD2AC100C3D7A4 /* text-input-mode-controller.h */,
+				23F34A7F20AD2C3F00C3D7A4 /* text-input-mode-controller.cc */,
+				23C9E67B1D9CFB9B0078DFFF /* lua-utils.h */,
+				23C9E67A1D9CFB9B0078DFFF /* lua-utils.cc */,
+				23B83F6B1D78524800DBC418 /* datatype.h */,
+				23B83F6D1D79177200DBC418 /* base.h */,
+			);
+			name = Base;
+			path = ../src;
+			sourceTree = "<group>";
+		};
+		23049B2F20B8422000696DCB /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				23A3FC4E20AACB4D00474E12 /* raw-pic-collection.h */,
+				23A3FC4F20AACC1200474E12 /* raw-pic-collection.cc */,
+				23FE797C20B123D200048479 /* grid-pic-storage.h */,
+				23FE797D20B123E500048479 /* grid-pic-storage.cc */,
+				23A6E83320B258A500815541 /* indexed-tile.h */,
+				23A6E83420B258B200815541 /* indexed-tile.cc */,
+				23A6E83720B25C6900815541 /* indexed-tile-storage.h */,
+				23A6E83820B25C7E00815541 /* indexed-tile-storage.cc */,
+				23EAD07920B65AC700060DFA /* animated-avatar-storage.h */,
+				23EAD07A20B65AD500060DFA /* animated-avatar-storage.cc */,
+				23EAD06E20B650A800060DFA /* indexed-spirit.h */,
+				23EAD07220B652E100060DFA /* animated-spirit.h */,
+				23EAD07620B6568000060DFA /* animated-avatar.h */,
+				23049B2A20B7F9F800696DCB /* animated-avatar.cc */,
+				23A6E83D20B3A9C500815541 /* universal-profile.h */,
+				23A6E83E20B3A9DB00815541 /* universal-profile.cc */,
+			);
+			name = Resource;
+			path = ../src;
+			sourceTree = "<group>";
+		};
 		237E913A2094608B00176FA8 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -279,10 +366,12 @@
 		23C9A3E61D7022EE00DAA480 = {
 			isa = PBXGroup;
 			children = (
+				23049B2F20B8422000696DCB /* Resource */,
+				23049B2E20B8412300696DCB /* Base */,
+				23049B2D20B8411200696DCB /* UI */,
 				23F89EB920ABD06B00EDC6A9 /* Megumi */,
 				23FD3C7E20888C7800975CBB /* Frameworks */,
 				23B83F5C1D757F9200DBC418 /* Third-party */,
-				23C9A3F91D70230C00DAA480 /* Include */,
 				237E913A2094608B00176FA8 /* Tests */,
 				23C9A3F11D7022EE00DAA480 /* Sources */,
 				23C9A3F01D7022EE00DAA480 /* Products */,
@@ -301,87 +390,10 @@
 		23C9A3F11D7022EE00DAA480 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				23C9E67A1D9CFB9B0078DFFF /* lua-utils.cc */,
 				23A3FC3F20A9351400474E12 /* editor-form.cc */,
 				23E1D75D208889CB00F9EF96 /* editor-main.cc */,
-				23C6785B208DB72E00A8EA4F /* render-entity.cc */,
-				23C6785F208DBB3600A8EA4F /* root-render-entity.cc */,
-				23C67862208DC4FD00A8EA4F /* sample-render-entity.cc */,
-				239F4808208ED2EB00FD09AD /* interactive-entity.cc */,
-				239F480C208ED5CF00FD09AD /* ui-component.cc */,
-				239F480F208EE17E00FD09AD /* ui-flat-button.cc */,
-				239F4812208F233B00FD09AD /* ui-flat-input-box.cc */,
-				23044E1D2092CDBD001924AA /* ui-flat-menu-group.cc */,
-				230822FF20908D7C003804EA /* ui-flat-menu.cc */,
-				23A3FC3820A2EF3800474E12 /* ui-flat-check-box.cc */,
-				23A3FC4B20A989F800474E12 /* ui-flat-status-bar.cc */,
-				23FE797920AFFB3A00048479 /* ui-flat-label.cc */,
-				23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */,
-				23EAD08020B6BB6500060DFA /* ui-animated-avatar-view.cc */,
-				23A6E84220B449CB00815541 /* ui-flat-pic-view.cc */,
-				230822FB20900BE2003804EA /* ui-layout.cc */,
-				23044E20209326D2001924AA /* ui-component-factory.cc */,
-				2353C92720940B2200C4B4EB /* ui-component-style-factory.cc */,
-				238F6CDD2099555B00791F67 /* ui-component-builder.cc */,
-				2353C92A20940CF400C4B4EB /* ui-style-collection.cc */,
-				23A3FC3C20A59C7000474E12 /* ui-form.cc */,
-				23A3FC4320A93FE300474E12 /* on-exit-scope.cc */,
-				23A3FC4720A9740700474E12 /* script-executor.cc */,
-				23A3FC4F20AACC1200474E12 /* raw-pic-collection.cc */,
-				23F34A7F20AD2C3F00C3D7A4 /* text-input-mode-controller.cc */,
-				23FE797D20B123E500048479 /* grid-pic-storage.cc */,
-				23A6E83420B258B200815541 /* indexed-tile.cc */,
-				23A6E83820B25C7E00815541 /* indexed-tile-storage.cc */,
-				23EAD07A20B65AD500060DFA /* animated-avatar-storage.cc */,
-				23A6E83E20B3A9DB00815541 /* universal-profile.cc */,
-				23049B2A20B7F9F800696DCB /* animated-avatar.cc */,
 			);
 			name = Sources;
-			path = ../src;
-			sourceTree = "<group>";
-		};
-		23C9A3F91D70230C00DAA480 /* Include */ = {
-			isa = PBXGroup;
-			children = (
-				23C9E67B1D9CFB9B0078DFFF /* lua-utils.h */,
-				23B83F6B1D78524800DBC418 /* datatype.h */,
-				23B83F6D1D79177200DBC418 /* base.h */,
-				23C6785A208DB6BA00A8EA4F /* render-entity.h */,
-				23C6785E208DBAE400A8EA4F /* root-render-entity.h */,
-				239F480A208ED43D00FD09AD /* interactive-listenner.h */,
-				239F4807208EC88D00FD09AD /* interactive-entity.h */,
-				23C67861208DC49000A8EA4F /* sample-render-entity.h */,
-				239F480B208ED57F00FD09AD /* ui-component.h */,
-				239F480E208EE14000FD09AD /* ui-flat-button.h */,
-				239F4811208F226A00FD09AD /* ui-flat-input-box.h */,
-				23044E1C2092CD2E001924AA /* ui-flat-menu-group.h */,
-				230822FE20908D33003804EA /* ui-flat-menu.h */,
-				23A3FC3720A2EEEE00474E12 /* ui-flat-check-box.h */,
-				23A3FC4A20A9895C00474E12 /* ui-flat-status-bar.h */,
-				23FE797820AFFAC700048479 /* ui-flat-label.h */,
-				23A6E84120B449B600815541 /* ui-flat-pic-view.h */,
-				23A3FC3320A0453700474E12 /* ui-pic-grid-selector.h */,
-				23EAD07F20B6BB4200060DFA /* ui-animated-avatar-view.h */,
-				230822FA20900BA9003804EA /* ui-layout.h */,
-				23044E1F2093264D001924AA /* ui-component-factory.h */,
-				238F6CDC209954ED00791F67 /* ui-component-builder.h */,
-				2353C92920940CB500C4B4EB /* ui-style-collection.h */,
-				23A3FC3B20A5919A00474E12 /* ui-form.h */,
-				23A3FC4120A93A5300474E12 /* lazy-instance.h */,
-				23A3FC4220A93F6300474E12 /* on-exit-scope.h */,
-				23A3FC4620A9445B00474E12 /* script-executor.h */,
-				23A3FC4E20AACB4D00474E12 /* raw-pic-collection.h */,
-				23F34A7E20AD2AC100C3D7A4 /* text-input-mode-controller.h */,
-				23FE797C20B123D200048479 /* grid-pic-storage.h */,
-				23A6E83320B258A500815541 /* indexed-tile.h */,
-				23A6E83720B25C6900815541 /* indexed-tile-storage.h */,
-				23EAD06E20B650A800060DFA /* indexed-spirit.h */,
-				23EAD07220B652E100060DFA /* animated-spirit.h */,
-				23EAD07620B6568000060DFA /* animated-avatar.h */,
-				23A6E83D20B3A9C500815541 /* universal-profile.h */,
-				23EAD07920B65AC700060DFA /* animated-avatar-storage.h */,
-			);
-			name = Include;
 			path = ../src;
 			sourceTree = "<group>";
 		};
@@ -502,7 +514,6 @@
 				23A6E83C20B2C92F00815541 /* indexed-tile-storage-test.cc in Sources */,
 				237E914C2094616500176FA8 /* root-render-entity.cc in Sources */,
 				238F6CDF2099555B00791F67 /* ui-component-builder.cc in Sources */,
-				237E914D2094616500176FA8 /* sample-render-entity.cc in Sources */,
 				237E914E2094616500176FA8 /* interactive-entity.cc in Sources */,
 				237E914F2094616500176FA8 /* ui-component.cc in Sources */,
 				23A6E84420B449CB00815541 /* ui-flat-pic-view.cc in Sources */,
@@ -566,7 +577,6 @@
 				23C9E67C1D9CFB9B0078DFFF /* lua-utils.cc in Sources */,
 				23FE797A20AFFB3A00048479 /* ui-flat-label.cc in Sources */,
 				23F34A8020AD2C3F00C3D7A4 /* text-input-mode-controller.cc in Sources */,
-				23C67863208DC4FD00A8EA4F /* sample-render-entity.cc in Sources */,
 				23EAD07B20B65AD500060DFA /* animated-avatar-storage.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

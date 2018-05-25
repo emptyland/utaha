@@ -103,9 +103,13 @@ int UIAnimatedAvatarView::OnEvent(SDL_Event *event, bool *is_break) {
         x += view_w_ + padding_size_ * 3;
     }
 
-    if (SDL_GetTicks() % animated_speed_ == 0) {
+    if (SDL_GetTicks() - latest_tick_ >= animated_speed_) {
         i_frame_ = (i_frame_ + 1) % AnimatedAvatar::Animation::kNumFrames;
+        latest_tick_ = SDL_GetTicks();
     }
+//    if (SDL_GetTicks() % animated_speed_ == 0) {
+//        i_frame_ = (i_frame_ + 1) % AnimatedAvatar::Animation::kNumFrames;
+//    }
     return UIComponent::OnRender(renderer);
 }
 
