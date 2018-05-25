@@ -527,19 +527,23 @@ EditorForm::EditorForm(const UniversalProfile *profile)
 
 /*virtual*/ int EditorForm::OnEditChanged(UIComponent *sender, bool *is_break) {
     if (sender->name().compare("grid-size-w-input") == 0) {
-        auto edit = down_cast<UIFlatInputBox>(sender);
-        int grid_w = atoi(edit->text().c_str());
+        int grid_w = down_cast<UIFlatInputBox>(sender)->GetInt();
         if (grid_w > 0) {
             raw_pic_ctrl_->selector()->set_grid_size_w(grid_w);
             raw_pic_ctrl_->selector()->unselected();
         }
     }
     if (sender->name().compare("grid-size-h-input") == 0) {
-        auto edit = down_cast<UIFlatInputBox>(sender);
-        int grid_h = atoi(edit->text().c_str());
+        int grid_h = down_cast<UIFlatInputBox>(sender)->GetInt();
         if (grid_h > 0) {
             raw_pic_ctrl_->selector()->set_grid_size_h(grid_h);
             raw_pic_ctrl_->selector()->unselected();
+        }
+    }
+    if (sender->name().compare("animated-speed") == 0) {
+        int animated_speed = down_cast<UIFlatInputBox>(sender)->GetInt();
+        if (animated_speed > 0) {
+            spirit_ctrl_->spirit_view()->set_animated_speed(animated_speed);
         }
     }
     return 0;
