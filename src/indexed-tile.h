@@ -27,6 +27,8 @@ public:
     bool bullet_pass() const { return passable_ & kBulletPass; }
     bool magic_pass() const { return passable_ & kMagicPass; }
 
+    inline void CopyTo(IndexedTile *other) const;
+
     DISALLOW_IMPLICIT_CONSTRUCTORS(IndexedTile);
 private:
     int id_ = 0;
@@ -34,6 +36,13 @@ private:
     int tex_id_ = 0;
     uint32_t passable_ = 0;
 }; // class IndexedTile
+
+inline void IndexedTile::CopyTo(IndexedTile *other) const {
+    other->set_id(id_);
+    other->set_name(name_);
+    other->set_tex_id(tex_id_);
+    other->set_passable(passable_);
+}
 
 } // namespace utaha
 

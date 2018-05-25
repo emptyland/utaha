@@ -63,10 +63,17 @@ style
     :setColor("FlatStatusBar.border.color", 0xffffffff)
     :setInt("FlatStatusBar.padding.size",   10)
 
--- Flat Pic View
+-- Flat Pic View Styles
     :setColor("FlatPicView.border.color", 0xffffffff)
     :setInt("FlatPicView.padding.size",   10)
 
 -- Pic Grid Selector Styles
     :setColor("PicGridSelector.grid.color",     0x00ff00ff)
     :setColor("PicGridSelector.selected.color", 0x80ff008f)
+
+-- Animated Avatar View Styles
+    :setFont("AnimatedAvatarView.font", "font.small")
+    :setColor("AnimatedAvatarView.font.color", 0xffffffff)
+    :setColor("AnimatedAvatarView.border.color", 0xffffffff)
+    :setInt("AnimatedAvatarView.padding.size",  10)
+

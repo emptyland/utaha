@@ -27,12 +27,18 @@ public:
     bool is_selected() const { return selected_y_ > -1 && selected_x_ > -1; }
     void unselected() { selected_x_ = -1; selected_y_ = -1; }
 
-    int selected_index() { return selected_y_ * max_h_grids_ + selected_x_; }
+    int selected_index() { return selected_index(selected_x_, selected_y_); }
+
+    int selected_index(int x, int y) { return y * max_h_grids_ + x; }
 
     bool SetPic(SDL_Surface *pic, bool ownership);
     bool LoadPicFromFile(const char *file_path);
 
-    SDL_Surface *CutSelectedSurface(int clipping);
+    SDL_Surface *CutSelectedSurface(int clipping) {
+        return !is_selected() ? nullptr :
+               CutSelectedSurface(selected_x_, selected_y_, clipping);
+    }
+    SDL_Surface *CutSelectedSurface(int x, int y, int clipping);
 
     SDL_Rect GetPicRect() const;
 private:

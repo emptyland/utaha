@@ -8,6 +8,7 @@
 #include "ui-flat-status-bar.h"
 #include "ui-flat-pic-view.h"
 #include "ui-pic-grid-selector.h"
+#include "ui-animated-avatar-view.h"
 #include "ui-style-collection.h"
 #include "glog/logging.h"
 #include <memory>
@@ -20,14 +21,30 @@ public:
     virtual ~UIComponentStyleFactory();
 
     virtual UIFlatButton *CreateFlatButton(const std::string &name) override;
+
     virtual UIFlatMenu *CreateFlatMenu(const std::string &name) override;
-    virtual UIFlatMenuGroup *CreateFlatMenuGroup(const std::string &name) override;
-    virtual UIFlatInputBox *CreateFlatInputBox(const std::string &name) override;
+
+    virtual UIFlatMenuGroup *
+    CreateFlatMenuGroup(const std::string &name) override;
+
+    virtual UIFlatInputBox *
+    CreateFlatInputBox(const std::string &name) override;
+
     virtual UIFlatLabel *CreateFlatLabel(const std::string &name) override;
-    virtual UIFlatCheckBox *CreateFlatCheckBox(const std::string &name) override;
-    virtual UIFlatStatusBar *CreateFlatStatusBar(const std::string &name) override;
+
+    virtual UIFlatCheckBox *
+    CreateFlatCheckBox(const std::string &name) override;
+
+    virtual UIFlatStatusBar *
+    CreateFlatStatusBar(const std::string &name) override;
+
     virtual UIFlatPicView *CreateFlatPicView(const std::string &name) override;
-    virtual UIPicGridSelector *CreatePicGridSelector(const std::string &name) override;
+
+    virtual UIPicGridSelector *
+    CreatePicGridSelector(const std::string &name) override;
+
+    virtual UIAnimatedAvatarView *
+    CreateAnimatedAvatarView(const std::string &name) override;
     
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIComponentStyleFactory);
 private:
@@ -44,13 +61,15 @@ static const char FLAT_MENU_FONT_COLOR[]   = "FlatMenu.font.color";
 static const char FLAT_MENU_BORDER_COLOR[] = "FlatMenu.border.color";
 static const char FLAT_MENU_PADDING_SIZE[] = "FlatMenu.padding.size";
 
-static const char FLAT_MENU_GROUP_FONT[]           = "FlatMenuGroup.font";
-static const char FLAT_MENU_GROUP_BG_COLOR[]       = "FlatMenuGroup.bg.color";
-static const char FLAT_MENU_GROUP_HOT_COLOR[]      = "FlatMenuGroup.hot.color";
-static const char FLAT_MENU_GROUP_FONT_COLOR[]     = "FlatMenuGroup.font.color";
-static const char FLAT_MENU_GROUP_BORDER_COLOR[]   = "FlatMenuGroup.border.color";
-static const char FLAT_MENU_GROUP_PADDING_H_SIZE[] = "FlatMenuGroup.padding.h.size";
-static const char FLAT_MENU_GROUP_PADDING_V_SIZE[] = "FlatMenuGroup.padding.v.size";
+static const char FLAT_MENU_GROUP_FONT[]         = "FlatMenuGroup.font";
+static const char FLAT_MENU_GROUP_BG_COLOR[]     = "FlatMenuGroup.bg.color";
+static const char FLAT_MENU_GROUP_HOT_COLOR[]    = "FlatMenuGroup.hot.color";
+static const char FLAT_MENU_GROUP_FONT_COLOR[]   = "FlatMenuGroup.font.color";
+static const char FLAT_MENU_GROUP_BORDER_COLOR[] = "FlatMenuGroup.border.color";
+static const char FLAT_MENU_GROUP_PADDING_H_SIZE[]
+    = "FlatMenuGroup.padding.h.size";
+static const char FLAT_MENU_GROUP_PADDING_V_SIZE[]
+    = "FlatMenuGroup.padding.v.size";
 
 static const char FLAT_BUTTON_FONT[]          = "FlatButton.font";
 static const char FLAT_BUTTON_DEFAULT_SIZE[]  = "FlatButton.defaultSize";
@@ -59,9 +78,10 @@ static const char FLAT_BUTTON_FONT_COLOR[]    = "FlatButton.font.color";
 static const char FLAT_BUTTON_PRESSED_COLOR[] = "FlatButton.pressed.color";
 static const char FLAT_BUTTON_NORMAL_COLOR[]  = "FlatButton.bg.color";
 
-static const char FLAT_INPUT_BOX_FONT[]               = "FlatInputBox.font";
-static const char FLAT_INPUT_BOX_DEFAULT_SIZE[]       = "FlatInputBox.defaultSize";
-static const char FLAT_INPUT_BOX_DEFAULT_MAX_INPUT[]  = "FlatInputBox.defaultMaxInput";
+static const char FLAT_INPUT_BOX_FONT[]          = "FlatInputBox.font";
+static const char FLAT_INPUT_BOX_DEFAULT_SIZE[]  = "FlatInputBox.defaultSize";
+static const char FLAT_INPUT_BOX_DEFAULT_MAX_INPUT[]
+    = "FlatInputBox.defaultMaxInput";
 static const char FLAT_INPUT_BOX_FONT_COLOR[]    = "FlatInputBox.font.color";
 static const char FLAT_INPUT_BOX_BORDER_COLOR[]  = "FlatInputBox.border.color";
 static const char FLAT_INPUT_BOX_BG_COLOR[]      = "FlatInputBox.bg.color";
@@ -74,23 +94,34 @@ static const char FLAT_LABEL_BORDER_COLOR[]   = "FlatLabel.border.color";
 static const char FLAT_LABEL_PADDING_H_SIZE[] = "FlatLabel.padding.h.size";
 static const char FLAT_LABEL_PADDING_V_SIZE[] = "FlatLabel.padding.v.size";
 
-static const char FLAT_CHECK_BOX_FONT[]           = "FlatCheckBox.font";
-static const char FLAT_CHECK_BOX_FONT_COLOR[]     = "FlatCheckBox.font.color";
-static const char FLAT_CHECK_BOX_BOX_COLOR[]      = "FlatCheckBox.box.color";
-static const char FLAT_CHECK_BOX_PADDING_H_SIZE[] = "FlatCheckBox.padding.h.size";
-static const char FLAT_CHECK_BOX_PADDING_V_SIZE[] = "FlatCheckBox.padding.v.size";
+static const char FLAT_CHECK_BOX_FONT[]       = "FlatCheckBox.font";
+static const char FLAT_CHECK_BOX_FONT_COLOR[] = "FlatCheckBox.font.color";
+static const char FLAT_CHECK_BOX_BOX_COLOR[]  = "FlatCheckBox.box.color";
+static const char FLAT_CHECK_BOX_PADDING_H_SIZE[]
+    = "FlatCheckBox.padding.h.size";
+static const char FLAT_CHECK_BOX_PADDING_V_SIZE[]
+    = "FlatCheckBox.padding.v.size";
 
-static const char FLAT_STATUS_BAR_FONT[]           = "FlatStatusBar.font";
-static const char FLAT_STATUS_BAR_FONT_COLOR[]     = "FlatStatusBar.font.color";
-static const char FLAT_STATUS_BAR_BG_COLOR[]       = "FlatStatusBar.bg.color";
-static const char FLAT_STATUS_BAR_BORDER_COLOR[]   = "FlatStatusBar.border.color";
-static const char FLAT_STATUS_BAR_PADDING_SIZE[]   = "FlatStatusBar.padding.size";
+static const char FLAT_STATUS_BAR_FONT[]         = "FlatStatusBar.font";
+static const char FLAT_STATUS_BAR_FONT_COLOR[]   = "FlatStatusBar.font.color";
+static const char FLAT_STATUS_BAR_BG_COLOR[]     = "FlatStatusBar.bg.color";
+static const char FLAT_STATUS_BAR_BORDER_COLOR[] = "FlatStatusBar.border.color";
+static const char FLAT_STATUS_BAR_PADDING_SIZE[] = "FlatStatusBar.padding.size";
 
 static const char FLAT_PIC_VIEW_BORDER_COLOR[]   = "FlatPicView.border.color";
 static const char FLAT_PIC_VIEW_PADDING_SIZE[]   = "FlatPicView.padding.size";
 
 static const char PIC_GRID_SELECTOR_GRID_COLOR[] = "PicGridSelector.grid.color";
-static const char PIC_GRID_SELECTOR_SELECTED_COLOR[] = "PicGridSelector.selected.color";
+static const char PIC_GRID_SELECTOR_SELECTED_COLOR[]
+    = "PicGridSelector.selected.color";
+
+static const char ANIMATED_AVATAR_VIEW_FONT[] = "AnimatedAvatarView.font";
+static const char ANIMATED_AVATAR_VIEW_FONT_COLOR[]
+    = "AnimatedAvatarView.font.color";
+static const char ANIMATED_AVATAR_VIEW_BORDER_COLOR[]
+    = "AnimatedAvatarView.border.color";
+static const char ANIMATED_AVATAR_VIEW_PADDING_SIZE[]
+    = "AnimatedAvatarView.padding.size";
 
 UIComponentFactory *CreateUIComponentStyleFactory(UIStyleCollection *style) {
     return new UIComponentStyleFactory(style);
@@ -219,13 +250,15 @@ UIComponentStyleFactory::CreateFlatMenuGroup(const std::string &name) {
     component->set_h_padding_size(style_->FindInt(FLAT_MENU_GROUP_PADDING_H_SIZE,
                                                   &ok));
     if (!ok) {
-        LOG(ERROR) << "Can not find int value: " << FLAT_MENU_GROUP_PADDING_H_SIZE;
+        LOG(ERROR) << "Can not find int value: "
+                   << FLAT_MENU_GROUP_PADDING_H_SIZE;
         return nullptr;
     }
     component->set_v_padding_size(style_->FindInt(FLAT_MENU_GROUP_PADDING_V_SIZE,
                                                   &ok));
     if (!ok) {
-        LOG(ERROR) << "Can not find int value: " << FLAT_MENU_GROUP_PADDING_V_SIZE;
+        LOG(ERROR) << "Can not find int value: "
+                   << FLAT_MENU_GROUP_PADDING_V_SIZE;
         return nullptr;
     }
 
@@ -398,7 +431,8 @@ UIComponentStyleFactory::CreateFlatStatusBar(const std::string &name) {
     component->set_padding_size(style_->FindInt(FLAT_STATUS_BAR_PADDING_SIZE,
                                                 &ok));
     if (!ok) {
-        LOG(ERROR) << "Can not find int value: " << FLAT_STATUS_BAR_PADDING_SIZE;
+        LOG(ERROR) << "Can not find int value: "
+                   << FLAT_STATUS_BAR_PADDING_SIZE;
         return nullptr;
     }
     return component.release();
@@ -416,7 +450,8 @@ UIComponentStyleFactory::CreateFlatPicView(const std::string &name) {
         return nullptr;
     }
     bool ok = true;
-    component->set_padding_size(style_->FindInt(FLAT_PIC_VIEW_PADDING_SIZE, &ok));
+    component->set_padding_size(style_->FindInt(FLAT_PIC_VIEW_PADDING_SIZE,
+                                                &ok));
     if (!ok) {
         LOG(ERROR) << "Can not find int value: " << FLAT_PIC_VIEW_PADDING_SIZE;
         return nullptr;
@@ -437,9 +472,46 @@ UIComponentStyleFactory::CreatePicGridSelector(const std::string &name) {
     }
     if (!style_->FindColor(PIC_GRID_SELECTOR_SELECTED_COLOR,
                            component->mutable_selected_color())) {
-        LOG(ERROR) << "Can not find color: " << PIC_GRID_SELECTOR_SELECTED_COLOR;
+        LOG(ERROR) << "Can not find color: "
+                   << PIC_GRID_SELECTOR_SELECTED_COLOR;
         return nullptr;
     }
+    return component.release();
+}
+
+/*virtual*/ UIAnimatedAvatarView *
+UIComponentStyleFactory::CreateAnimatedAvatarView(const std::string &name) {
+    bool ok = true;
+    TTF_Font *font = style_->FindFont(ANIMATED_AVATAR_VIEW_FONT, &ok);
+    if (!ok) {
+        LOG(ERROR) << "Can not find font: " << ANIMATED_AVATAR_VIEW_FONT;
+        return nullptr;
+    }
+
+    std::unique_ptr<UIAnimatedAvatarView> component(
+        new UIAnimatedAvatarView(font));
+    component->set_name(name);
+    component->set_id(NextId());
+
+    if (!style_->FindColor(ANIMATED_AVATAR_VIEW_FONT_COLOR,
+                           component->mutable_font_color())) {
+        LOG(ERROR) << "Can not find color: " << ANIMATED_AVATAR_VIEW_FONT_COLOR;
+        return nullptr;
+    }
+    if (!style_->FindColor(ANIMATED_AVATAR_VIEW_BORDER_COLOR,
+                           component->mutable_border_color())) {
+        LOG(ERROR) << "Can not find color: "
+                   << ANIMATED_AVATAR_VIEW_BORDER_COLOR;
+        return nullptr;
+    }
+    component->set_padding_size(style_->FindInt(
+            ANIMATED_AVATAR_VIEW_PADDING_SIZE, &ok));
+    if (!ok) {
+        LOG(ERROR) << "Can not find int value: "
+                   << ANIMATED_AVATAR_VIEW_PADDING_SIZE;
+        return nullptr;
+    }
+
     return component.release();
 }
 

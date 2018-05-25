@@ -23,6 +23,7 @@ class UIFlatCheckBoxBuilder;
 class UIFlatStatusBarBuilder;
 class UIFlatStatusBarGridBuilder;
 class UIPicGridSelectorBuilder;
+class UIAnimatedAvatarViewBuilder;
 class UILayoutBuilder;
 class UILayoutRowBuilder;
 class UIComponent;
@@ -36,6 +37,7 @@ class UIFlatStatusBar;
 class UIFlatStatusBarGrid;
 class UIFlatPicView;
 class UIPicGridSelector;
+class UIAnimatedAvatarView;
 class UILayout;
 class UILayoutRow;
 class UIForm;
@@ -43,7 +45,8 @@ class UIForm;
 
 class UIComponentBuilder {
 public:
-    UIComponentBuilder(UIComponentFactory *factory, UIForm *form, InteractiveListenner *listenner);
+    UIComponentBuilder(UIComponentFactory *factory, UIForm *form,
+                       InteractiveListenner *listenner);
     ~UIComponentBuilder();
 
     UIFlatMenuGroupBuilder *BeginFlatMenuGroup(const char *name);
@@ -56,6 +59,7 @@ public:
     UIFlatCheckBoxBuilder *BeginFlatCheckBox(const char *name);
     UIFlatStatusBarBuilder *BeginFlatStatusBar(const char *name);
     UIPicGridSelectorBuilder *BeginPicGridSelector(const char *name);
+    UIAnimatedAvatarViewBuilder *BeginAnimatedAvatarView(const char *name);
     UILayoutBuilder *BeginLayout();
 
     static int BindTo(lua_State *L);
@@ -248,7 +252,8 @@ private:
 }; // class UIFlatStatusBarGridBuilder;
 
 
-class UIPicGridSelectorBuilder : public UIComponentBuilderBase<UIPicGridSelector> {
+class UIPicGridSelectorBuilder :
+    public UIComponentBuilderBase<UIPicGridSelector> {
 public:
     inline UIPicGridSelectorBuilder(UIPicGridSelector *component,
                                     UIComponentFactory *factory)
@@ -264,6 +269,22 @@ public:
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIPicGridSelectorBuilder);
 }; // UIPicGridSelectorBuilder
 
+
+class UIAnimatedAvatarViewBuilder :
+    public UIComponentBuilderBase<UIAnimatedAvatarView> {
+public:
+    inline UIAnimatedAvatarViewBuilder(UIAnimatedAvatarView *component,
+                                       UIComponentFactory *factory)
+        : UIComponentBuilderBase(component, factory) {}
+    inline ~UIAnimatedAvatarViewBuilder() = default;
+
+    UIAnimatedAvatarViewBuilder *LetViewW(int w);
+    UIAnimatedAvatarViewBuilder *LetViewH(int h);
+    UIAnimatedAvatarViewBuilder *LetAnimatedSpeed(int speed);
+    UIAnimatedAvatarView *EndAnimatedAvatarView();
+
+    DISALLOW_IMPLICIT_CONSTRUCTORS(UIAnimatedAvatarViewBuilder);
+}; // class UIAnimatedAvatarViewBuilder
 
 class UILayoutBuilder {
 public:

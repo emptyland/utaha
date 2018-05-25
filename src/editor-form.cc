@@ -8,9 +8,12 @@
 #include "ui-flat-pic-view.h"
 #include "ui-layout.h"
 #include "ui-style-collection.h"
+#include "ui-animated-avatar-view.h"
 #include "ui-component-factory.h"
 #include "ui-component-builder.h"
 #include "universal-profile.h"
+#include "animated-avatar-storage.h"
+#include "animated-avatar.h"
 #include "raw-pic-collection.h"
 #include "grid-pic-storage.h"
 #include "indexed-tile-storage.h"
@@ -23,6 +26,7 @@ namespace utaha {
 
 class RawPicController;
 class TileController;
+class SpiritController;
 
 class EditorForm : public UIForm {
 public:
@@ -54,26 +58,34 @@ private:
 
     UILayout *right_layout_ = nullptr;
     UILayout *tile_layout_ = nullptr;
+    UILayout *spirit_layout_ = nullptr;
 
     Mode mode_ = EDIT_TILE;
     RawPicController *raw_pic_ctrl_ = nullptr;
     TileController   *tile_ctrl_ = nullptr;
+    SpiritController *spirit_ctrl_ = nullptr;
 
     IndexedTileStorage *tiles_ = nullptr;
     GridPicStorage *tiles_tex_ = nullptr;
+
+    AnimatedAvatarStorage *spirits_ = nullptr;
+    GridPicStorage *spirits_tex_ = nullptr;
 }; // class EditorForm
 
 #define DEFINE_CMD_ID(M) \
-    M(ID_FILE_TILE,         100) \
-    M(ID_FILE_SPIRIT,       200) \
-    M(ID_FILE_MAP,          300) \
-    M(ID_FILE_SAVE_ALL,     400) \
-    M(ID_TILE_NEW,          110) \
-    M(ID_TILE_COMMIT,       120) \
-    M(ID_TILE_NEXT,         130) \
-    M(ID_TILE_PREV,         140) \
-    M(ID_SELECTOR_UNSELECT, 150) \
-    M(ID_SELECTOR_SELECTED, 160)
+    M(ID_FILE_TILE,          100) \
+    M(ID_FILE_SPIRIT,        200) \
+    M(ID_FILE_MAP,           300) \
+    M(ID_FILE_SAVE_ALL,      400) \
+    M(ID_TILE_NEW,           110) \
+    M(ID_TILE_COMMIT,        120) \
+    M(ID_TILE_NEXT,          130) \
+    M(ID_TILE_PREV,          140) \
+    M(ID_SELECTOR_UNSELECT,  150) \
+    M(ID_SELECTOR_SELECTED,  160) \
+    M(ID_SPIRIT_ADD_REGULAR, 210) \
+    M(ID_SPIRIT_NEXT,        220) \
+    M(ID_SPIRIT_PREV,        230)
 
 struct EditorFormR {
     enum ID: int {
@@ -137,6 +149,7 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 // class TileController
 ////////////////////////////////////////////////////////////////////////////////
+
 class TileController {
 public:
     TileController() = default;
@@ -147,6 +160,10 @@ public:
     DEF_PTR_PROP_RW_NOTNULL2(UIFlatPicView, picked_grid);
     DEF_PTR_PROP_RW_NOTNULL2(IndexedTileStorage, tiles);
     DEF_PTR_PROP_RW_NOTNULL2(GridPicStorage, tiles_tex);
+
+    void AddPassMaskCb(UIFlatCheckBox *cb) {
+        pass_mask_cbs_.push_back(DCHECK_NOTNULL(cb));
+    }
 
     const IndexedTile *current_tile() const { return tile_; }
 
@@ -165,6 +182,7 @@ public:
     void NextTile() {
         current_tile_p_ = (current_tile_p_ + 1) % tile_ids_.size();
         SetCurrentTile();
+        new_tile_ = false;
     }
 
     void PrevTile() {
@@ -174,20 +192,18 @@ public:
             --current_tile_p_;
         }
         SetCurrentTile();
+        new_tile_ = false;
     }
 
     void SetCurrentTile() {
         int tile_id = tile_ids_[current_tile_p_];
-        if (new_tile_) {
-            delete tile_;
+        auto tile = tiles_->FindMutableOrNull(tile_id);
+        if (!tile) {
+            return;
         }
-        tile_ = tiles_->FindMutableOrNull(tile_id);
-        new_tile_ = false;
+        tile->CopyTo(tile_);
 
-        char buf[128];
-        snprintf(buf, arraysize(buf), "%d", tile_->id());
-        tile_id_ib_->set_text(buf);
-        tile_id_ib_->changed();
+        tile_id_ib_->SetInt(tile_->id());
 
         if (tile_->walk_pass()) {
             pass_mask_cbs_[0]->set_checked(true);
@@ -213,23 +229,9 @@ public:
         picked_grid_->SetPic(tiles_tex_->FindOrNullGrid(tile_->tex_id()), false);
     }
 
-    void AddPassMaskCb(UIFlatCheckBox *cb) {
-        pass_mask_cbs_.push_back(DCHECK_NOTNULL(cb));
-    }
-
     void NewTile() {
-        if (new_tile_ && tile_) {
-            delete tile_;
-            tile_ = nullptr;
-        }
-        tile_ = new IndexedTile();
         new_tile_ = true;
-
-        char buf[128];
-        snprintf(buf, arraysize(buf), "%d", tiles_->next_id());
-        tile_id_ib_->set_text(buf);
-        tile_id_ib_->changed();
-
+        tile_id_ib_->SetInt(tiles_->next_id());
         picked_grid_->SetPic(nullptr, false);
     }
 
@@ -243,15 +245,16 @@ public:
     }
 
     void CommitTile(const std::string &file_name, UIPicGridSelector *selector) {
-        if (!tile_) {
-            return;
-        }
+        UpdateTile(file_name, selector);
+        bool ok = true;
+        tiles_->PutTile(tile_, &ok);
         if (new_tile_) {
-            AddTile(file_name, selector);
-        } else {
-            UpdateTile(file_name, selector);
+            tiles_->NextId();
+            tile_ids_.push_back(tile_->id());
+            current_tile_p_ = tile_ids_.size() - 1;
         }
         picked_grid_->SetPic(tiles_tex_->FindOrNullGrid(tile_->tex_id()), false);
+        tile_ = new IndexedTile();
     }
 
     void UpdateTile(const std::string &file_name, UIPicGridSelector *selector) {
@@ -286,62 +289,142 @@ public:
         tile_->set_id(tiles_->next_id());
     }
 
-    void AddTile(const std::string &file_name, UIPicGridSelector *selector) {
-        if (!selector->is_selected()) {
-            LOG(ERROR) << "Not any grid be selected.";
-            return;
-        }
-
-        int clipping = atoi(clipping_ib_->text().c_str());
-        int tex_id = 0;
-        bool ok = true;
-        if (!tiles_tex_->FindOrNullGrid(file_name,
-                                        selector->selected_index(), &tex_id)) {
-            tex_id = tiles_tex_->PutGrid(file_name,
-                                         selector->selected_index(),
-                                         selector->CutSelectedSurface(clipping),
-                                         &ok);
-        }
-
-        uint32_t passable = 0;
-        if (pass_mask_cbs_[0]->checked()) {
-            passable |= IndexedTile::kWalkPass;
-        }
-        if (pass_mask_cbs_[1]->checked()) {
-            passable |= IndexedTile::kFlyPass;
-        }
-        if (pass_mask_cbs_[2]->checked()) {
-            passable |= IndexedTile::kBulletPass;
-        }
-        if (pass_mask_cbs_[3]->checked()) {
-            passable |= IndexedTile::kMagicPass;
-        }
-        tile_->set_passable(passable);
-        tile_->set_id(tiles_->next_id());
-        tile_->set_tex_id(tex_id);
-
-        tiles_->PutTile(tile_, &ok);
-        if (ok) {
-            tiles_->NextId();
-        }
-        new_tile_ = false;
-        tile_ids_.push_back(tile_->id());
-        current_tile_p_ = tile_ids_.size() - 1;
-    }
-
     DISALLOW_IMPLICIT_CONSTRUCTORS(TileController);
 private:
     UIFlatInputBox *tile_id_ib_ = nullptr;
     UIFlatInputBox *clipping_ib_ = nullptr;
     UIFlatPicView *picked_grid_ = nullptr;
-    IndexedTile *tile_ = nullptr;
+    IndexedTile *tile_ = new IndexedTile();
     bool new_tile_ = false;
     IndexedTileStorage *tiles_ = nullptr;
     GridPicStorage *tiles_tex_ = nullptr;
     std::vector<UIFlatCheckBox *> pass_mask_cbs_;
     std::vector<int> tile_ids_;
     size_t current_tile_p_ = 0;
-};
+}; // class TileController
+
+
+////////////////////////////////////////////////////////////////////////////////
+// class SpiritController
+////////////////////////////////////////////////////////////////////////////////
+
+class SpiritController {
+public:
+    inline SpiritController() = default;
+    ~SpiritController() { delete spirit_; }
+
+    DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, spirit_id_ib);
+    DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, spirit_name_ib);
+    DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, animated_speed_ib);
+    DEF_PTR_PROP_RW_NOTNULL2(UIAnimatedAvatarView, spirit_view);
+    DEF_PTR_PROP_RW_NOTNULL2(AnimatedAvatarStorage, spirits);
+    DEF_PTR_PROP_RW_NOTNULL2(GridPicStorage, spirits_tex);
+
+    void Reset() {
+        auto n_spirits = spirits_->GetAllAvatarIdentifiers(&spirit_ids_);
+        if (n_spirits == 0) {
+            NewSpirit();
+        } else {
+            current_spirit_p_ = 0;
+            SetCurrentSpirit();
+        }
+        spirit_view_->set_grids(spirits_tex_->mutable_grid_pics());
+    }
+
+    void NextSpirit() {
+        current_spirit_p_ = (current_spirit_p_ + 1) % spirit_ids_.size();
+        SetCurrentSpirit();
+        new_spirit_ = false;
+    }
+
+    void PrevSpirit() {
+        if (current_spirit_p_ == 0) {
+            current_spirit_p_ = spirit_ids_.size() - 1;
+        } else {
+            --current_spirit_p_;
+        }
+        SetCurrentSpirit();
+        new_spirit_ = false;
+    }
+
+    void NewSpirit() {
+        new_spirit_ = true;
+        spirit_name_ib_->SetText("[unnamed]");
+        spirit_id_ib_->SetInt(spirits_->next_id());
+
+        spirit_view_->SetAvatar(nullptr, false);
+    }
+
+    void SetCurrentSpirit() {
+        int spirit_id = spirit_ids_[current_spirit_p_];
+        auto spirit = spirits_->FindMutableOrNull(spirit_id);
+        if (!spirit) {
+            return;
+        }
+        spirit->CopyTo(spirit_);
+
+        spirit_id_ib_->SetInt(spirit_->id());
+        spirit_name_ib_->SetText(spirit_->name());
+        spirit_view_->SetAvatar(spirit_, false);
+    }
+
+    void AddRegular(const std::string &file_name, UIPicGridSelector *selector) {
+        if (selector->max_h_grids() % 3 != 0) {
+            return;
+        }
+        if (selector->max_v_grids() % 4 != 0) {
+            return;
+        }
+        for (int j = 0; j < selector->max_v_grids() / 4; ++j) {
+            for (int i = 0; i < selector->max_h_grids() / 3; ++i) {
+                MakeSpirit(file_name, selector, i, j);
+            }
+        }
+    }
+
+    void MakeSpirit(const std::string &file_name, UIPicGridSelector *selector,
+                    int block_x, int block_y) {
+        spirit_->set_name("[unnamed]");
+        spirit_->set_w(spirit_view_->view_w());
+        spirit_->set_h(spirit_view_->view_h());
+        for (int j = 0; j < 4; ++j) {
+            for (int i = 0; i < 3; ++i) {
+                int y = block_y * 4 + j;
+                int x = block_x * 3 + i;
+                bool ok = true;
+                auto tex_id = spirits_tex_->PutGrid(
+                    file_name,
+                    selector->selected_index(x, y),
+                    selector->CutSelectedSurface(x, y, 0),
+                    &ok);
+                spirit_->set_frame(static_cast<Direction>(j), i, tex_id);
+            }
+        }
+        bool ok = true;
+        spirits_->PutAvatar(spirit_, &ok);
+        spirit_ids_.push_back(spirit_->id());
+        current_spirit_p_ = spirit_ids_.size() - 1;
+
+        spirit_view_->SetAvatar(spirit_, false);
+        spirit_name_ib_->SetText(spirit_->name());
+        spirit_id_ib_->SetInt(spirit_->id());
+
+        spirit_ = new AnimatedAvatar();
+    }
+
+    DISALLOW_IMPLICIT_CONSTRUCTORS(SpiritController);
+private:
+    UIFlatInputBox *spirit_id_ib_ = nullptr;
+    UIFlatInputBox *spirit_name_ib_ = nullptr;
+    UIFlatInputBox *animated_speed_ib_ = nullptr;
+    UIAnimatedAvatarView *spirit_view_ = nullptr;
+    AnimatedAvatarStorage *spirits_ = nullptr;
+    GridPicStorage *spirits_tex_ = nullptr;
+    AnimatedAvatar *spirit_ = new AnimatedAvatar();
+    bool new_spirit_ = false;
+    size_t current_spirit_p_ = 0;
+    std::vector<int> spirit_ids_;
+}; // class SpiritController
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -385,6 +468,12 @@ EditorForm::EditorForm(const UniversalProfile *profile)
             if (!tiles_->StoreToFile()) {
                 LOG(ERROR) << "Store tiles fail!";
             }
+            if (!spirits_tex_->StoreToFile()) {
+                LOG(ERROR) << "Store spirits texture fail!";
+            }
+            if (!spirits_->StoreToFile()) {
+                LOG(ERROR) << "Store spirits fail!";
+            }
             break;
 
         case EditorFormR::ID_TILE_NEXT:
@@ -404,7 +493,8 @@ EditorForm::EditorForm(const UniversalProfile *profile)
                 LOG(ERROR) << "Raw pic grid has not selected!";
                 break;
             }
-            tile_ctrl_->CommitTile(raw_pic_ctrl_->CurrentFile(),  raw_pic_ctrl_->selector());
+            tile_ctrl_->CommitTile(raw_pic_ctrl_->CurrentFile(),
+                                   raw_pic_ctrl_->selector());
             tile_ctrl_->NewTile();
             break;
 
@@ -414,6 +504,19 @@ EditorForm::EditorForm(const UniversalProfile *profile)
 
         case EditorFormR::ID_SELECTOR_SELECTED:
             tile_ctrl_->OnSelectRawGrid(raw_pic_ctrl_->selector());
+            break;
+
+        case EditorFormR::ID_SPIRIT_ADD_REGULAR:
+            spirit_ctrl_->AddRegular(raw_pic_ctrl_->CurrentFile(),
+                                     raw_pic_ctrl_->selector());
+            break;
+
+        case EditorFormR::ID_SPIRIT_NEXT:
+            spirit_ctrl_->NextSpirit();
+            break;
+
+        case EditorFormR::ID_SPIRIT_PREV:
+            spirit_ctrl_->PrevSpirit();
             break;
 
         default:
@@ -489,6 +592,7 @@ EditorForm::EditorForm(const UniversalProfile *profile)
     set_status_bar(DCHECK_NOTNULL(status_bar));
     right_layout_ = result["rightLayout"].cast<UILayout *>();
     tile_layout_ = result["tileLayout"].cast<UILayout *>();
+    spirit_layout_ = result["spiritLayout"].cast<UILayout *>();
 
     int w, h;
     SDL_GetWindowSize(window(), &w, &h);
@@ -511,8 +615,8 @@ EditorForm::EditorForm(const UniversalProfile *profile)
         tiles_tex_ = new GridPicStorage();
         tiles_tex_->set_dir(profile_->assets_dir());
         tiles_tex_->set_name("tiles-tex");
-        tiles_tex_->set_grid_w(48);
-        tiles_tex_->set_grid_h(48);
+        tiles_tex_->set_grid_w(profile_->tile_w());
+        tiles_tex_->set_grid_h(profile_->tile_h());
         if (!tiles_tex_->LoadFromFile()) {
             LOG(ERROR) << "Can not laod: " << tiles_tex_->name();
             return -1;
@@ -525,6 +629,29 @@ EditorForm::EditorForm(const UniversalProfile *profile)
         tiles_->set_grid_pic_name(tiles_tex_->name());
         if (!tiles_->LoadFromFile()) {
             LOG(ERROR) << "Can not laod tiles.";
+            return -1;
+        }
+    }
+
+    {
+        spirits_tex_ = new GridPicStorage();
+        spirits_tex_ = new GridPicStorage();
+        spirits_tex_->set_dir(profile_->assets_dir());
+        spirits_tex_->set_name("avatars-tex");
+        spirits_tex_->set_grid_w(profile_->avatar_w());
+        spirits_tex_->set_grid_h(profile_->avatar_h());
+        if (!spirits_tex_->LoadFromFile()) {
+            LOG(ERROR) << "Can not laod: " << spirits_tex_->name();
+            return -1;
+        }
+    }
+
+    {
+        spirits_ = new AnimatedAvatarStorage(2000);
+        spirits_->set_dir(profile_->assets_dir());
+        spirits_->set_grid_pic_name(spirits_tex_->name());
+        if (!spirits_->LoadFromFile()) {
+            LOG(ERROR) << "Can not laod avatars.";
             return -1;
         }
     }
@@ -572,10 +699,31 @@ EditorForm::EditorForm(const UniversalProfile *profile)
         tile_ctrl_->Reset();
     }
 
+    {
+        spirit_ctrl_ = new SpiritController();
+        auto id = down_cast<UIFlatInputBox>(
+            spirit_layout_->FindComponentOrNull("spirit-id"));
+        spirit_ctrl_->set_spirit_id_ib(id);
+        auto name = down_cast<UIFlatInputBox>(
+            spirit_layout_->FindComponentOrNull("spirit-name"));
+        spirit_ctrl_->set_spirit_name_ib(name);
+        auto speed = down_cast<UIFlatInputBox>(
+            spirit_layout_->FindComponentOrNull("animated-speed"));
+        spirit_ctrl_->set_animated_speed_ib(speed);
+        auto view = down_cast<UIAnimatedAvatarView>(
+            spirit_layout_->FindComponentOrNull("spirit-view"));
+        spirit_ctrl_->set_spirit_view(view);
+
+        spirit_ctrl_->set_spirits(spirits_);
+        spirit_ctrl_->set_spirits_tex(spirits_tex_);
+        spirit_ctrl_->Reset();
+    }
+
     UIForm::main_menu()->UpdateRect();
     UIForm::status_bar()->UpdateRect();
     right_layout_->UpdateRect();
     tile_layout_->UpdateRect();
+    spirit_layout_->UpdateRect();
     return UIForm::OnInit();
 }
 
@@ -612,6 +760,14 @@ EditorForm::EditorForm(const UniversalProfile *profile)
                     tile_ctrl_->NextTile();
                 }
             }
+            if (spirit_ctrl_->spirit_view()->focused()) {
+                if (e->key.keysym.sym == SDLK_UP) {
+                    spirit_ctrl_->PrevSpirit();
+                }
+                if (e->key.keysym.sym == SDLK_DOWN) {
+                    spirit_ctrl_->NextSpirit();
+                }
+            }
             break;
 
         default:
@@ -626,6 +782,7 @@ EditorForm::EditorForm(const UniversalProfile *profile)
 
         case EDIT_SPIRIT:
             right_layout_->OnEvent(e, is_break);
+            spirit_layout_->OnEvent(e, is_break);
             break;
 
         case EDIT_MAP:
@@ -638,13 +795,17 @@ EditorForm::EditorForm(const UniversalProfile *profile)
 
 /*virtual*/ void EditorForm::OnQuit() {
     delete raw_pic_ctrl_; raw_pic_ctrl_ = nullptr;
+    delete spirit_ctrl_; spirit_ctrl_ = nullptr;
     delete tile_ctrl_; tile_ctrl_ = nullptr;
     delete right_layout_; right_layout_ = nullptr;
+    delete spirit_layout_; spirit_layout_ = nullptr;
     delete factory_; factory_ = nullptr;
     delete styles_; styles_ = nullptr;
     delete raw_pics_; raw_pics_ = nullptr;
     delete tiles_; tiles_ = nullptr;
     delete tiles_tex_; tiles_tex_ = nullptr;
+    delete spirits_; spirits_ = nullptr;
+    delete spirits_tex_; spirits_tex_ = nullptr;
 }
 
 /*virtual*/ void EditorForm::OnAfterRender() {
@@ -656,6 +817,7 @@ EditorForm::EditorForm(const UniversalProfile *profile)
 
         case EDIT_SPIRIT:
             right_layout_->OnRender(renderer());
+            spirit_layout_->OnRender(renderer());
             break;
 
         case EDIT_MAP:

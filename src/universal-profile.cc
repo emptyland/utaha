@@ -53,6 +53,12 @@ int UniversalProfile::ApplyProfiles(lua_State *L) {
     if (!arg["tileH"].isNil()) {
         tile_h_ = arg["tileH"].cast<int>();
     }
+    if (!arg["avatarW"].isNil()) {
+        avatar_w_ = arg["avatarW"].cast<int>();
+    }
+    if (!arg["avatarH"].isNil()) {
+        avatar_h_ = arg["avatarH"].cast<int>();
+    }
     if (!arg["assetsDir"].isNil()) {
         assets_dir_ = arg["assetsDir"].cast<std::string>();
     }

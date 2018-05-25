@@ -15,6 +15,7 @@ class UIFlatCheckBox;
 class UIFlatStatusBar;
 class UIFlatPicView;
 class UIPicGridSelector;
+class UIAnimatedAvatarView;
 class UIStyleCollection;
 
 class UIComponentFactory {
@@ -30,7 +31,12 @@ public:
     virtual UIFlatCheckBox *CreateFlatCheckBox(const std::string &name) = 0;
     virtual UIFlatStatusBar *CreateFlatStatusBar(const std::string &name) = 0;
     virtual UIFlatPicView *CreateFlatPicView(const std::string &name) = 0;
-    virtual UIPicGridSelector *CreatePicGridSelector(const std::string &name) = 0;
+
+    virtual UIPicGridSelector *
+    CreatePicGridSelector(const std::string &name) = 0;
+
+    virtual UIAnimatedAvatarView *
+    CreateAnimatedAvatarView(const std::string &name) = 0;
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIComponentFactory);
 }; // class UIComponentFactory

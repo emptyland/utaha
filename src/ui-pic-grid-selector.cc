@@ -128,7 +128,7 @@ bool UIPicGridSelector::LoadPicFromFile(const char *file_path) {
     return SetPic(pic, true);
 }
 
-SDL_Surface *UIPicGridSelector::CutSelectedSurface(int clipping) {
+SDL_Surface *UIPicGridSelector::CutSelectedSurface(int x, int y, int clipping) {
     int h = grid_size_h_;
     if (clipping > 0) {
         h -= clipping;
@@ -143,8 +143,8 @@ SDL_Surface *UIPicGridSelector::CutSelectedSurface(int clipping) {
     }
 
     SDL_Rect src = {
-        selected_x_ * grid_size_w_,
-        selected_y_ * grid_size_h_,
+        x * grid_size_w_,
+        y * grid_size_h_,
         grid_size_w_,
         h,
     };

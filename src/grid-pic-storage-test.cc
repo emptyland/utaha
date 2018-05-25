@@ -31,7 +31,7 @@ TEST(GridPicStorageTest, Store) {
         SDL_UnlockSurface(grid);
 
         bool ok = true;
-        storage.FindOrInsertGrid("[unknown]", i, grid, &ok);
+        storage.PutGrid("[unknown]", i, grid, &ok);
         ASSERT_TRUE(ok);
     }
 

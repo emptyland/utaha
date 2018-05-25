@@ -17,6 +17,12 @@ local mainMenu = builder:beginFlatMenuGroup("main-menu")
         :addItem("Next Tile", R.ID_TILE_NEXT, nil)
         :addItem("Prev Tile", R.ID_TILE_PREV, nil)
     :endColumn()
+    :beginColumn("Spirit", 3)
+        :addItem("Add Regular", R.ID_SPIRIT_ADD_REGULAR, nil)
+        :addDiv()
+        :addItem("Next Spirit", R.ID_SPIRIT_NEXT, nil)
+        :addItem("Prev Spirit", R.ID_SPIRIT_PREV, nil)
+    :endColumn()
 :endMenuGroup()
 
 local statusBar = builder:beginFlatStatusBar("main-status-bar")
@@ -128,9 +134,56 @@ local tileLayout = builder:beginLayout()
     :endRow()
 :endLayout()
 
+--------------------------------------------------------------------------------
+
+local spiritId = builder:beginFlatInputBox("spirit-id")
+    :text(0)
+    :maxInput(100)
+    :h(26)
+    :w(60)
+:endInputBox()
+
+local spiritName = builder:beginFlatInputBox("spirit-name")
+    :text("[unnamed]")
+    :maxInput(100)
+    :h(26)
+    :w(120)
+:endInputBox()
+
+local animatedSpeed = builder:beginFlatInputBox("animated-speed")
+    :text(1000)
+    :maxInput(100)
+    :h(26)
+    :w(60)
+:endInputBox()
+
+local spiritView = builder:beginAnimatedAvatarView("spirit-view")
+    :viewW(24)
+    :viewH(32)
+    :animatedSpeed(100)
+:endAnimatedAvatarView()
+
+local spiritLayout = builder:beginLayout()
+    :paddingSize(1)
+    :verticalAlignment(alignment.ALIGN_LEFT_OR_TOP)
+    :horizontalAligment(alignment.ALIGN_LEFT_OR_TOP)
+    :beginRow(alignment.ALIGN_LEFT_OR_TOP)
+        :add(builder:flatLabel("l", "Spirit ID:"))
+        :add(spiritId)
+        :add(builder:flatLabel("l", "Spirit Name: "))
+        :add(spiritName)
+        :add(builder:flatLabel("l", "Animated Speed: "))
+        :add(animatedSpeed)
+    :endRow()
+    :beginRow(alignment.ALIGN_CENTER)
+        :add(spiritView)
+    :endRow()
+:endLayout()
+
 return {
-    mainMenu = mainMenu,
-    statusBar = statusBar,
-    rightLayout = rightLayout,
-    tileLayout = tileLayout
+    mainMenu     = mainMenu,
+    statusBar    = statusBar,
+    rightLayout  = rightLayout,
+    tileLayout   = tileLayout,
+    spiritLayout = spiritLayout,
 }

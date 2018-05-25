@@ -9,6 +9,7 @@
 #include "ui-flat-label.h"
 #include "ui-flat-pic-view.h"
 #include "ui-pic-grid-selector.h"
+#include "ui-animated-avatar-view.h"
 #include "ui-layout.h"
 #include "lua-utils.h"
 #include "glog/logging.h"
@@ -131,6 +132,17 @@ UIComponentBuilder::BeginPicGridSelector(const char *name) {
     return new UIPicGridSelectorBuilder(component, factory_);
 }
 
+UIAnimatedAvatarViewBuilder *
+UIComponentBuilder::BeginAnimatedAvatarView(const char *name) {
+    auto component = factory_->CreateAnimatedAvatarView(name);
+    if (!component) {
+        LOG(ERROR) << "Can not create <UIAnimatedAvatarView>!";
+        return nullptr;
+    }
+    component->AddListenner(listenner_);
+    return new UIAnimatedAvatarViewBuilder(component, factory_);
+}
+
 UILayoutBuilder *UIComponentBuilder::BeginLayout() {
     auto layout = new UILayout(form_);
     return new UILayoutBuilder(layout);
@@ -140,26 +152,40 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
     luabridge::getGlobalNamespace(L)
         .beginNamespace(kLuaNamespace)
             .beginClass<UIComponentBuilder>("UIComponentBuilder")
-                .addFunction("beginFlatMenuGroup", &UIComponentBuilder::BeginFlatMenuGroup)
-                .addFunction("beginFlatMenu", &UIComponentBuilder::BeginFlatMenu)
-                .addFunction("beginFlatButton", &UIComponentBuilder::BeginFlatButton)
-                .addFunction("beginFlatInputBox", &UIComponentBuilder::BeginFlatInputBox)
-                .addFunction("beginFlatLabel", &UIComponentBuilder::BeginFlatLabel)
+                .addFunction("beginFlatMenuGroup",
+                             &UIComponentBuilder::BeginFlatMenuGroup)
+                .addFunction("beginFlatMenu",
+                             &UIComponentBuilder::BeginFlatMenu)
+                .addFunction("beginFlatButton",
+                             &UIComponentBuilder::BeginFlatButton)
+                .addFunction("beginFlatInputBox",
+                             &UIComponentBuilder::BeginFlatInputBox)
+                .addFunction("beginFlatLabel",
+                             &UIComponentBuilder::BeginFlatLabel)
                 .addFunction("flatLabel", &UIComponentBuilder::LetFlatLabel)
                 .addFunction("flatPicView", &UIComponentBuilder::LetFlatPicView)
-                .addFunction("beginFlatCheckBox", &UIComponentBuilder::BeginFlatCheckBox)
-                .addFunction("beginFlatStatusBar", &UIComponentBuilder::BeginFlatStatusBar)
-                .addFunction("beginPicGridSelector", &UIComponentBuilder::BeginPicGridSelector)
+                .addFunction("beginFlatCheckBox",
+                             &UIComponentBuilder::BeginFlatCheckBox)
+                .addFunction("beginFlatStatusBar",
+                             &UIComponentBuilder::BeginFlatStatusBar)
+                .addFunction("beginPicGridSelector",
+                             &UIComponentBuilder::BeginPicGridSelector)
+                .addFunction("beginAnimatedAvatarView",
+                             &UIComponentBuilder::BeginAnimatedAvatarView)
                 .addFunction("beginLayout", &UIComponentBuilder::BeginLayout)
             .endClass()
             .beginClass<UIFlatMenuGroupBuilder>("FlatMenuGroupBuilder")
-                .addFunction("beginColumn", &UIFlatMenuGroupBuilder::BeginColumn)
-                .addFunction("endMenuGroup", &UIFlatMenuGroupBuilder::EndMenuGroup)
+                .addFunction("beginColumn",
+                             &UIFlatMenuGroupBuilder::BeginColumn)
+                .addFunction("endMenuGroup",
+                             &UIFlatMenuGroupBuilder::EndMenuGroup)
             .endClass()
-            .beginClass<UIFlatMenuGroupColumnBuilder>("FlatMenuGroupColumnBuilder")
+            .beginClass<UIFlatMenuGroupColumnBuilder>(
+                "FlatMenuGroupColumnBuilder")
                 .addFunction("addItem", &UIFlatMenuGroupColumnBuilder::AddItem)
                 .addFunction("addDiv", &UIFlatMenuGroupColumnBuilder::AddDiv)
-                .addFunction("endColumn", &UIFlatMenuGroupColumnBuilder::EndColumn)
+                .addFunction("endColumn",
+                             &UIFlatMenuGroupColumnBuilder::EndColumn)
             .endClass()
             .beginClass<UIFlatMenuBuilder>("FlatMenuBuilder")
                 .addFunction("addItem", &UIFlatMenuBuilder::AddItem)
@@ -205,26 +231,42 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
                 .addFunction("y", &UIFlatStatusBarBuilder::LetY)
                 .addFunction("w", &UIFlatStatusBarBuilder::LetW)
                 .addFunction("h", &UIFlatStatusBarBuilder::LetH)
-                .addFunction("endStatusBar", &UIFlatStatusBarBuilder::EndStatusBar)
+                .addFunction("endStatusBar",
+                             &UIFlatStatusBarBuilder::EndStatusBar)
             .endClass()
             .beginClass<UIFlatStatusBarGridBuilder>("FlatStatusBarGridBuilder")
                 .addFunction("text", &UIFlatStatusBarGridBuilder::LetText)
                 .addFunction("w", &UIFlatStatusBarGridBuilder::LetW)
-                .addFunction("fontColor", &UIFlatStatusBarGridBuilder::LetFontColor)
+                .addFunction("fontColor",
+                             &UIFlatStatusBarGridBuilder::LetFontColor)
                 .addFunction("bgColor", &UIFlatStatusBarGridBuilder::LetBgColor)
                 .addFunction("endGrid", &UIFlatStatusBarGridBuilder::EndGrid)
             .endClass()
             .beginClass<UIPicGridSelectorBuilder>("PicGridSelectorBuilder")
                 .addFunction("cmdId", &UIPicGridSelectorBuilder::LetCmdId)
-                .addFunction("gridSizeW", &UIPicGridSelectorBuilder::LetGridSizeW)
-                .addFunction("gridSizeH", &UIPicGridSelectorBuilder::LetGridSizeH)
-                .addFunction("endPicGridSelectorFromFile", &UIPicGridSelectorBuilder::EndPicGridSelectorFromFile)
-                .addFunction("endPicGridSelector", &UIPicGridSelectorBuilder::EndPicGridSelector)
+                .addFunction("gridSizeW",
+                             &UIPicGridSelectorBuilder::LetGridSizeW)
+                .addFunction("gridSizeH",
+                             &UIPicGridSelectorBuilder::LetGridSizeH)
+                .addFunction("endPicGridSelectorFromFile",
+                    &UIPicGridSelectorBuilder::EndPicGridSelectorFromFile)
+                .addFunction("endPicGridSelector",
+                             &UIPicGridSelectorBuilder::EndPicGridSelector)
+            .endClass()
+            .beginClass<UIAnimatedAvatarViewBuilder>("AnimatedAvatarBuilder")
+                .addFunction("viewW", &UIAnimatedAvatarViewBuilder::LetViewW)
+                .addFunction("viewH", &UIAnimatedAvatarViewBuilder::LetViewH)
+                .addFunction("animatedSpeed",
+                             &UIAnimatedAvatarViewBuilder::LetAnimatedSpeed)
+                .addFunction("endAnimatedAvatarView",
+                             &UIAnimatedAvatarViewBuilder::EndAnimatedAvatarView)
             .endClass()
             .beginClass<UILayoutBuilder>("LayoutBuilder")
                 .addFunction("paddingSize", &UILayoutBuilder::LetPaddingSize)
-                .addFunction("verticalAlignment", &UILayoutBuilder::LetVerticalAlignment)
-                .addFunction("horizontalAligment", &UILayoutBuilder::LetHorizontalAligment)
+                .addFunction("verticalAlignment",
+                             &UILayoutBuilder::LetVerticalAlignment)
+                .addFunction("horizontalAligment",
+                             &UILayoutBuilder::LetHorizontalAligment)
                 .addFunction("debugMode", &UILayoutBuilder::LetDebugMode)
                 .addFunction("beginRow", &UILayoutBuilder::BeginRow)
                 .addFunction("endLayout", &UILayoutBuilder::EndLayout)
@@ -234,15 +276,21 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
                 .addFunction("endRow", &UILayoutRowBuilder::EndRow)
             .endClass()
             .beginClass<UIComponent>("Component").endClass()
-            .deriveClass<UIFlatMenuGroup, UIComponent>("FlatMenuGroup").endClass()
+            .deriveClass<UIFlatMenuGroup, UIComponent>("FlatMenuGroup")
+            .endClass()
             .deriveClass<UIFlatMenu, UIComponent>("FlatMenu").endClass()
             .deriveClass<UIFlatButton, UIComponent>("FlatButton").endClass()
             .deriveClass<UIFlatInputBox, UIComponent>("FlatInputBox").endClass()
             .deriveClass<UIFlatLabel, UIComponent>("FlatLabel").endClass()
-            .deriveClass<UIFlatCheckBox, UIComponent>("FlatCheckBox").endClass()
-            .deriveClass<UIFlatStatusBar, UIComponent>("FlatStatusBar").endClass()
+            .deriveClass<UIFlatCheckBox, UIComponent>("FlatCheckBox")
+            .endClass()
+            .deriveClass<UIFlatStatusBar, UIComponent>("FlatStatusBar")
+            .endClass()
             .deriveClass<UIFlatPicView, UIComponent>("FlatPicView").endClass()
-            .deriveClass<UIPicGridSelector, UIComponent>("PicGridSelector").endClass()
+            .deriveClass<UIPicGridSelector, UIComponent>("PicGridSelector")
+            .endClass()
+            .deriveClass<UIAnimatedAvatarView, UIComponent>("AnimatedAvatarView")
+            .endClass()
             .beginClass<UILayout>("Layout").endClass()
         .endNamespace();
 
@@ -252,7 +300,8 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
         {"ALIGN_CENTER",          UILayout::ALIGN_CENTER},
         {"ALIGN_FILL",            UILayout::ALIGN_FILL},
     };
-    LuaUtils::InitConstantId(L, kLuaNamespace, "alignment", alignments, arraysize(alignments));
+    LuaUtils::InitConstantId(L, kLuaNamespace, "alignment", alignments,
+                             arraysize(alignments));
     return 0;
 }
 
@@ -276,11 +325,12 @@ UIFlatMenuGroup *UIFlatMenuGroupBuilder::EndMenuGroup() {
 // class UIFlatMenuGroupColumnBuilder
 ////////////////////////////////////////////////////////////////////////////////
 
-UIFlatMenuGroupColumnBuilder::UIFlatMenuGroupColumnBuilder(const char *name,
-                                                           int cmd_id,
-                                                           void *param,
-                                                           InteractiveListenner *listenner,
-                                                           UIFlatMenuGroupBuilder *builder)
+UIFlatMenuGroupColumnBuilder::UIFlatMenuGroupColumnBuilder(
+        const char *name,
+        int cmd_id,
+        void *param,
+        InteractiveListenner *listenner,
+        UIFlatMenuGroupBuilder *builder)
     : col_name_(DCHECK_NOTNULL(name))
     , col_cmd_id_(cmd_id)
     , col_param_(param)
@@ -291,7 +341,8 @@ UIFlatMenuGroupColumnBuilder::UIFlatMenuGroupColumnBuilder(const char *name,
 }
 
 UIFlatMenuGroupColumnBuilder *
-UIFlatMenuGroupColumnBuilder::AddItem(const char *name, int cmd_id, void *param) {
+UIFlatMenuGroupColumnBuilder::AddItem(const char *name, int cmd_id,
+                                      void *param) {
     component()->AddItem(name, cmd_id, param);
     return this;
 }
@@ -620,6 +671,32 @@ UIFlatStatusBarBuilder *UIFlatStatusBarGridBuilder::EndGrid() {
     auto reuslt = builder_;
     delete this;
     return reuslt;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// class UIAnimatedAvatarViewBuilder
+////////////////////////////////////////////////////////////////////////////////
+
+UIAnimatedAvatarViewBuilder *UIAnimatedAvatarViewBuilder::LetViewW(int w) {
+    component()->set_view_w(w);
+    return this;
+}
+
+UIAnimatedAvatarViewBuilder *UIAnimatedAvatarViewBuilder::LetViewH(int h) {
+    component()->set_view_h(h);
+    return this;
+}
+
+UIAnimatedAvatarViewBuilder *
+UIAnimatedAvatarViewBuilder::LetAnimatedSpeed(int speed) {
+    component()->set_animated_speed(speed);
+    return this;
+}
+
+UIAnimatedAvatarView *UIAnimatedAvatarViewBuilder::EndAnimatedAvatarView() {
+    auto result = component();
+    delete this;
+    return result;
 }
 
 } // namespace utaha

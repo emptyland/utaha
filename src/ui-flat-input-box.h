@@ -2,6 +2,8 @@
 #define UTAHA_UI_FLAT_INPUT_BOX_H_
 
 #include "ui-component.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <string>
 
 typedef struct _TTF_Font TTF_Font;
@@ -24,6 +26,14 @@ public:
 
     void changed() { is_changed_ = true; }
 
+    int GetInt() const { return atoi(text_.c_str()); }
+    inline void SetInt(int value);
+
+    void SetText(const std::string &text) {
+        text_.assign(text);
+        is_changed_= true;
+    }
+
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIFlatInputBox);
 private:
     bool CreateOrSetText(SDL_Renderer *renderer);
@@ -40,6 +50,13 @@ private:
     int text_w_ = 0;
     int text_h_ = 0;
 }; // class UIFlatInputBox
+
+inline void UIFlatInputBox::SetInt(int value) {
+    char buf[128];
+    snprintf(buf, arraysize(buf), "%d", value);
+    text_.assign(buf);
+    is_changed_ = true;
+}
 
 } // namespace utaha
 

@@ -32,13 +32,7 @@ public:
 
     SDL_Surface *FindOrNullGrid(const std::string &original_file,
                                 int original_idx, int *index) const;
-    SDL_Surface *FindOrNullGrid(int index) const {
-        if (index < 0 || index >= grid_pics_.size()) {
-            return nullptr;
-        } else {
-            return grid_pics_[index];
-        }
-    }
+    inline SDL_Surface *FindOrNullGrid(int index) const;
 
     bool Exists(const std::string &original_file, int original_idx) const {
         return FindOrNullGrid(original_file, original_idx, nullptr) != nullptr;
@@ -53,7 +47,15 @@ private:
     std::string name_;
     std::vector<SDL_Surface *> grid_pics_;
     std::map<std::string, int> original_;
-};
+}; // class GridPicStorage
+
+inline SDL_Surface *GridPicStorage::FindOrNullGrid(int index) const {
+    if (index < 0 || index >= grid_pics_.size()) {
+        return nullptr;
+    } else {
+        return grid_pics_[index];
+    }
+}
 
 } // namespace utaha
 
