@@ -34,10 +34,10 @@ public:
     bool SetPic(SDL_Surface *pic, bool ownership);
     bool LoadPicFromFile(const char *file_path);
 
-    SDL_Surface *CutSelectedSurface(int clipping) {
-        return !is_selected() ? nullptr :
-               CutSelectedSurface(selected_x_, selected_y_, clipping);
-    }
+    inline void SetGridSizeW(int w);
+    inline void SetGridSizeH(int h);
+
+    inline SDL_Surface *CutSelectedSurface(int clipping);
     SDL_Surface *CutSelectedSurface(int x, int y, int clipping);
 
     SDL_Rect GetPicRect() const;
@@ -55,6 +55,27 @@ private:
     int selected_y_ = -1;
     bool ownership_ = false;
 }; // class UIPicGridSelector
+
+inline void UIPicGridSelector::SetGridSizeW(int w) {
+    if (w > 0) {
+        grid_size_w_ = w;
+        max_h_grids_ = pic_->w / grid_size_w_;
+        unselected();
+    }
+}
+
+inline void UIPicGridSelector::SetGridSizeH(int h) {
+    if (h > 0) {
+        grid_size_h_ = h;
+        max_v_grids_ = pic_->h / grid_size_h_;
+        unselected();
+    }
+}
+
+inline SDL_Surface *UIPicGridSelector::CutSelectedSurface(int clipping) {
+    return !is_selected() ? nullptr :
+    CutSelectedSurface(selected_x_, selected_y_, clipping);
+}
 
 } // namespace utaha
 

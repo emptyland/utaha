@@ -1,6 +1,6 @@
 #include "ui-flat-button.h"
-#include "sample-render-entity.h"
 #include "glog/logging.h"
+#include SDL_TTF_H
 
 namespace utaha {
 

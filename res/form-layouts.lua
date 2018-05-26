@@ -158,8 +158,8 @@ local animatedSpeed = builder:beginFlatInputBox("animated-speed")
 :endInputBox()
 
 local spiritView = builder:beginAnimatedAvatarView("spirit-view")
-    :viewW(24)
-    :viewH(32)
+    :viewW(48)
+    :viewH(64)
     :animatedSpeed(100)
 :endAnimatedAvatarView()
 

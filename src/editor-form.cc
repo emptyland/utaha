@@ -537,15 +537,13 @@ EditorForm::EditorForm(const UniversalProfile *profile)
     if (sender->name().compare("grid-size-w-input") == 0) {
         int grid_w = down_cast<UIFlatInputBox>(sender)->GetInt();
         if (grid_w > 0) {
-            raw_pic_ctrl_->selector()->set_grid_size_w(grid_w);
-            raw_pic_ctrl_->selector()->unselected();
+            raw_pic_ctrl_->selector()->SetGridSizeW(grid_w);
         }
     }
     if (sender->name().compare("grid-size-h-input") == 0) {
         int grid_h = down_cast<UIFlatInputBox>(sender)->GetInt();
         if (grid_h > 0) {
-            raw_pic_ctrl_->selector()->set_grid_size_h(grid_h);
-            raw_pic_ctrl_->selector()->unselected();
+            raw_pic_ctrl_->selector()->SetGridSizeH(grid_h);
         }
     }
     if (sender->name().compare("animated-speed") == 0) {
