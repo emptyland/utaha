@@ -175,8 +175,16 @@
     <Image Include="utaha.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\animated-avatar-storage.h" />
+    <ClInclude Include="..\src\animated-avatar.h" />
+    <ClInclude Include="..\src\animated-spirit.h" />
     <ClInclude Include="..\src\base.h" />
     <ClInclude Include="..\src\datatype.h" />
+    <ClInclude Include="..\src\fixed-terrain.h" />
+    <ClInclude Include="..\src\grid-pic-storage.h" />
+    <ClInclude Include="..\src\indexed-spirit.h" />
+    <ClInclude Include="..\src\indexed-tile-storage.h" />
+    <ClInclude Include="..\src\indexed-tile.h" />
     <ClInclude Include="..\src\interactive-entity.h" />
     <ClInclude Include="..\src\interactive-listenner.h" />
     <ClInclude Include="..\src\lazy-instance.h" />
@@ -185,34 +193,47 @@
     <ClInclude Include="..\src\raw-pic-collection.h" />
     <ClInclude Include="..\src\render-entity.h" />
     <ClInclude Include="..\src\root-render-entity.h" />
-    <ClInclude Include="..\src\sample-render-entity.h" />
     <ClInclude Include="..\src\script-executor.h" />
+    <ClInclude Include="..\src\text-input-mode-controller.h" />
+    <ClInclude Include="..\src\ui-animated-avatar-view.h" />
     <ClInclude Include="..\src\ui-component-builder.h" />
     <ClInclude Include="..\src\ui-component-factory.h" />
     <ClInclude Include="..\src\ui-component.h" />
     <ClInclude Include="..\src\ui-flat-button.h" />
     <ClInclude Include="..\src\ui-flat-check-box.h" />
     <ClInclude Include="..\src\ui-flat-input-box.h" />
+    <ClInclude Include="..\src\ui-flat-label.h" />
     <ClInclude Include="..\src\ui-flat-menu-group.h" />
     <ClInclude Include="..\src\ui-flat-menu.h" />
+    <ClInclude Include="..\src\ui-flat-pic-view.h" />
     <ClInclude Include="..\src\ui-flat-status-bar.h" />
     <ClInclude Include="..\src\ui-form.h" />
     <ClInclude Include="..\src\ui-layout.h" />
     <ClInclude Include="..\src\ui-pic-grid-selector.h" />
     <ClInclude Include="..\src\ui-style-collection.h" />
     <ClInclude Include="..\src\ui_layout.h" />
+    <ClInclude Include="..\src\universal-profile.h" />
+    <ClInclude Include="..\src\base-io.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\animated-avatar-storage.cc" />
+    <ClCompile Include="..\src\animated-avatar.cc" />
+    <ClCompile Include="..\src\base-io-windows.cc" />
     <ClCompile Include="..\src\editor-form.cc" />
     <ClCompile Include="..\src\editor-main.cc" />
+    <ClCompile Include="..\src\fixed-terrain.cc" />
+    <ClCompile Include="..\src\grid-pic-storage.cc" />
+    <ClCompile Include="..\src\indexed-tile-storage.cc" />
+    <ClCompile Include="..\src\indexed-tile.cc" />
     <ClCompile Include="..\src\interactive-entity.cc" />
     <ClCompile Include="..\src\lua-utils.cc" />
     <ClCompile Include="..\src\on-exit-scope.cc" />
     <ClCompile Include="..\src\raw-pic-collection.cc" />
     <ClCompile Include="..\src\render-entity.cc" />
     <ClCompile Include="..\src\root-render-entity.cc" />
-    <ClCompile Include="..\src\sample-render-entity.cc" />
     <ClCompile Include="..\src\script-executor.cc" />
+    <ClCompile Include="..\src\text-input-mode-controller.cc" />
+    <ClCompile Include="..\src\ui-animated-avatar-view.cc" />
     <ClCompile Include="..\src\ui-component-builder.cc" />
     <ClCompile Include="..\src\ui-component-factory.cc" />
     <ClCompile Include="..\src\ui-component-style-factory.cc" />
@@ -220,13 +241,16 @@
     <ClCompile Include="..\src\ui-flat-button.cc" />
     <ClCompile Include="..\src\ui-flat-check-box.cc" />
     <ClCompile Include="..\src\ui-flat-input-box.cc" />
+    <ClCompile Include="..\src\ui-flat-label.cc" />
     <ClCompile Include="..\src\ui-flat-menu-group.cc" />
     <ClCompile Include="..\src\ui-flat-menu.cc" />
+    <ClCompile Include="..\src\ui-flat-pic-view.cc" />
     <ClCompile Include="..\src\ui-flat-status-bar.cc" />
     <ClCompile Include="..\src\ui-form.cc" />
     <ClCompile Include="..\src\ui-layout.cc" />
     <ClCompile Include="..\src\ui-pic-grid-selector.cc" />
     <ClCompile Include="..\src\ui-style-collection.cc" />
+    <ClCompile Include="..\src\universal-profile.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

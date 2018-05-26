@@ -6,10 +6,10 @@
 namespace utaha {
 
 enum Direction: int {
-    DIR_N, // 上
-    DIR_S, // 下
-    DIR_W, // 左
-    DIR_E, // 右
+    DIR_N, // UP
+    DIR_S, // Down
+    DIR_W, // Left
+    DIR_E, // Right
     MAX_DIR,
 };
 

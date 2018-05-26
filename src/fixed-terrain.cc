@@ -1,4 +1,4 @@
-#include "indexed-terrain.h"
+#include "fixed-terrain.h"
 
 namespace utaha {
 

@@ -1,7 +1,9 @@
 #include "indexed-tile-storage.h"
 #include "indexed-tile.h"
 #include "glog/logging.h"
+#include "base-io.h"
 #include <stdio.h>
+#include <memory>
 
 namespace utaha {
 
@@ -24,34 +26,32 @@ bool IndexedTileStorage::LoadFromFile() {
     std::string metadata_file(dir_);
     metadata_file.append("/").append(kName).append(".metadata");
 
-    if (access(metadata_file.c_str(), F_OK) != 0) {
+    if (!FSUtils::FileExist(metadata_file)) {
         return true;
     }
 
-    FILE *f = fopen(metadata_file.c_str(), "rb");
+    std::unique_ptr<FileTextInputStream>
+        f(FSUtils::OpenTextFileRead(metadata_file));
     if (!f) {
-        PLOG(ERROR) << "Ca not open file: " << metadata_file;
         return false;
     }
     char buf[FILENAME_MAX]; int start_id;
-    fscanf(f, "%s\t%d\n", buf, &start_id);
+    f->Scanf("%s\t%d\n", buf, &start_id);
     grid_pic_name_.assign(buf);
     if (start_id != start_id_) {
         // TODO:
     }
-    fclose(f); f = nullptr;
 
     std::string data_file(dir_);
     data_file.append("/").append(kName).append(".data");
 
-    f = fopen(data_file.c_str(), "rb");
+    f.reset(FSUtils::OpenTextFileRead(data_file));
     if (!f) {
-        PLOG(ERROR) << "Can not open file: " << data_file;
         return false;
     }
     int tile_id, tex_id;
     uint32_t passable;
-    while (fscanf(f, "%d\t%s\t%d\t%u\n", &tile_id, buf, &tex_id, &passable) != EOF) {
+    while (f->Scanf("%d\t%s\t%d\t%u\n", &tile_id, buf, &tex_id, &passable) != EOF) {
         auto tile = new IndexedTile();
         tile->set_id(tile_id);
         tile->set_name(buf);
@@ -70,7 +70,6 @@ bool IndexedTileStorage::LoadFromFile() {
     if (next_id_ != 0) {
         NextId();
     }
-    fclose(f); f = nullptr;
     return true;
 }
 
@@ -78,30 +77,25 @@ bool IndexedTileStorage::StoreToFile() {
     std::string metadata_file(dir_);
     metadata_file.append("/").append(kName).append(".metadata");
 
-    FILE *f = fopen(metadata_file.c_str(), "wb");
+    std::unique_ptr<FileTextOutputStream>
+        f(FSUtils::OpenTextFileWrite(metadata_file));
     if (!f) {
-        PLOG(ERROR) << "Can not open file: " << metadata_file;
         return false;
     }
-    fprintf(f, "%s\t%d\n", grid_pic_name_.c_str(), start_id_);
-    fclose(f); f = nullptr;
+    f->Printf("%s\t%d\n", grid_pic_name_.c_str(), start_id_);
 
     std::string data_file(dir_);
     data_file.append("/").append(kName).append(".data");
-
-    f = fopen(data_file.c_str(), "wb");
+    f.reset(FSUtils::OpenTextFileWrite(data_file));
     if (!f) {
-        PLOG(ERROR) << "Can not open file: " << data_file;
         return false;
     }
     for (const auto &pair : tiles_) {
-        fprintf(f, "%d\t%s\t%d\t%u\n", pair.second->id(),
-                pair.second->name().empty() ? "[unknown]"
-                : pair.second->name().c_str(),
-                pair.second->tex_id(), pair.second->passable());
+        f->Printf("%d\t%s\t%d\t%u\n", pair.second->id(),
+                  pair.second->name().empty() ? "[unknown]"
+                  : pair.second->name().c_str(),
+                  pair.second->tex_id(), pair.second->passable());
     }
-    fclose(f); f = nullptr;
-
     return true;
 }
 

@@ -1,17 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="源文件">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="资源文件">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Base">
+      <UniqueIdentifier>{ed99138c-b954-4079-b1a3-b9e8e3c25790}</UniqueIdentifier>
+      <Extensions>*.h,*.cc</Extensions>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{8f16e158-4fa3-48b0-aff8-3881793c395f}</UniqueIdentifier>
+      <Extensions>*.h,*.cc</Extensions>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{ebe7d896-0bf8-463f-9400-ff8332cf5f7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -24,156 +31,228 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\base.h">
-      <Filter>头文件</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="..\src\datatype.h">
-      <Filter>头文件</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="..\src\interactive-entity.h">
-      <Filter>头文件</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="..\src\interactive-listenner.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\lua-utils.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\render-entity.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\root-render-entity.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\sample-render-entity.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ui_layout.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ui-component.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ui-component-builder.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ui-component-factory.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ui-flat-button.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ui-flat-check-box.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ui-flat-input-box.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ui-flat-menu.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ui-flat-menu-group.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ui-layout.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ui-pic-grid-selector.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ui-style-collection.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ui-flat-status-bar.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ui-form.h">
-      <Filter>头文件</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="..\src\lazy-instance.h">
-      <Filter>头文件</Filter>
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lua-utils.h">
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="..\src\on-exit-scope.h">
-      <Filter>头文件</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\raw-pic-collection.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="..\src\render-entity.h">
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="..\src\script-executor.h">
-      <Filter>头文件</Filter>
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\root-render-entity.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui_layout.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-component.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-component-builder.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-component-factory.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-button.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-check-box.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-input-box.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-menu.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-menu-group.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-status-bar.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-form.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-layout.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-pic-grid-selector.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-style-collection.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\raw-pic-collection.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\animated-spirit.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\animated-avatar.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\animated-avatar-storage.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fixed-terrain.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\grid-pic-storage.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\indexed-spirit.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\indexed-tile.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\indexed-tile-storage.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\text-input-mode-controller.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-animated-avatar-view.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-label.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-pic-view.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\universal-profile.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\base-io.h">
+      <Filter>Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\editor-main.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\interactive-entity.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\lua-utils.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\render-entity.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\root-render-entity.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\sample-render-entity.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ui-component.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ui-component-builder.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ui-component-factory.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ui-component-style-factory.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ui-flat-button.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ui-flat-check-box.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ui-flat-input-box.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ui-flat-menu.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ui-flat-menu-group.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ui-layout.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ui-pic-grid-selector.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ui-style-collection.cc">
-      <Filter>源文件</Filter>
+      <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\editor-form.cc">
-      <Filter>源文件</Filter>
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ui-flat-status-bar.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ui-form.cc">
-      <Filter>源文件</Filter>
+    <ClCompile Include="..\src\interactive-entity.cc">
+      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="..\src\on-exit-scope.cc">
-      <Filter>源文件</Filter>
+      <Filter>Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\raw-pic-collection.cc">
-      <Filter>源文件</Filter>
+    <ClCompile Include="..\src\render-entity.cc">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\root-render-entity.cc">
+      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="..\src\script-executor.cc">
-      <Filter>源文件</Filter>
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-component.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-component-builder.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-component-factory.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-component-style-factory.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-button.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-check-box.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-input-box.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-menu.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-menu-group.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-status-bar.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-form.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-layout.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-pic-grid-selector.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-style-collection.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\raw-pic-collection.cc">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lua-utils.cc">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\animated-avatar.cc">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\animated-avatar-storage.cc">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\fixed-terrain.cc">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\grid-pic-storage.cc">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\indexed-tile.cc">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\indexed-tile-storage.cc">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\text-input-mode-controller.cc">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-animated-avatar-view.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-label.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-pic-view.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\universal-profile.cc">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\base-io-windows.cc">
+      <Filter>Base</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

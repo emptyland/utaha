@@ -1,7 +1,9 @@
 #include "grid-pic-storage.h"
 #include "glog/logging.h"
+#include "base-io.h"
 #include SDL_IMAGE_H
 #include <stdio.h>
+#include <memory>
 
 namespace utaha {
 
@@ -25,41 +27,32 @@ GridPicStorage::~GridPicStorage() {
 bool GridPicStorage::LoadFromFile() {
     std::string meta_file(dir_);
     meta_file.append("/").append(name_).append(".metadata");
-
-    if (access(meta_file.c_str(), F_OK) != 0) {
+    if (!FSUtils::FileExist(meta_file)) {
         return true;
     }
 
-    FILE *f = fopen(meta_file.c_str(), "rb");
+    std::unique_ptr<FileTextInputStream>
+        f(FSUtils::OpenTextFileRead(meta_file));
     if (!f) {
-        PLOG(ERROR) << "Can not open file: " << meta_file;
         return false;
     }
     size_t n_grids = 0;
-    fscanf(f, "%d\t%d\t%zd\n", &grid_w_, &grid_h_, &n_grids);
-    if (ferror(f)) {
-        PLOG(ERROR) << "Can not read file: " << meta_file;
-        fclose(f);
-        return false;
-    }
-    fclose(f); f = nullptr;
+    f->Scanf("%d\t%d\t%zd\n", &grid_w_, &grid_h_, &n_grids);
 
     std::string idx_file(dir_);
     idx_file.append("/").append(name_).append(".index");
-    f = fopen(idx_file.c_str(), "rb");
+    f.reset(FSUtils::OpenTextFileRead(idx_file));
     if (!f) {
-        PLOG(ERROR) << "Can not open file: " << idx_file;
         return false;
     }
     char original_file[FILENAME_MAX];
     int original_index = 0, index = 0;
-    while (fscanf(f, "%s\t%d\t%d\n", original_file, &original_index,
-                  &index) != EOF) {
+    while (f->Scanf("%s\t%d\t%d\n", original_file, &original_index,
+                    &index) != EOF) {
         char key[FILENAME_MAX];
         snprintf(key, arraysize(key), "%s/%d", original_file, original_index);
         original_[key] = index;
     }
-    fclose(f); f = nullptr;
 
     std::string pic_file(dir_);
     pic_file.append("/").append(name_).append(".png");
@@ -120,29 +113,25 @@ bool GridPicStorage::StoreToFile() {
     std::string meta_file(dir_);
     meta_file.append("/").append(name_).append(".metadata");
 
-    FILE *f = fopen(meta_file.c_str(), "wb");
+    std::unique_ptr<FileTextOutputStream>
+        f(FSUtils::OpenTextFileWrite(meta_file));
     if (!f) {
-        PLOG(ERROR) << "Can not open file: " << meta_file;
         return false;
     }
-    fprintf(f, "%d\t%d\t%zd\n", grid_w_, grid_h_, grid_pics_.size());
-    fclose(f); f = nullptr;
+    f->Printf("%d\t%d\t%zd\n", grid_w_, grid_h_, grid_pics_.size());
 
     std::string idx_file(dir_);
     idx_file.append("/").append(name_).append(".index");
-    f = fopen(idx_file.c_str(), "wb");
+    f.reset(FSUtils::OpenTextFileWrite(idx_file));
     if (!f) {
-        PLOG(ERROR) << "Can not open file: " << meta_file;
         return false;
     }
     for (const auto &pair : original_) {
         auto p = pair.first.rfind("/");
         auto file = pair.first.substr(0, p);
         auto index = pair.first.substr(p + 1);
-        fprintf(f, "%s\t%s\t%d\n", file.c_str(), index.c_str(), pair.second);
+        f->Printf("%s\t%s\t%d\n", file.c_str(), index.c_str(), pair.second);
     }
-    fclose(f); f = nullptr;
-
 
     int grid_h = grid_pics_.empty() ? 0 : pitch_;
     int grid_v = (static_cast<int>(grid_pics_.size()) + pitch_ - 1) / pitch_;

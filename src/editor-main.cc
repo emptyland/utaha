@@ -32,8 +32,14 @@ int CALLBACK WinMain(
     }
 
     utaha::OnExitScope on_exit(utaha::ON_EXIT_SCOPE_INITIALIZER);
+    utaha::UniversalProfile profile;
+    std::string err;
+    profile.LoadFromFile("res/profile.lua", &err);
+    if (!err.empty()) {
+        LOG(FATAL) << "Can not load profile file!" << err;
+    }
 
-    std::unique_ptr<utaha::UIForm> form(utaha::CreateEditorForm());
+    std::unique_ptr<utaha::UIForm> form(utaha::CreateEditorForm(&profile));
     if (!form->OpenWindow("Utaha-Editor", 800, 600)) {
         return -1;
     }

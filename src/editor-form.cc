@@ -617,7 +617,7 @@ EditorForm::EditorForm(const UniversalProfile *profile)
         return -1;
     } else {
         char buf[64];
-        snprintf(buf, arraysize(buf), "raw: %lu", num_raw_pics);
+        snprintf(buf, arraysize(buf), "raw: %zu", num_raw_pics);
         status_bar->mutable_grid(1)->set_text(buf);
     }
 
