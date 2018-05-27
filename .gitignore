@@ -50,3 +50,5 @@ vs/utaha.vcxproj.user
 
 *.idb
 *.pdb
+*.user
+.vs

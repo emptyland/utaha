@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Extern">
+      <UniqueIdentifier>{28c29206-0cf2-4a49-bd3a-078cf492f71e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{7b00e61c-abd6-4c3b-acf4-165c03bcbd3f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\animated-avatar.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\animated-avatar-storage.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\animated-spirit.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\base.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\base-io.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\datatype.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fixed-terrain.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\grid-pic-storage.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\indexed-spirit.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\indexed-tile.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\indexed-tile-storage.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interactive-entity.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interactive-listenner.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lazy-instance.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lua-utils.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\on-exit-scope.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\raw-pic-collection.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render-entity.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\root-render-entity.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\script-executor.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\text-input-mode-controller.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-animated-avatar-view.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-component.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-component-builder.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-component-factory.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-button.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-check-box.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-input-box.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-label.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-menu.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-menu-group.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-pic-view.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-status-bar.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-form.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-layout.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-pic-grid-selector.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-style-collection.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\universal-profile.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\animated-avatar.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\animated-avatar-storage.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\base-io-windows.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\fixed-terrain.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\grid-pic-storage.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\indexed-tile.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\indexed-tile-storage.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interactive-entity.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lua-utils.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\on-exit-scope.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\raw-pic-collection.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\render-entity.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\root-render-entity.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\script-executor.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\text-input-mode-controller.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-animated-avatar-view.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-component.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-component-builder.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-component-factory.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-component-style-factory.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-button.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-check-box.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-input-box.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-label.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-menu.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-menu-group.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-pic-view.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-status-bar.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-form.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-layout.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-pic-grid-selector.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-style-collection.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\universal-profile.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\animated-avatar-storage-test.cc">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\animated-avatar-test.cc">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\grid-pic-storage-test.cc">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\indexed-tile-storage-test.cc">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\raw-pic-collection-test.cc">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-component-builder-test.cc">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-component-factory-test.cc">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-style-collection-test.cc">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\test-main.cc">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\base-io-test.cc">
+      <Filter>Tests</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

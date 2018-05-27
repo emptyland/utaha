@@ -54,7 +54,7 @@ int FileTextInputStream::Scanf(const char *fmt, ...) {
     va_list ap;
 
     va_start(ap, fmt);
-    int received = vfscanf_s(f_, fmt, ap);
+    int received = vfscanf(f_, fmt, ap);
     va_end(ap);
 
     return received;

@@ -211,7 +211,6 @@
     <ClInclude Include="..\src\ui-layout.h" />
     <ClInclude Include="..\src\ui-pic-grid-selector.h" />
     <ClInclude Include="..\src\ui-style-collection.h" />
-    <ClInclude Include="..\src\ui_layout.h" />
     <ClInclude Include="..\src\universal-profile.h" />
     <ClInclude Include="..\src\base-io.h" />
   </ItemGroup>

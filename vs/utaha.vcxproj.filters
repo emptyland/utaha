@@ -60,9 +60,6 @@
     <ClInclude Include="..\src\root-render-entity.h">
       <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ui_layout.h">
-      <Filter>UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\ui-component.h">
       <Filter>UI</Filter>
     </ClInclude>

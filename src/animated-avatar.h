@@ -45,11 +45,11 @@ public:
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(AnimatedAvatar);
 private:
-    int id_;
+    int id_ = 0;
     std::string name_;
     Animation animation_[MAX_DIR];
-    int w_;
-    int h_;
+    int w_ = 0;
+    int h_ = 0;
 }; // class AnimatedAvatar
 
 } // namespace utaha

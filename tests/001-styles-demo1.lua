@@ -3,9 +3,9 @@ local style = utaha.styleCollection
 
 -- Global Font Styles
 style
-    :addFont("font.normal", "assets/fonts/default.ttf", 18)
-    :addFont("font.small", "assets/fonts/default.ttf", 12)
-    :addFont("font.big", "assets/fonts/default.ttf", 20)
+    :addFont("font.normal", "res/fonts/wqy-zenhei.ttf", 18)
+    :addFont("font.small", "res/fonts/wqy-zenhei.ttf", 12)
+    :addFont("font.big", "res/fonts/wqy-zenhei.ttf", 20)
 
 -- Flat Menu Styles
     :setFont("FlatMenu.font",          "font.normal")

@@ -20,7 +20,7 @@ TEST(AnimatedAvatarStorageTest, Store) {
             }
         }
         bool ok = true;
-        ASSERT_GE(storage.PutAvatar(avatar, &ok), 2000);
+        ASSERT_GE(storage.PutAvatar(avatar, &ok), 2000) << "index: " << i;
         ASSERT_TRUE(ok);
     }
 

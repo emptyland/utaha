@@ -7,7 +7,7 @@
 #include "ui-layout.h"
 #include "lua-utils.h"
 #include "gtest/gtest.h"
-#include <SDL2/SDL.h>
+#include SDL_H
 
 namespace utaha {
 
