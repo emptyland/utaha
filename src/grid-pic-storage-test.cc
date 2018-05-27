@@ -1,4 +1,5 @@
 #include "grid-pic-storage.h"
+#include "base-io.h"
 #include "gtest/gtest.h"
 #include SDL_H
 #include SDL_IMAGE_H
@@ -35,7 +36,7 @@ TEST(GridPicStorageTest, Store) {
         ASSERT_TRUE(ok);
     }
 
-    ASSERT_TRUE(storage.StoreToFile());
+    ASSERT_TRUE(storage.StoreToFile(GetFileSystem()));
 }
 
 TEST(GridPicStorageTest, Load) {
@@ -43,7 +44,7 @@ TEST(GridPicStorageTest, Load) {
     storage.set_dir("tests/grid");
     storage.set_name("test1");
 
-    ASSERT_TRUE(storage.LoadFromFile());
+    ASSERT_TRUE(storage.LoadFromFile(GetFileSystem()));
     EXPECT_EQ(storage.pitch(), storage.grid_pics().size());
 
     EXPECT_EQ(48, storage.grid_w());

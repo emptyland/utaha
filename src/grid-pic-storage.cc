@@ -24,15 +24,14 @@ GridPicStorage::~GridPicStorage() {
  * # ${name}.index
  * [original name] [original index] [index]
  */
-bool GridPicStorage::LoadFromFile() {
+bool GridPicStorage::LoadFromFile(Original *fs) {
     std::string meta_file(dir_);
     meta_file.append("/").append(name_).append(".metadata");
-    if (!FSUtils::FileExist(meta_file)) {
+    if (fs->FileNotExist(meta_file)) {
         return true;
     }
 
-    std::unique_ptr<FileTextInputStream>
-        f(FSUtils::OpenTextFileRead(meta_file));
+    std::unique_ptr<FileTextInputStream> f(fs->OpenTextFileRd(meta_file));
     if (!f) {
         return false;
     }
@@ -41,7 +40,7 @@ bool GridPicStorage::LoadFromFile() {
 
     std::string idx_file(dir_);
     idx_file.append("/").append(name_).append(".index");
-    f.reset(FSUtils::OpenTextFileRead(idx_file));
+    f.reset(fs->OpenTextFileRd(idx_file));
     if (!f) {
         return false;
     }
@@ -105,7 +104,7 @@ final:
  * ${dir}/${name}.index
  * ${dir}/${name}.png
  */
-bool GridPicStorage::StoreToFile() {
+bool GridPicStorage::StoreToFile(Original *fs) {
     if (original_.empty()) {
         return true; // TODO:
     }
@@ -113,8 +112,7 @@ bool GridPicStorage::StoreToFile() {
     std::string meta_file(dir_);
     meta_file.append("/").append(name_).append(".metadata");
 
-    std::unique_ptr<FileTextOutputStream>
-        f(FSUtils::OpenTextFileWrite(meta_file));
+    std::unique_ptr<FileTextOutputStream> f(fs->OpenTextFileWr(meta_file));
     if (!f) {
         return false;
     }
@@ -122,7 +120,7 @@ bool GridPicStorage::StoreToFile() {
 
     std::string idx_file(dir_);
     idx_file.append("/").append(name_).append(".index");
-    f.reset(FSUtils::OpenTextFileWrite(idx_file));
+    f.reset(fs->OpenTextFileWr(idx_file));
     if (!f) {
         return false;
     }

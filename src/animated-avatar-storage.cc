@@ -14,16 +14,15 @@ AnimatedAvatarStorage::~AnimatedAvatarStorage() {
     }
 }
 
-bool AnimatedAvatarStorage::LoadFromFile() {
+bool AnimatedAvatarStorage::LoadFromFile(Original *fs) {
     std::string metadata_file(dir_);
     metadata_file.append("/").append(kName).append(".metadata");
 
-    if (!FSUtils::FileExist(metadata_file)) {
+    if (fs->FileNotExist(metadata_file)) {
         return true;
     }
 
-    std::unique_ptr<FileTextInputStream>
-        f(FSUtils::OpenTextFileRead(metadata_file));
+    std::unique_ptr<FileTextInputStream> f(fs->OpenTextFileRd(metadata_file));
     if (!f) {
         return false;
     }
@@ -38,7 +37,7 @@ bool AnimatedAvatarStorage::LoadFromFile() {
     std::string data_file(dir_);
     data_file.append("/").append(kName).append(".data");
 
-    f.reset(FSUtils::OpenTextFileRead(data_file));
+    f.reset(fs->OpenTextFileRd(data_file));
     if (!f) {
         return false;
     }
@@ -78,12 +77,11 @@ bool AnimatedAvatarStorage::LoadFromFile() {
     return true;
 }
 
-bool AnimatedAvatarStorage::StoreToFile() {
+bool AnimatedAvatarStorage::StoreToFile(Original *fs) {
     std::string metadata_file(dir_);
     metadata_file.append("/").append(kName).append(".metadata");
 
-    std::unique_ptr<FileTextOutputStream>
-        f(FSUtils::OpenTextFileWrite(metadata_file));
+    std::unique_ptr<FileTextOutputStream> f(fs->OpenTextFileWr(metadata_file));
     if (!f) {
         return false;
     }
@@ -91,7 +89,7 @@ bool AnimatedAvatarStorage::StoreToFile() {
 
     std::string data_file(dir_);
     data_file.append("/").append(kName).append(".data");
-    f.reset(FSUtils::OpenTextFileWrite(data_file));
+    f.reset(fs->OpenTextFileWr(data_file));
     if (!f) {
         return false;
     }

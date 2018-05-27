@@ -19,6 +19,7 @@
 #include "indexed-tile-storage.h"
 #include "indexed-tile.h"
 #include "lua-utils.h"
+#include "base-io.h"
 #include "script-executor.h"
 #include "glog/logging.h"
 
@@ -36,7 +37,7 @@ public:
         EDIT_MAP,
     };
 
-    explicit EditorForm(const UniversalProfile *profile);
+    EditorForm(const UniversalProfile *profile, Original *fs);
     virtual ~EditorForm();
 
     virtual int OnCommand(UIComponent *sender, int cmd_id, void *param,
@@ -51,6 +52,7 @@ public:
     DISALLOW_IMPLICIT_CONSTRUCTORS(EditorForm);
 private:
     const UniversalProfile *profile_;
+    Original *fs_;
     UIStyleCollection *styles_ = nullptr;
     UIComponentFactory *factory_ = nullptr;
     RawPicCollection *raw_pics_ = nullptr;
@@ -444,11 +446,12 @@ static const LuaConstantId editor_form_id[] = {
 };
 
 UIForm *CreateEditorForm(const UniversalProfile *profile) {
-    return new EditorForm(profile);
+    return new EditorForm(profile, GetFileSystem());
 }
 
-EditorForm::EditorForm(const UniversalProfile *profile)
-    : profile_(DCHECK_NOTNULL(profile)) {
+EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
+    : profile_(DCHECK_NOTNULL(profile))
+    , fs_(DCHECK_NOTNULL(fs)) {
 }
 
 /*virtual*/ EditorForm::~EditorForm() {
@@ -470,16 +473,16 @@ EditorForm::EditorForm(const UniversalProfile *profile)
             break;
 
         case EditorFormR::ID_FILE_SAVE_ALL:
-            if (!tiles_tex_->StoreToFile()) {
+            if (!tiles_tex_->StoreToFile(fs_)) {
                 LOG(ERROR) << "Store tiles texture fail!";
             }
-            if (!tiles_->StoreToFile()) {
+            if (!tiles_->StoreToFile(fs_)) {
                 LOG(ERROR) << "Store tiles fail!";
             }
-            if (!spirits_tex_->StoreToFile()) {
+            if (!spirits_tex_->StoreToFile(fs_)) {
                 LOG(ERROR) << "Store spirits texture fail!";
             }
-            if (!spirits_->StoreToFile()) {
+            if (!spirits_->StoreToFile(fs_)) {
                 LOG(ERROR) << "Store spirits fail!";
             }
             break;
@@ -627,7 +630,7 @@ EditorForm::EditorForm(const UniversalProfile *profile)
         tiles_tex_->set_name("tiles-tex");
         tiles_tex_->set_grid_w(profile_->tile_w());
         tiles_tex_->set_grid_h(profile_->tile_h());
-        if (!tiles_tex_->LoadFromFile()) {
+        if (!tiles_tex_->LoadFromFile(fs_)) {
             LOG(ERROR) << "Can not laod: " << tiles_tex_->name();
             return -1;
         }
@@ -637,7 +640,7 @@ EditorForm::EditorForm(const UniversalProfile *profile)
         tiles_ = new IndexedTileStorage(1000);
         tiles_->set_dir(profile_->assets_dir());
         tiles_->set_grid_pic_name(tiles_tex_->name());
-        if (!tiles_->LoadFromFile()) {
+        if (!tiles_->LoadFromFile(fs_)) {
             LOG(ERROR) << "Can not laod tiles.";
             return -1;
         }
@@ -650,7 +653,7 @@ EditorForm::EditorForm(const UniversalProfile *profile)
         spirits_tex_->set_name("avatars-tex");
         spirits_tex_->set_grid_w(profile_->avatar_w());
         spirits_tex_->set_grid_h(profile_->avatar_h());
-        if (!spirits_tex_->LoadFromFile()) {
+        if (!spirits_tex_->LoadFromFile(fs_)) {
             LOG(ERROR) << "Can not laod: " << spirits_tex_->name();
             return -1;
         }
@@ -660,7 +663,7 @@ EditorForm::EditorForm(const UniversalProfile *profile)
         spirits_ = new AnimatedAvatarStorage(2000);
         spirits_->set_dir(profile_->assets_dir());
         spirits_->set_grid_pic_name(spirits_tex_->name());
-        if (!spirits_->LoadFromFile()) {
+        if (!spirits_->LoadFromFile(fs_)) {
             LOG(ERROR) << "Can not laod avatars.";
             return -1;
         }

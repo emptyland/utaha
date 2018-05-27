@@ -111,11 +111,11 @@ inline T *down_cast(F *from) {
 #endif
 
 #if defined(__APPLE__)
-#   define UTAHA_OS_MACOS 1
+#   define UTAHA_OS_DARWIN 1
 #endif
 
 
-#if defined(UTAHA_OS_MACOS)
+#if defined(UTAHA_OS_DARWIN)
 #   define SDL_H       <SDL2/SDL.h>
 #   define SDL_IMAGE_H <SDL2_image/SDL_image.h>
 #   define SDL_TTF_H   <SDL2_ttf/SDL_ttf.h>

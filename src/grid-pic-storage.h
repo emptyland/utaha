@@ -10,6 +10,8 @@ typedef struct SDL_Surface SDL_Surface;
 
 namespace utaha {
 
+class Original;
+
 class GridPicStorage {
 public:
     GridPicStorage();
@@ -22,8 +24,8 @@ public:
     DEF_VAL_PROP_RW(std::string, name);
     DEF_VAL_PROP_RMW(std::vector<SDL_Surface *>, grid_pics)
 
-    bool LoadFromFile();
-    bool StoreToFile();
+    bool LoadFromFile(Original *fs);
+    bool StoreToFile(Original *fs);
 
     int PutGrid(const std::string &original_file, int original_idx,
                 SDL_Surface *grid, bool *ok);

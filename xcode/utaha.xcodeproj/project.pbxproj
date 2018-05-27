@@ -15,6 +15,11 @@
 		2308230020908D7C003804EA /* ui-flat-menu.cc in Sources */ = {isa = PBXBuildFile; fileRef = 230822FF20908D7C003804EA /* ui-flat-menu.cc */; };
 		2335E8A420B848B200FFE051 /* fixed-terrain.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2335E8A320B848B200FFE051 /* fixed-terrain.cc */; };
 		2335E8A520B848B200FFE051 /* fixed-terrain.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2335E8A320B848B200FFE051 /* fixed-terrain.cc */; };
+		2335E8A820BAD62600FFE051 /* base-io.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2335E8A720BAD62600FFE051 /* base-io.cc */; };
+		2335E8A920BAD62600FFE051 /* base-io.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2335E8A720BAD62600FFE051 /* base-io.cc */; };
+		2335E8AB20BAD6F300FFE051 /* base-io-unix.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2335E8AA20BAD6F300FFE051 /* base-io-unix.cc */; };
+		2335E8AC20BAD6F300FFE051 /* base-io-unix.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2335E8AA20BAD6F300FFE051 /* base-io-unix.cc */; };
+		2335E8AE20BADBD300FFE051 /* base-io-test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2335E8AD20BADBD300FFE051 /* base-io-test.cc */; };
 		2353C92820940B2200C4B4EB /* ui-component-style-factory.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2353C92720940B2200C4B4EB /* ui-component-style-factory.cc */; };
 		2353C92B20940CF400C4B4EB /* ui-style-collection.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2353C92A20940CF400C4B4EB /* ui-style-collection.cc */; };
 		237E913320942D8600176FA8 /* libluajit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C9A4011D70241E00DAA480 /* libluajit.a */; };
@@ -132,6 +137,10 @@
 		230822FF20908D7C003804EA /* ui-flat-menu.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-flat-menu.cc"; sourceTree = "<group>"; };
 		2335E8A220B8489B00FFE051 /* fixed-terrain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "fixed-terrain.h"; sourceTree = "<group>"; };
 		2335E8A320B848B200FFE051 /* fixed-terrain.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "fixed-terrain.cc"; sourceTree = "<group>"; };
+		2335E8A620BAD3CF00FFE051 /* base-io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "base-io.h"; sourceTree = "<group>"; };
+		2335E8A720BAD62600FFE051 /* base-io.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "base-io.cc"; sourceTree = "<group>"; };
+		2335E8AA20BAD6F300FFE051 /* base-io-unix.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "base-io-unix.cc"; sourceTree = "<group>"; };
+		2335E8AD20BADBD300FFE051 /* base-io-test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "base-io-test.cc"; sourceTree = "<group>"; };
 		2353C92720940B2200C4B4EB /* ui-component-style-factory.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-component-style-factory.cc"; sourceTree = "<group>"; };
 		2353C92920940CB500C4B4EB /* ui-style-collection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-style-collection.h"; sourceTree = "<group>"; };
 		2353C92A20940CF400C4B4EB /* ui-style-collection.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-style-collection.cc"; sourceTree = "<group>"; };
@@ -293,6 +302,9 @@
 		23049B2E20B8412300696DCB /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				2335E8A620BAD3CF00FFE051 /* base-io.h */,
+				2335E8A720BAD62600FFE051 /* base-io.cc */,
+				2335E8AA20BAD6F300FFE051 /* base-io-unix.cc */,
 				23C6785A208DB6BA00A8EA4F /* render-entity.h */,
 				23C6785B208DB72E00A8EA4F /* render-entity.cc */,
 				23C6785E208DBAE400A8EA4F /* root-render-entity.h */,
@@ -345,6 +357,7 @@
 		237E913A2094608B00176FA8 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				2335E8AD20BADBD300FFE051 /* base-io-test.cc */,
 				237E913B209460C700176FA8 /* ui-style-collection-test.cc */,
 				237E916520947C5F00176FA8 /* ui-component-factory-test.cc */,
 				238F6CE0209958CF00791F67 /* ui-component-builder-test.cc */,
@@ -536,10 +549,13 @@
 				23A6E83A20B25C7E00815541 /* indexed-tile-storage.cc in Sources */,
 				237E91522094616500176FA8 /* ui-flat-menu-group.cc in Sources */,
 				237E91532094616500176FA8 /* ui-flat-menu.cc in Sources */,
+				2335E8AE20BADBD300FFE051 /* base-io-test.cc in Sources */,
 				237E91542094616500176FA8 /* ui-layout.cc in Sources */,
 				23EAD08220B6BB6500060DFA /* ui-animated-avatar-view.cc in Sources */,
+				2335E8A920BAD62600FFE051 /* base-io.cc in Sources */,
 				23EAD07C20B65AD500060DFA /* animated-avatar-storage.cc in Sources */,
 				237E91552094616500176FA8 /* ui-component-factory.cc in Sources */,
+				2335E8AC20BAD6F300FFE051 /* base-io-unix.cc in Sources */,
 				23A3FC4D20A989F800474E12 /* ui-flat-status-bar.cc in Sources */,
 				237E91562094616500176FA8 /* ui-component-style-factory.cc in Sources */,
 				23A3FC3E20A59C7000474E12 /* ui-form.cc in Sources */,
@@ -565,11 +581,13 @@
 				239F480D208ED5CF00FD09AD /* ui-component.cc in Sources */,
 				23A6E83F20B3A9DB00815541 /* universal-profile.cc in Sources */,
 				23FE797E20B123E500048479 /* grid-pic-storage.cc in Sources */,
+				2335E8A820BAD62600FFE051 /* base-io.cc in Sources */,
 				23A3FC4020A9351400474E12 /* editor-form.cc in Sources */,
 				23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */,
 				2353C92B20940CF400C4B4EB /* ui-style-collection.cc in Sources */,
 				23A6E83920B25C7E00815541 /* indexed-tile-storage.cc in Sources */,
 				230822FC20900BE2003804EA /* ui-layout.cc in Sources */,
+				2335E8AB20BAD6F300FFE051 /* base-io-unix.cc in Sources */,
 				239F4813208F233B00FD09AD /* ui-flat-input-box.cc in Sources */,
 				23049B2B20B7F9F800696DCB /* animated-avatar.cc in Sources */,
 				2308230020908D7C003804EA /* ui-flat-menu.cc in Sources */,

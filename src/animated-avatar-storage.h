@@ -9,6 +9,7 @@
 namespace utaha {
 
 class AnimatedAvatar;
+class Original;
 
 class AnimatedAvatarStorage {
 public:
@@ -20,8 +21,8 @@ public:
     DEF_VAL_PROP_RW(std::string, grid_pic_name);
     DEF_VAL_GETTER(int, next_id);
 
-    bool LoadFromFile();
-    bool StoreToFile();
+    bool LoadFromFile(Original *fs);
+    bool StoreToFile(Original *fs);
 
     int PutAvatar(AnimatedAvatar *avatar, bool *ok);
 

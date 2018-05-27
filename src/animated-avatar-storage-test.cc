@@ -1,5 +1,6 @@
 #include "animated-avatar-storage.h"
 #include "animated-avatar.h"
+#include "base-io.h"
 #include "gtest/gtest.h"
 
 namespace utaha {
@@ -24,7 +25,7 @@ TEST(AnimatedAvatarStorageTest, Store) {
         ASSERT_TRUE(ok);
     }
 
-    ASSERT_TRUE(storage.StoreToFile());
+    ASSERT_TRUE(storage.StoreToFile(GetFileSystem()));
 }
 
 TEST(AnimatedAvatarStorageTest, Load) {
@@ -32,7 +33,7 @@ TEST(AnimatedAvatarStorageTest, Load) {
     storage.set_dir("tests/avatars");
     storage.set_grid_pic_name("avatar");
 
-    ASSERT_TRUE(storage.LoadFromFile());
+    ASSERT_TRUE(storage.LoadFromFile(GetFileSystem()));
 
     auto avatar = storage.FindOrNull(2010);
     ASSERT_NE(nullptr, avatar);
