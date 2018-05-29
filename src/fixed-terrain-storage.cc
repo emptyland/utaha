@@ -97,10 +97,10 @@ bool FixedTerrainStorage::StoreMetadata(const FixedTerrain *terrain,
     std::string file = Original::sprintf("%s/%s-%d.metadata", dir().c_str(),
                                          name().c_str(), terrain->id());
     std::unique_ptr<FileTextOutputStream> fx(fs->OpenTextFileWr(file));
-    fx->Printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", terrain->tile_w(),
-               terrain->tile_h(), terrain->max_h_tiles(),
+    fx->Printf("%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", terrain->name().c_str(),
+               terrain->tile_w(), terrain->tile_h(), terrain->max_h_tiles(),
                terrain->max_v_tiles(), terrain->script_id(),
-               terrain->trap_size(), terrain->entity_size(),
+               terrain->linker_size(), terrain->entity_size(),
                terrain->actor_size());
     return true;
 }
@@ -119,14 +119,15 @@ bool FixedTerrainStorage::StoreMap(const FixedTerrain *terrain,
 
 bool FixedTerrainStorage::StoreOthers(const FixedTerrain *terrain,
                                       Original *fs) const {
-    if (terrain->trap_size() > 0) {
-        std::string file = Original::sprintf("%s/%s-%d.trap", dir().c_str(),
+    if (terrain->linker_size() > 0) {
+        std::string file = Original::sprintf("%s/%s-%d.linker", dir().c_str(),
                                              name().c_str(), terrain->id());
         std::unique_ptr<FileTextOutputStream> fx(fs->OpenTextFileWr(file));
-        for (int i = 0; i < terrain->trap_size(); ++i) {
-            auto trap = terrain->trap(i);
-            fx->Printf("%d\t%d\t%d\t%d\n", trap->x, trap->y, trap->params,
-                       trap->script_id);
+        for (int i = 0; i < terrain->linker_size(); ++i) {
+            auto linker = terrain->linker(i);
+            fx->Printf("%d\t%d\t%d\t%d\t%d\t%d\n", linker.x, linker.y,
+                       linker.params, linker.to_id, linker.to_x,
+                       linker.to_y);
         }
     }
 
@@ -136,7 +137,7 @@ bool FixedTerrainStorage::StoreOthers(const FixedTerrain *terrain,
         std::unique_ptr<FileTextOutputStream> fx(fs->OpenTextFileWr(file));
         for (int i = 0; i < terrain->entity_size(); ++i) {
             auto entity = terrain->entity(i);
-            fx->Printf("%d\t%d\t%d\n", entity->x, entity->y, entity->spirit_id);
+            fx->Printf("%d\t%d\t%d\n", entity.x, entity.y, entity.spirit_id);
         }
     }
 
@@ -146,8 +147,8 @@ bool FixedTerrainStorage::StoreOthers(const FixedTerrain *terrain,
         std::unique_ptr<FileTextOutputStream> fx(fs->OpenTextFileWr(file));
         for (int i = 0; i < terrain->actor_size(); ++i) {
             auto actor = terrain->actor(i);
-            fx->Printf("%d\t%d\t%d\t%d\t%d\n", actor->x, actor->y, actor->param,
-                       actor->lv, actor->actor_id);
+            fx->Printf("%d\t%d\t%d\t%d\t%d\n", actor.x, actor.y, actor.param,
+                       actor.lv, actor.actor_id);
         }
     }
     return true;
@@ -162,21 +163,23 @@ bool FixedTerrainStorage::LoadMetadata(FixedTerrain *terrain, Original *fs) {
     }
 
     std::unique_ptr<FileTextInputStream> fx(fs->OpenTextFileRd(file));
-    int tile_w, tile_h, max_h_tiles, max_v_tiles, script_id, trap_size,
+    int tile_w, tile_h, max_h_tiles, max_v_tiles, script_id, linker_size,
         entity_size, actor_size;
-    int nitems = fx->Scanf("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", &tile_w, &tile_h,
-                           &max_h_tiles, &max_v_tiles, &script_id, &trap_size,
-                           &entity_size, &actor_size);
-    if (nitems != 8) {
+    char name[FILENAME_MAX] = {0};
+    int nitems = fx->Scanf("%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", name, &tile_w,
+                           &tile_h, &max_h_tiles, &max_v_tiles, &script_id,
+                           &linker_size, &entity_size, &actor_size);
+    if (nitems != 9) {
         LOG(ERROR) << "Can not read terrain metadata file. " << file;
         return false;
     }
+    terrain->set_name(name);
     terrain->set_tile_w(tile_w);
     terrain->set_tile_h(tile_h);
     terrain->set_max_h_tiles(max_h_tiles);
     terrain->set_max_v_tiles(max_v_tiles);
     terrain->set_script_id(script_id);
-    terrain->set_trap_size(trap_size);
+    terrain->set_linker_size(linker_size);
     terrain->set_entity_size(entity_size);
     terrain->set_actor_size(actor_size);
     return true;
@@ -202,25 +205,27 @@ bool FixedTerrainStorage::LoadMap(FixedTerrain *terrain, Original *fs) {
 }
 
 bool FixedTerrainStorage::LoadOthers(FixedTerrain *terrain, Original *fs) {
-    if (terrain->trap_size() > 0) {
-        std::string file = Original::sprintf("%s/%s-%d.trap", dir().c_str(),
+    if (terrain->linker_size() > 0) {
+        std::string file = Original::sprintf("%s/%s-%d.linker", dir().c_str(),
                                              name().c_str(), terrain->id());
         std::unique_ptr<FileTextInputStream> fx(fs->OpenTextFileRd(file));
         if (!fx) {
             LOG(ERROR) << "Can not open terrain's trap file. " << file;
             return false;
         }
-        std::unique_ptr<IndexedTrap[]>
-            traps(new IndexedTrap[terrain->trap_size()]);
-        for (int i = 0; i < terrain->trap_size(); ++i) {
-            int nitems = fx->Scanf("%d\t%d\t%d\t%d\n", &traps[i].x, &traps[i].y,
-                                   &traps[i].params, &traps[i].script_id);
-            if (nitems != 4) {
+        std::unique_ptr<IndexedLinker[]>
+            linkers(new IndexedLinker[terrain->linker_size()]);
+        for (int i = 0; i < terrain->linker_size(); ++i) {
+            int nitems = fx->Scanf("%d\t%d\t%d\t%d\t%d\t%d\n", &linkers[i].x,
+                                   &linkers[i].y, &linkers[i].params,
+                                   &linkers[i].to_id, &linkers[i].to_x,
+                                   &linkers[i].to_y);
+            if (nitems != 6) {
                 LOG(ERROR) << "Terrain's trap file read fail! line: " << i;
                 return false;
             }
         }
-        terrain->set_traps(traps.release());
+        terrain->set_linkers(linkers.release());
     }
 
     if (terrain->entity_size() > 0) {
