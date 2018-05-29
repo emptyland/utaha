@@ -7,13 +7,14 @@
 
 namespace utaha {
 
-const char IndexedTileStorage::kName[] = "tiles";
-
-IndexedTileStorage::~IndexedTileStorage() {
-    for (const auto &pair : tiles_) {
-        delete pair.second;
-    }
+IndexedTileStorage::IndexedTileStorage(int start_id)
+    : GenericStorage(start_id) {
 }
+
+/*virtual*/ IndexedTileStorage::~IndexedTileStorage() {
+}
+
+/*virtual*/ std::string IndexedTileStorage::name() const { return "tiles"; }
 
 /**
  * ${name}.metadata
@@ -22,42 +23,44 @@ IndexedTileStorage::~IndexedTileStorage() {
  * ${name}.data
  * [id] [name] [tex-id] [passable]
  */
-bool IndexedTileStorage::LoadFromFile(Original *fs) {
-    std::string metadata_file(dir_);
-    metadata_file.append("/").append(kName).append(".metadata");
-
-    if (fs->FileNotExist(metadata_file)) {
+/*virtual*/ bool IndexedTileStorage::LoadFromFile(Original *fs) {
+    std::string file = Original::sprintf("%s/%s.metadata", dir().c_str(),
+                                         name().c_str());
+    if (fs->FileNotExist(file)) {
         return true;
     }
 
-    std::unique_ptr<FileTextInputStream> f(fs->OpenTextFileRd(metadata_file));
+    std::unique_ptr<FileTextInputStream> f(fs->OpenTextFileRd(file));
     if (!f) {
         return false;
     }
-    char buf[FILENAME_MAX]; int start_id;
-    f->Scanf("%s\t%d\n", buf, &start_id);
-    grid_pic_name_.assign(buf);
-    if (start_id != start_id_) {
+    char tex_name[FILENAME_MAX];
+    int sid;
+    if (f->Scanf("%s\t%d\n", tex_name, &sid) != 2) {
+        LOG(ERROR) << "Tile metadata file read fail." << file;
+        return false;
+    }
+    set_tex_name(tex_name);
+    if (sid != start_id()) {
         // TODO:
     }
 
-    std::string data_file(dir_);
-    data_file.append("/").append(kName).append(".data");
-
-    f.reset(fs->OpenTextFileRd(data_file));
+    file = Original::sprintf("%s/%s.data", dir().c_str(), name().c_str());
+    f.reset(fs->OpenTextFileRd(file));
     if (!f) {
         return false;
     }
+    char name[FILENAME_MAX];
     int tile_id, tex_id;
     uint32_t passable;
-    while (f->Scanf("%d\t%s\t%d\t%u\n", &tile_id, buf, &tex_id, &passable) != EOF) {
+    while (f->Scanf("%d\t%s\t%d\t%u\n", &tile_id, name, &tex_id, &passable) != EOF) {
         auto tile = new IndexedTile();
         tile->set_id(tile_id);
-        tile->set_name(buf);
+        tile->set_name(name);
         tile->set_tex_id(tex_id);
         tile->set_passable(passable);
         bool ok = true;
-        PutTile(tile, &ok);
+        Put(tile, &ok);
         if (!ok) {
             delete tile;
         }
@@ -72,50 +75,28 @@ bool IndexedTileStorage::LoadFromFile(Original *fs) {
     return true;
 }
 
-bool IndexedTileStorage::StoreToFile(Original *fs) {
-    std::string metadata_file(dir_);
-    metadata_file.append("/").append(kName).append(".metadata");
+/*virtual*/ bool IndexedTileStorage::StoreToFile(Original *fs) const {
+    std::string file = Original::sprintf("%s/%s.metadata", dir().c_str(),
+                                         name().c_str());
 
-    std::unique_ptr<FileTextOutputStream> f(fs->OpenTextFileWr(metadata_file));
+    std::unique_ptr<FileTextOutputStream> f(fs->OpenTextFileWr(file));
     if (!f) {
         return false;
     }
-    f->Printf("%s\t%d\n", grid_pic_name_.c_str(), start_id_);
+    f->Printf("%s\t%d\n", tex_name().c_str(), start_id());
 
-    std::string data_file(dir_);
-    data_file.append("/").append(kName).append(".data");
-    f.reset(fs->OpenTextFileWr(data_file));
+    file = Original::sprintf("%s/%s.data", dir().c_str(), name().c_str());
+    f.reset(fs->OpenTextFileWr(file));
     if (!f) {
         return false;
     }
-    for (const auto &pair : tiles_) {
+    for (const auto &pair : entities_) {
         f->Printf("%d\t%s\t%d\t%u\n", pair.second->id(),
                   pair.second->name().empty() ? "[unknown]"
                   : pair.second->name().c_str(),
                   pair.second->tex_id(), pair.second->passable());
     }
     return true;
-}
-
-int IndexedTileStorage::PutTile(IndexedTile *tile, bool *ok) {
-    bool gen_id = false;
-    if (tile->id() == 0) {
-        tile->set_id(next_id_);
-        gen_id = true;
-    }
-
-    auto iter = tiles_.find(tile->id());
-    if (iter != tiles_.end()) {
-        *ok = false;
-        delete iter->second;
-    } else {
-        *ok = true;
-    }
-    tiles_[tile->id()] = tile;
-    if (gen_id) {
-        NextId();
-    }
-    return tile->id();
 }
 
 } // namespace utaha

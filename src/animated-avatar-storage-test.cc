@@ -9,7 +9,7 @@ TEST(AnimatedAvatarStorageTest, Store) {
     AnimatedAvatarStorage storage(2000);
 
     storage.set_dir("tests/avatars");
-    storage.set_grid_pic_name("avatar");
+    storage.set_tex_name("avatar");
     for (int i = 0; i < 100; ++i) {
         auto avatar = new AnimatedAvatar;
         avatar->set_w(20);
@@ -21,7 +21,7 @@ TEST(AnimatedAvatarStorageTest, Store) {
             }
         }
         bool ok = true;
-        ASSERT_GE(storage.PutAvatar(avatar, &ok), 2000) << "index: " << i;
+        ASSERT_GE(storage.Put(avatar, &ok), 2000) << "index: " << i;
         ASSERT_TRUE(ok);
     }
 
@@ -31,7 +31,7 @@ TEST(AnimatedAvatarStorageTest, Store) {
 TEST(AnimatedAvatarStorageTest, Load) {
     AnimatedAvatarStorage storage(2000);
     storage.set_dir("tests/avatars");
-    storage.set_grid_pic_name("avatar");
+    storage.set_tex_name("avatar");
 
     ASSERT_TRUE(storage.LoadFromFile(GetFileSystem()));
 

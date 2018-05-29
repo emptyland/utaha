@@ -10,11 +10,13 @@ namespace utaha {
 GridPicStorage::GridPicStorage() {
 }
 
-GridPicStorage::~GridPicStorage() {
+/*virtual*/ GridPicStorage::~GridPicStorage() {
     for (auto surface : grid_pics_) {
         SDL_FreeSurface(surface);
     }
 }
+
+/*virtual*/ std::string GridPicStorage::name() const { return name_; }
 
 /**
  * # ${name}.metadata
@@ -24,23 +26,22 @@ GridPicStorage::~GridPicStorage() {
  * # ${name}.index
  * [original name] [original index] [index]
  */
-bool GridPicStorage::LoadFromFile(Original *fs) {
-    std::string meta_file(dir_);
-    meta_file.append("/").append(name_).append(".metadata");
-    if (fs->FileNotExist(meta_file)) {
+/*virtual*/ bool GridPicStorage::LoadFromFile(Original *fs) {
+    std::string file = Original::sprintf("%s/%s.metadata", dir_.c_str(),
+                                         name_.c_str());
+    if (fs->FileNotExist(file)) {
         return true;
     }
 
-    std::unique_ptr<FileTextInputStream> f(fs->OpenTextFileRd(meta_file));
+    std::unique_ptr<FileTextInputStream> f(fs->OpenTextFileRd(file));
     if (!f) {
         return false;
     }
     size_t n_grids = 0;
     f->Scanf("%d\t%d\t%zd\n", &grid_w_, &grid_h_, &n_grids);
 
-    std::string idx_file(dir_);
-    idx_file.append("/").append(name_).append(".index");
-    f.reset(fs->OpenTextFileRd(idx_file));
+    file = Original::sprintf("%s/%s.index", dir_.c_str(), name_.c_str());
+    f.reset(fs->OpenTextFileRd(file));
     if (!f) {
         return false;
     }
@@ -48,16 +49,14 @@ bool GridPicStorage::LoadFromFile(Original *fs) {
     int original_index = 0, index = 0;
     while (f->Scanf("%s\t%d\t%d\n", original_file, &original_index,
                     &index) != EOF) {
-        char key[FILENAME_MAX];
-        snprintf(key, arraysize(key), "%s/%d", original_file, original_index);
+        auto key = Original::sprintf("%s/%d", original_file, original_index);
         original_[key] = index;
     }
 
-    std::string pic_file(dir_);
-    pic_file.append("/").append(name_).append(".png");
-    SDL_Surface *whole = IMG_Load(pic_file.c_str());
+    file = Original::sprintf("%s/%s.png", dir_.c_str(), name_.c_str());
+    SDL_Surface *whole = IMG_Load(file.c_str());
     if (!whole) {
-        LOG(ERROR) << "Can not load img: " << pic_file << " " << SDL_GetError();
+        LOG(ERROR) << "Can not load img: " << file << " " << SDL_GetError();
         return false;
     }
     if (whole->w % grid_w_) {
@@ -104,23 +103,21 @@ final:
  * ${dir}/${name}.index
  * ${dir}/${name}.png
  */
-bool GridPicStorage::StoreToFile(Original *fs) {
+/*virtual*/ bool GridPicStorage::StoreToFile(Original *fs) const {
     if (original_.empty()) {
         return true; // TODO:
     }
 
-    std::string meta_file(dir_);
-    meta_file.append("/").append(name_).append(".metadata");
-
-    std::unique_ptr<FileTextOutputStream> f(fs->OpenTextFileWr(meta_file));
+    std::string file = Original::sprintf("%s/%s.metadata", dir_.c_str(),
+                                         name_.c_str());
+    std::unique_ptr<FileTextOutputStream> f(fs->OpenTextFileWr(file));
     if (!f) {
         return false;
     }
     f->Printf("%d\t%d\t%zd\n", grid_w_, grid_h_, grid_pics_.size());
 
-    std::string idx_file(dir_);
-    idx_file.append("/").append(name_).append(".index");
-    f.reset(fs->OpenTextFileWr(idx_file));
+    file = Original::sprintf("%s/%s.index", dir_.c_str(), name_.c_str());
+    f.reset(fs->OpenTextFileWr(file));
     if (!f) {
         return false;
     }
@@ -154,9 +151,8 @@ bool GridPicStorage::StoreToFile(Original *fs) {
     }
     SDL_FreeSurface(whole);
 
-    std::string pic_file(dir_);
-    pic_file.append("/").append(name_).append(".png");
-    if (IMG_SavePNG(whole, pic_file.c_str()) < 0) {
+    file = Original::sprintf("%s/%s.png", dir_.c_str(), name_.c_str());
+    if (IMG_SavePNG(whole, file.c_str()) < 0) {
         LOG(ERROR) << "Can not save png file." << SDL_GetError();
         return false;
     }

@@ -9,7 +9,7 @@ TEST(IndexedTileStorageTest, Store) {
     IndexedTileStorage storage(1000);
 
     storage.set_dir("tests/tiles");
-    storage.set_grid_pic_name("tiles");
+    storage.set_tex_name("tiles");
     bool ok = true;
     for (int i = 0; i < 100; ++i) {
         auto tile = new IndexedTile();
@@ -19,7 +19,7 @@ TEST(IndexedTileStorageTest, Store) {
         } else {
             tile->set_passable(IndexedTile::kWalkPass | IndexedTile::kBulletPass);
         }
-        ASSERT_GE(storage.PutTile(tile, &ok), 1000);
+        ASSERT_GE(storage.Put(tile, &ok), 1000);
         ASSERT_TRUE(ok);
     }
     ASSERT_TRUE(storage.StoreToFile(GetFileSystem()));

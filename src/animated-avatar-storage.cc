@@ -6,47 +6,48 @@
 
 namespace utaha {
 
-const char AnimatedAvatarStorage::kName[] = "avatars";
+AnimatedAvatarStorage::AnimatedAvatarStorage(int start_id)
+    : GenericStorage(start_id) {
+}
 
-AnimatedAvatarStorage::~AnimatedAvatarStorage() {
-    for (const auto &pair : avatars_) {
-        delete pair.second;
-    }
+/*virtual*/ AnimatedAvatarStorage::~AnimatedAvatarStorage() {
+}
+
+/*virtual*/ std::string AnimatedAvatarStorage::name() const {
+    return "avatars";
 }
 
 bool AnimatedAvatarStorage::LoadFromFile(Original *fs) {
-    std::string metadata_file(dir_);
-    metadata_file.append("/").append(kName).append(".metadata");
-
-    if (fs->FileNotExist(metadata_file)) {
+    std::string file = Original::sprintf("%s/%s.metadata", dir().c_str(),
+                                         name().c_str());
+    if (fs->FileNotExist(file)) {
         return true;
     }
 
-    std::unique_ptr<FileTextInputStream> f(fs->OpenTextFileRd(metadata_file));
+    std::unique_ptr<FileTextInputStream> f(fs->OpenTextFileRd(file));
     if (!f) {
         return false;
     }
-    char buf[FILENAME_MAX];
-    int start_id = 0;
-    f->Scanf("%s\t%d\n", buf, &start_id);
-    if (start_id != start_id_) {
+    char tex_name[FILENAME_MAX];
+    int sid = 0;
+    f->Scanf("%s\t%d\n", tex_name, &sid);
+    if (sid != start_id()) {
         // TODO:
     }
-    grid_pic_name_.assign(buf);
+    set_tex_name(tex_name);
 
-    std::string data_file(dir_);
-    data_file.append("/").append(kName).append(".data");
-
-    f.reset(fs->OpenTextFileRd(data_file));
+    file = Original::sprintf("%s/%s.data", dir().c_str(), name().c_str());
+    f.reset(fs->OpenTextFileRd(file));
     if (!f) {
         return false;
     }
 
+    char name[FILENAME_MAX];
     int avatar_id = 0, w = 0, h = 0;
-    while (f->Scanf("%d\t%s\t%d\t%d", &avatar_id, buf, &w, &h) != EOF) {
+    while (f->Scanf("%d\t%s\t%d\t%d", &avatar_id, name, &w, &h) != EOF) {
         auto avatar = new AnimatedAvatar();
         avatar->set_id(avatar_id);
-        avatar->set_name(buf);
+        avatar->set_name(name);
         avatar->set_w(w);
         avatar->set_h(h);
 
@@ -64,36 +65,33 @@ bool AnimatedAvatarStorage::LoadFromFile(Original *fs) {
         }
         f->Scanf("\n");
         bool ok = true;
-        PutAvatar(avatar, &ok);
-
+        Put(avatar, &ok);
         if (avatar_id > next_id_) {
             next_id_ = avatar_id;
         }
     }
-
     if (next_id_ != 0) {
         NextId();
     }
     return true;
 }
 
-bool AnimatedAvatarStorage::StoreToFile(Original *fs) {
-    std::string metadata_file(dir_);
-    metadata_file.append("/").append(kName).append(".metadata");
+bool AnimatedAvatarStorage::StoreToFile(Original *fs) const {
+    std::string file = Original::sprintf("%s/%s.metadata", dir().c_str(),
+                                         name().c_str());
 
-    std::unique_ptr<FileTextOutputStream> f(fs->OpenTextFileWr(metadata_file));
+    std::unique_ptr<FileTextOutputStream> f(fs->OpenTextFileWr(file));
     if (!f) {
         return false;
     }
-    f->Printf("%s\t%d\n", grid_pic_name_.c_str(), start_id_);
+    f->Printf("%s\t%d\n", tex_name().c_str(), start_id());
 
-    std::string data_file(dir_);
-    data_file.append("/").append(kName).append(".data");
-    f.reset(fs->OpenTextFileWr(data_file));
+    file = Original::sprintf("%s/%s.data", dir().c_str(), name().c_str());
+    f.reset(fs->OpenTextFileWr(file));
     if (!f) {
         return false;
     }
-    for (const auto &pair : avatars_) {
+    for (const auto &pair : entities_) {
         auto avatar = pair.second;
         f->Printf("%d\t%s\t%d\t%d", avatar->id(), avatar->name().empty() ?
                   "[unknown]" : avatar->name().c_str(), avatar->w(), avatar->h());
@@ -106,27 +104,6 @@ bool AnimatedAvatarStorage::StoreToFile(Original *fs) {
         f->Printf("\n");
     }
     return true;
-}
-
-int AnimatedAvatarStorage::PutAvatar(AnimatedAvatar *avatar, bool *ok) {
-    bool gen_id = false;
-    if (avatar->id() == 0) {
-        avatar->set_id(next_id_);
-        gen_id = true;
-    }
-
-    auto iter = avatars_.find(avatar->id());
-    if (iter != avatars_.end()) {
-        *ok = false;
-        delete iter->second;
-    } else {
-        *ok = true;
-    }
-    avatars_[avatar->id()] = avatar;
-    if (gen_id) {
-        NextId();
-    }
-    return avatar->id();
 }
 
 } // namespace utaha

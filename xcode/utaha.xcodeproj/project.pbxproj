@@ -355,6 +355,10 @@
 				23A6E83820B25C7E00815541 /* indexed-tile-storage.cc */,
 				23EAD07920B65AC700060DFA /* animated-avatar-storage.h */,
 				23EAD07A20B65AD500060DFA /* animated-avatar-storage.cc */,
+				23A1F0E820BBAC0600D0492A /* fixed-terrain-storage.h */,
+				23A1F0E920BBAC1700D0492A /* fixed-terrain-storage.cc */,
+				23A1F0E220BBA62600D0492A /* generic-storage.h */,
+				23A1F0E520BBA95100D0492A /* generic-storage.cc */,
 				23EAD06E20B650A800060DFA /* indexed-spirit.h */,
 				23EAD07220B652E100060DFA /* animated-spirit.h */,
 				23EAD07620B6568000060DFA /* animated-avatar.h */,
@@ -363,10 +367,6 @@
 				23A6E83E20B3A9DB00815541 /* universal-profile.cc */,
 				2335E8A220B8489B00FFE051 /* fixed-terrain.h */,
 				2335E8A320B848B200FFE051 /* fixed-terrain.cc */,
-				23A1F0E820BBAC0600D0492A /* fixed-terrain-storage.h */,
-				23A1F0E920BBAC1700D0492A /* fixed-terrain-storage.cc */,
-				23A1F0E220BBA62600D0492A /* generic-storage.h */,
-				23A1F0E520BBA95100D0492A /* generic-storage.cc */,
 			);
 			name = Resource;
 			path = ../src;

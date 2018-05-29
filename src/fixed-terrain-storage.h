@@ -8,14 +8,13 @@ namespace utaha {
 
 class FileTextOutputStream;
 
-class FixedTerrainStorage : public GenericStorage<FixedTerrain, 10> {
+class FixedTerrainStorage : public GenericStorage<FixedTerrain> {
 public:
     FixedTerrainStorage(int start_id);
     virtual ~FixedTerrainStorage();
 
     virtual bool LoadFromFile(Original *fs) override;
     virtual bool StoreToFile(Original *fs) const override;
-
     virtual std::string name() const override;
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(FixedTerrainStorage);

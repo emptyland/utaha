@@ -1,7 +1,7 @@
 #ifndef UTAHA_GRID_PIC_STORAGE_H_
 #define UTAHA_GRID_PIC_STORAGE_H_
 
-#include "base.h"
+#include "generic-storage.h"
 #include <string>
 #include <vector>
 #include <map>
@@ -12,20 +12,21 @@ namespace utaha {
 
 class Original;
 
-class GridPicStorage {
+class GridPicStorage : public Storage {
 public:
     GridPicStorage();
-    ~GridPicStorage();
+    virtual ~GridPicStorage();
 
     DEF_VAL_PROP_RW(int, grid_w);
     DEF_VAL_PROP_RW(int, grid_h);
     DEF_VAL_PROP_RW(int, pitch);
     DEF_VAL_PROP_RW(std::string, dir);
-    DEF_VAL_PROP_RW(std::string, name);
+    DEF_VAL_SETTER(std::string, name);
     DEF_VAL_PROP_RMW(std::vector<SDL_Surface *>, grid_pics)
 
-    bool LoadFromFile(Original *fs);
-    bool StoreToFile(Original *fs);
+    virtual bool LoadFromFile(Original *fs) override;
+    virtual bool StoreToFile(Original *fs) const override;
+    virtual std::string name() const override;
 
     int PutGrid(const std::string &original_file, int original_idx,
                 SDL_Surface *grid, bool *ok);
