@@ -57,6 +57,13 @@
 		239F480D208ED5CF00FD09AD /* ui-component.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F480C208ED5CF00FD09AD /* ui-component.cc */; };
 		239F4810208EE17E00FD09AD /* ui-flat-button.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F480F208EE17E00FD09AD /* ui-flat-button.cc */; };
 		239F4813208F233B00FD09AD /* ui-flat-input-box.cc in Sources */ = {isa = PBXBuildFile; fileRef = 239F4812208F233B00FD09AD /* ui-flat-input-box.cc */; };
+		23A1F0E120BBA12700D0492A /* fixed-terrain-test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A1F0E020BBA12700D0492A /* fixed-terrain-test.cc */; };
+		23A1F0E420BBA67400D0492A /* generic-storage-test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A1F0E320BBA67400D0492A /* generic-storage-test.cc */; };
+		23A1F0E620BBA95100D0492A /* generic-storage.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A1F0E520BBA95100D0492A /* generic-storage.cc */; };
+		23A1F0E720BBA95100D0492A /* generic-storage.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A1F0E520BBA95100D0492A /* generic-storage.cc */; };
+		23A1F0EA20BBAC1700D0492A /* fixed-terrain-storage.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A1F0E920BBAC1700D0492A /* fixed-terrain-storage.cc */; };
+		23A1F0EB20BBAC1700D0492A /* fixed-terrain-storage.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A1F0E920BBAC1700D0492A /* fixed-terrain-storage.cc */; };
+		23A1F0ED20BD026200D0492A /* fixed-terrain-storage-test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A1F0EC20BD026200D0492A /* fixed-terrain-storage-test.cc */; };
 		23A3FC3520A045FB00474E12 /* ui-pic-grid-selector.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */; };
 		23A3FC3620A045FB00474E12 /* ui-pic-grid-selector.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */; };
 		23A3FC3920A2EF3800474E12 /* ui-flat-check-box.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3820A2EF3800474E12 /* ui-flat-check-box.cc */; };
@@ -162,6 +169,13 @@
 		239F480F208EE17E00FD09AD /* ui-flat-button.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-flat-button.cc"; sourceTree = "<group>"; };
 		239F4811208F226A00FD09AD /* ui-flat-input-box.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-flat-input-box.h"; sourceTree = "<group>"; };
 		239F4812208F233B00FD09AD /* ui-flat-input-box.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-flat-input-box.cc"; sourceTree = "<group>"; };
+		23A1F0E020BBA12700D0492A /* fixed-terrain-test.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "fixed-terrain-test.cc"; sourceTree = "<group>"; };
+		23A1F0E220BBA62600D0492A /* generic-storage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "generic-storage.h"; sourceTree = "<group>"; };
+		23A1F0E320BBA67400D0492A /* generic-storage-test.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "generic-storage-test.cc"; sourceTree = "<group>"; };
+		23A1F0E520BBA95100D0492A /* generic-storage.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "generic-storage.cc"; sourceTree = "<group>"; };
+		23A1F0E820BBAC0600D0492A /* fixed-terrain-storage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "fixed-terrain-storage.h"; sourceTree = "<group>"; };
+		23A1F0E920BBAC1700D0492A /* fixed-terrain-storage.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "fixed-terrain-storage.cc"; sourceTree = "<group>"; };
+		23A1F0EC20BD026200D0492A /* fixed-terrain-storage-test.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "fixed-terrain-storage-test.cc"; sourceTree = "<group>"; };
 		23A3FC3320A0453700474E12 /* ui-pic-grid-selector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-pic-grid-selector.h"; sourceTree = "<group>"; };
 		23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-pic-grid-selector.cc"; sourceTree = "<group>"; };
 		23A3FC3720A2EEEE00474E12 /* ui-flat-check-box.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-flat-check-box.h"; sourceTree = "<group>"; };
@@ -349,6 +363,10 @@
 				23A6E83E20B3A9DB00815541 /* universal-profile.cc */,
 				2335E8A220B8489B00FFE051 /* fixed-terrain.h */,
 				2335E8A320B848B200FFE051 /* fixed-terrain.cc */,
+				23A1F0E820BBAC0600D0492A /* fixed-terrain-storage.h */,
+				23A1F0E920BBAC1700D0492A /* fixed-terrain-storage.cc */,
+				23A1F0E220BBA62600D0492A /* generic-storage.h */,
+				23A1F0E520BBA95100D0492A /* generic-storage.cc */,
 			);
 			name = Resource;
 			path = ../src;
@@ -366,7 +384,10 @@
 				23FE798020B1AF2100048479 /* grid-pic-storage-test.cc */,
 				23EAD07720B656F400060DFA /* animated-avatar-test.cc */,
 				23EAD07D20B6B28700060DFA /* animated-avatar-storage-test.cc */,
+				23A1F0E020BBA12700D0492A /* fixed-terrain-test.cc */,
 				237E91612094628800176FA8 /* test-main.cc */,
+				23A1F0E320BBA67400D0492A /* generic-storage-test.cc */,
+				23A1F0EC20BD026200D0492A /* fixed-terrain-storage-test.cc */,
 			);
 			name = Tests;
 			path = ../src;
@@ -524,6 +545,7 @@
 				23A3FC3A20A2EF3800474E12 /* ui-flat-check-box.cc in Sources */,
 				2335E8A520B848B200FFE051 /* fixed-terrain.cc in Sources */,
 				23A3FC4520A93FE300474E12 /* on-exit-scope.cc in Sources */,
+				23A1F0E720BBA95100D0492A /* generic-storage.cc in Sources */,
 				23A3FC5320AAD79000474E12 /* raw-pic-collection-test.cc in Sources */,
 				23A3FC5120AACC1200474E12 /* raw-pic-collection.cc in Sources */,
 				238F6CE1209958CF00791F67 /* ui-component-builder-test.cc in Sources */,
@@ -532,6 +554,7 @@
 				23A3FC4920A9740700474E12 /* script-executor.cc in Sources */,
 				23EAD07820B656F400060DFA /* animated-avatar-test.cc in Sources */,
 				23A6E83C20B2C92F00815541 /* indexed-tile-storage-test.cc in Sources */,
+				23A1F0EB20BBAC1700D0492A /* fixed-terrain-storage.cc in Sources */,
 				237E914C2094616500176FA8 /* root-render-entity.cc in Sources */,
 				238F6CDF2099555B00791F67 /* ui-component-builder.cc in Sources */,
 				237E914E2094616500176FA8 /* interactive-entity.cc in Sources */,
@@ -542,6 +565,8 @@
 				23EAD07E20B6B28700060DFA /* animated-avatar-storage-test.cc in Sources */,
 				237E91632094628800176FA8 /* test-main.cc in Sources */,
 				237E91512094616500176FA8 /* ui-flat-input-box.cc in Sources */,
+				23A1F0E120BBA12700D0492A /* fixed-terrain-test.cc in Sources */,
+				23A1F0ED20BD026200D0492A /* fixed-terrain-storage-test.cc in Sources */,
 				23FE797F20B123E500048479 /* grid-pic-storage.cc in Sources */,
 				23F34A8120AD2C3F00C3D7A4 /* text-input-mode-controller.cc in Sources */,
 				23FE797B20AFFB3A00048479 /* ui-flat-label.cc in Sources */,
@@ -557,6 +582,7 @@
 				237E91552094616500176FA8 /* ui-component-factory.cc in Sources */,
 				2335E8AC20BAD6F300FFE051 /* base-io-unix.cc in Sources */,
 				23A3FC4D20A989F800474E12 /* ui-flat-status-bar.cc in Sources */,
+				23A1F0E420BBA67400D0492A /* generic-storage-test.cc in Sources */,
 				237E91562094616500176FA8 /* ui-component-style-factory.cc in Sources */,
 				23A3FC3E20A59C7000474E12 /* ui-form.cc in Sources */,
 				237E91572094616500176FA8 /* ui-style-collection.cc in Sources */,
@@ -576,6 +602,7 @@
 				23A6E84320B449CB00815541 /* ui-flat-pic-view.cc in Sources */,
 				23A3FC4420A93FE300474E12 /* on-exit-scope.cc in Sources */,
 				23A3FC5020AACC1200474E12 /* raw-pic-collection.cc in Sources */,
+				23A1F0EA20BBAC1700D0492A /* fixed-terrain-storage.cc in Sources */,
 				239F4810208EE17E00FD09AD /* ui-flat-button.cc in Sources */,
 				2353C92820940B2200C4B4EB /* ui-component-style-factory.cc in Sources */,
 				239F480D208ED5CF00FD09AD /* ui-component.cc in Sources */,
@@ -586,6 +613,7 @@
 				23C6785C208DB72E00A8EA4F /* render-entity.cc in Sources */,
 				2353C92B20940CF400C4B4EB /* ui-style-collection.cc in Sources */,
 				23A6E83920B25C7E00815541 /* indexed-tile-storage.cc in Sources */,
+				23A1F0E620BBA95100D0492A /* generic-storage.cc in Sources */,
 				230822FC20900BE2003804EA /* ui-layout.cc in Sources */,
 				2335E8AB20BAD6F300FFE051 /* base-io-unix.cc in Sources */,
 				239F4813208F233B00FD09AD /* ui-flat-input-box.cc in Sources */,

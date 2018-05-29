@@ -52,6 +52,43 @@ private:
     FILE *f_;
 }; // class FileTextOutputStreamImpl
 
+
+class FileBinaryInputStreamImpl : public FileBinaryInputStream {
+public:
+    FileBinaryInputStreamImpl(FILE *f) : f_(DCHECK_NOTNULL(f)) {}
+
+    virtual ~FileBinaryInputStreamImpl() {
+        fclose(f_);
+        f_ = nullptr;
+    }
+
+    virtual size_t Read(void *data, size_t n) override {
+        return fread(data, 1, n, f_);
+    }
+
+private:
+    FILE *f_;
+}; // FileBinaryInputStreamImpl
+
+
+class FileBinaryOutputStreamImpl : public FileBinaryOutputStream {
+public:
+    FileBinaryOutputStreamImpl(FILE *f) : f_(DCHECK_NOTNULL(f)) {}
+
+    virtual ~FileBinaryOutputStreamImpl() {
+        fclose(f_);
+        f_ = nullptr;
+    }
+
+    virtual size_t Write(const void *data, size_t n) override {
+        return fwrite(data, 1, n, f_);
+    }
+
+private:
+    FILE *f_;
+}; // FileBinaryOutputStreamImpl
+
+
 class UnixFileIterator : public FileIterator {
 public:
     UnixFileIterator(const std::string &dir) : dir_(dir) {}
@@ -209,6 +246,26 @@ public:
             return nullptr;
         }
         return new FileTextOutputStreamImpl(f);
+    }
+
+    virtual FileBinaryInputStream *
+    OpenBinaryFileRd(const std::string &file) override {
+        FILE *f = fopen(file.c_str(), "rb");
+        if (!f) {
+            PLOG(ERROR) << "Can not open file: " << file;
+            return nullptr;
+        }
+        return new FileBinaryInputStreamImpl(f);
+    }
+
+    virtual FileBinaryOutputStream *
+    OpenBinaryFileWr(const std::string &file) override {
+        FILE *f = fopen(file.c_str(), "wb");
+        if (!f) {
+            PLOG(ERROR) << "Can not open file: " << file;
+            return nullptr;
+        }
+        return new FileBinaryOutputStreamImpl(f);
     }
 
     virtual bool FileExist(const std::string &file) override {

@@ -11,8 +11,6 @@ TEST(BaseIoTest, Sanity) {
     int n1, n2;
     f->Scanf("%s\t%d\t%d\n", file, &n1, &n2);
 
-//    ASSERT_EQ(25, n1);
-//    ASSERT_EQ(25, n2);
     ASSERT_STRCASEEQ("[unknown]", file);
 }
 
@@ -39,7 +37,16 @@ TEST(BaseIoTest, GetFileStat) {
     EXPECT_TRUE(file->is_dir());
     EXPECT_EQ("grid", file->name());
     printf("%s\n", file->dir().c_str());
+}
 
+TEST(BaseIoTest, Sprintf) {
+    EXPECT_EQ("1/2/test.3", Original::sprintf("%d/%d/%s.%d", 1, 2, "test", 3));
+
+    std::string large;
+    large.resize(1024, 'A');
+
+    auto format = Original::sprintf("%d/%s/%d", 100, large.c_str(), 111);
+    EXPECT_EQ("100/" + large + "/111" , format);
 }
 
 }

@@ -32,4 +32,16 @@ FileEntry::FileEntry() {
 /*virtual*/ FileEntry::~FileEntry() {
 }
 
+FileBinaryInputStream::FileBinaryInputStream() {
+}
+
+/*virtual*/ FileBinaryInputStream::~FileBinaryInputStream() {
+}
+
+FileBinaryOutputStream::FileBinaryOutputStream() {
+}
+
+/*virtual*/ FileBinaryOutputStream::~FileBinaryOutputStream() {
+}
+
 } // namespace utaha
