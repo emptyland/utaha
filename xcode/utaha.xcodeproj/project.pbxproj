@@ -64,6 +64,8 @@
 		23A1F0EA20BBAC1700D0492A /* fixed-terrain-storage.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A1F0E920BBAC1700D0492A /* fixed-terrain-storage.cc */; };
 		23A1F0EB20BBAC1700D0492A /* fixed-terrain-storage.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A1F0E920BBAC1700D0492A /* fixed-terrain-storage.cc */; };
 		23A1F0ED20BD026200D0492A /* fixed-terrain-storage-test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A1F0EC20BD026200D0492A /* fixed-terrain-storage-test.cc */; };
+		23A1F0F020BD8B3900D0492A /* ui-terrain-view.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A1F0EF20BD8B3900D0492A /* ui-terrain-view.cc */; };
+		23A1F0F120BD8B3900D0492A /* ui-terrain-view.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A1F0EF20BD8B3900D0492A /* ui-terrain-view.cc */; };
 		23A3FC3520A045FB00474E12 /* ui-pic-grid-selector.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */; };
 		23A3FC3620A045FB00474E12 /* ui-pic-grid-selector.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */; };
 		23A3FC3920A2EF3800474E12 /* ui-flat-check-box.cc in Sources */ = {isa = PBXBuildFile; fileRef = 23A3FC3820A2EF3800474E12 /* ui-flat-check-box.cc */; };
@@ -176,6 +178,8 @@
 		23A1F0E820BBAC0600D0492A /* fixed-terrain-storage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "fixed-terrain-storage.h"; sourceTree = "<group>"; };
 		23A1F0E920BBAC1700D0492A /* fixed-terrain-storage.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "fixed-terrain-storage.cc"; sourceTree = "<group>"; };
 		23A1F0EC20BD026200D0492A /* fixed-terrain-storage-test.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "fixed-terrain-storage-test.cc"; sourceTree = "<group>"; };
+		23A1F0EE20BD8AE300D0492A /* ui-terrain-view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-terrain-view.h"; sourceTree = "<group>"; };
+		23A1F0EF20BD8B3900D0492A /* ui-terrain-view.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-terrain-view.cc"; sourceTree = "<group>"; };
 		23A3FC3320A0453700474E12 /* ui-pic-grid-selector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-pic-grid-selector.h"; sourceTree = "<group>"; };
 		23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ui-pic-grid-selector.cc"; sourceTree = "<group>"; };
 		23A3FC3720A2EEEE00474E12 /* ui-flat-check-box.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ui-flat-check-box.h"; sourceTree = "<group>"; };
@@ -297,17 +301,19 @@
 				23A3FC3420A045FB00474E12 /* ui-pic-grid-selector.cc */,
 				23EAD07F20B6BB4200060DFA /* ui-animated-avatar-view.h */,
 				23EAD08020B6BB6500060DFA /* ui-animated-avatar-view.cc */,
+				23A1F0EE20BD8AE300D0492A /* ui-terrain-view.h */,
+				23A1F0EF20BD8B3900D0492A /* ui-terrain-view.cc */,
 				230822FA20900BA9003804EA /* ui-layout.h */,
 				230822FB20900BE2003804EA /* ui-layout.cc */,
 				23044E1F2093264D001924AA /* ui-component-factory.h */,
 				23044E20209326D2001924AA /* ui-component-factory.cc */,
+				2353C92720940B2200C4B4EB /* ui-component-style-factory.cc */,
 				238F6CDC209954ED00791F67 /* ui-component-builder.h */,
 				238F6CDD2099555B00791F67 /* ui-component-builder.cc */,
 				2353C92920940CB500C4B4EB /* ui-style-collection.h */,
 				2353C92A20940CF400C4B4EB /* ui-style-collection.cc */,
 				23A3FC3B20A5919A00474E12 /* ui-form.h */,
 				23A3FC3C20A59C7000474E12 /* ui-form.cc */,
-				2353C92720940B2200C4B4EB /* ui-component-style-factory.cc */,
 			);
 			name = UI;
 			path = ../src;
@@ -570,6 +576,7 @@
 				23FE797F20B123E500048479 /* grid-pic-storage.cc in Sources */,
 				23F34A8120AD2C3F00C3D7A4 /* text-input-mode-controller.cc in Sources */,
 				23FE797B20AFFB3A00048479 /* ui-flat-label.cc in Sources */,
+				23A1F0F120BD8B3900D0492A /* ui-terrain-view.cc in Sources */,
 				23A6E84020B3A9DB00815541 /* universal-profile.cc in Sources */,
 				23A6E83A20B25C7E00815541 /* indexed-tile-storage.cc in Sources */,
 				237E91522094616500176FA8 /* ui-flat-menu-group.cc in Sources */,
@@ -627,6 +634,7 @@
 				238F6CDE2099555B00791F67 /* ui-component-builder.cc in Sources */,
 				23A3FC3D20A59C7000474E12 /* ui-form.cc in Sources */,
 				23A3FC3920A2EF3800474E12 /* ui-flat-check-box.cc in Sources */,
+				23A1F0F020BD8B3900D0492A /* ui-terrain-view.cc in Sources */,
 				2335E8A420B848B200FFE051 /* fixed-terrain.cc in Sources */,
 				23C9E67C1D9CFB9B0078DFFF /* lua-utils.cc in Sources */,
 				23FE797A20AFFB3A00048479 /* ui-flat-label.cc in Sources */,

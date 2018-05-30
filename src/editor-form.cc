@@ -9,9 +9,12 @@
 #include "ui-layout.h"
 #include "ui-style-collection.h"
 #include "ui-animated-avatar-view.h"
+#include "ui-terrain-view.h"
 #include "ui-component-factory.h"
 #include "ui-component-builder.h"
 #include "universal-profile.h"
+#include "fixed-terrain-storage.h"
+#include "fixed-terrain.h"
 #include "animated-avatar-storage.h"
 #include "animated-avatar.h"
 #include "raw-pic-collection.h"
@@ -28,6 +31,7 @@ namespace utaha {
 class RawPicController;
 class TileController;
 class SpiritController;
+class MapController;
 
 class EditorForm : public UIForm {
 public:
@@ -51,6 +55,13 @@ public:
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(EditorForm);
 private:
+    void UpdateLayout() {
+        right_layout_->UpdateRect();
+        tile_layout_->UpdateRect();
+        spirit_layout_->UpdateRect();
+        map_layout_->UpdateRect();
+    }
+
     const UniversalProfile *profile_;
     Original *fs_;
     UIStyleCollection *styles_ = nullptr;
@@ -61,8 +72,9 @@ private:
     UILayout *right_layout_ = nullptr;
     UILayout *tile_layout_ = nullptr;
     UILayout *spirit_layout_ = nullptr;
+    UILayout *map_layout_ = nullptr;
 
-    Mode mode_ = EDIT_TILE;
+    Mode mode_ = EDIT_MAP;
     RawPicController *raw_pic_ctrl_ = nullptr;
     TileController   *tile_ctrl_ = nullptr;
     SpiritController *spirit_ctrl_ = nullptr;
@@ -72,6 +84,9 @@ private:
 
     AnimatedAvatarStorage *spirits_ = nullptr;
     GridPicStorage *spirits_tex_ = nullptr;
+
+    MapController *map_ctrl_ = nullptr;
+    FixedTerrainStorage *maps_ = nullptr;
 }; // class EditorForm
 
 #define DEFINE_CMD_ID(M) \
@@ -87,7 +102,12 @@ private:
     M(ID_SELECTOR_SELECTED,  160) \
     M(ID_SPIRIT_ADD_REGULAR, 210) \
     M(ID_SPIRIT_NEXT,        220) \
-    M(ID_SPIRIT_PREV,        230)
+    M(ID_SPIRIT_PREV,        230) \
+    M(ID_MAP_NEW,            310) \
+    M(ID_MAP_NEXT,           320) \
+    M(ID_MAP_PREV,           330) \
+    M(ID_MAP_COMMIT,         340) \
+    M(ID_MAP_DELETE,         350)
 
 struct EditorFormR {
     enum ID: int {
@@ -169,7 +189,7 @@ public:
 
     const IndexedTile *current_tile() const { return tile_; }
 
-    size_t UpdateTileIds() { return tiles_->GetAllTileIdentifiers(&tile_ids_); }
+    size_t UpdateTileIds() { return tiles_->GetAllIdentifiers(&tile_ids_); }
 
     void Reset() {
         auto n_tiles = UpdateTileIds();
@@ -249,7 +269,7 @@ public:
     void CommitTile(const std::string &file_name, UIPicGridSelector *selector) {
         UpdateTile(file_name, selector);
         bool ok = true;
-        tiles_->PutTile(tile_, &ok);
+        tiles_->Put(tile_, &ok);
         if (new_tile_) {
             tiles_->NextId();
             tile_ids_.push_back(tile_->id());
@@ -323,7 +343,7 @@ public:
     DEF_PTR_PROP_RW_NOTNULL2(GridPicStorage, spirits_tex);
 
     void Reset() {
-        auto n_spirits = spirits_->GetAllAvatarIdentifiers(&spirit_ids_);
+        auto n_spirits = spirits_->GetAllIdentifiers(&spirit_ids_);
         if (n_spirits == 0) {
             NewSpirit();
         } else {
@@ -403,7 +423,7 @@ public:
             }
         }
         bool ok = true;
-        spirits_->PutAvatar(spirit_, &ok);
+        spirits_->Put(spirit_, &ok);
         spirit_ids_.push_back(spirit_->id());
         current_spirit_p_ = spirit_ids_.size() - 1;
 
@@ -438,6 +458,88 @@ const Direction SpiritController::kDirectionMap[MAX_DIR] = {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
+// class MapController
+////////////////////////////////////////////////////////////////////////////////
+
+class MapController {
+public:
+    MapController() {}
+    ~MapController() {}
+
+    DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, map_id_ib);
+    DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, map_name_ib);
+    DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, tile_w_ib);
+    DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, tile_h_ib);
+    DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, max_h_tiles_ib);
+    DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, max_v_tiles_ib);
+    DEF_PTR_PROP_RW_NOTNULL2(UITerrainView, map_view);
+    DEF_PTR_PROP_RW_NOTNULL2(FixedTerrainStorage, maps);
+
+    int NewMap(std::string *err) {
+        int tile_w = tile_w_ib_->GetInt();
+        if (tile_w <= 0) {
+            err->assign("Incorrect tile-w size, must be > 0");
+            return 0;
+        }
+
+        int tile_h = tile_h_ib_->GetInt();
+        if (tile_h <= 0) {
+            err->assign("Incorrect tile-h size, must be > 0");
+            return 0;
+        }
+
+        int max_h_tiles = max_h_tiles_ib_->GetInt();
+        if (max_h_tiles <= 0) {
+            err->assign("Incorrect max-h-tiles size, must be > 0");
+            return 0;
+        }
+
+        int max_v_tiles = max_v_tiles_ib_->GetInt();
+        if (max_v_tiles <= 0) {
+            err->assign("Incorrect max-v-tiles size, must be > 0");
+            return 0;
+        }
+
+        raw_tiles_.clear();
+        raw_tiles_.resize(max_h_tiles * max_v_tiles, 1070);
+
+        map_view_->set_tile_w(tile_w);
+        map_view_->set_tile_h(tile_h);
+        map_view_->set_max_h_tiles(max_h_tiles);
+        map_view_->set_max_v_tiles(max_v_tiles);
+        map_view_->set_terrain_tiles(&raw_tiles_);
+        map_view_->InvalidateWhole();
+        return 0;
+    }
+
+    void CommitMap() {
+
+    }
+
+    void DeleteMap() {}
+
+    void NextMap() {}
+
+    void PrevMap() {}
+
+    void Reset() {}
+
+
+
+    DISALLOW_IMPLICIT_CONSTRUCTORS(MapController);
+private:
+    UIFlatInputBox *map_id_ib_ = nullptr;
+    UIFlatInputBox *map_name_ib_ = nullptr;
+    UIFlatInputBox *tile_w_ib_ = nullptr;
+    UIFlatInputBox *tile_h_ib_ = nullptr;
+    UIFlatInputBox *max_h_tiles_ib_ = nullptr;
+    UIFlatInputBox *max_v_tiles_ib_ = nullptr;
+    UITerrainView *map_view_ = nullptr;
+    FixedTerrainStorage *maps_ = nullptr;
+    std::vector<int> raw_tiles_;
+}; // class MapController
+
+////////////////////////////////////////////////////////////////////////////////
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -462,14 +564,17 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
     switch (cmd_id) {
         case EditorFormR::ID_FILE_TILE:
             mode_ = EDIT_TILE;
+            UpdateLayout();
             break;
 
         case EditorFormR::ID_FILE_SPIRIT:
             mode_ = EDIT_SPIRIT;
+            UpdateLayout();
             break;
 
         case EditorFormR::ID_FILE_MAP:
             mode_ = EDIT_MAP;
+            UpdateLayout();
             break;
 
         case EditorFormR::ID_FILE_SAVE_ALL:
@@ -484,6 +589,9 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
             }
             if (!spirits_->StoreToFile(fs_)) {
                 LOG(ERROR) << "Store spirits fail!";
+            }
+            if (!maps_->StoreToFile(fs_)) {
+                LOG(ERROR) << "Store maps fail!";
             }
             break;
 
@@ -528,6 +636,22 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
 
         case EditorFormR::ID_SPIRIT_PREV:
             spirit_ctrl_->PrevSpirit();
+            break;
+
+        case EditorFormR::ID_MAP_NEW: {
+            std::string err;
+            map_ctrl_->NewMap(&err);
+            if (!err.empty()) {
+                LOG(ERROR) << "Can not new map: " << err;
+            }
+        } break;
+
+        case EditorFormR::ID_MAP_NEXT:
+            map_ctrl_->NextMap();
+            break;
+
+        case EditorFormR::ID_MAP_PREV:
+            map_ctrl_->PrevMap();
             break;
 
         default:
@@ -606,6 +730,7 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
     right_layout_ = result["rightLayout"].cast<UILayout *>();
     tile_layout_ = result["tileLayout"].cast<UILayout *>();
     spirit_layout_ = result["spiritLayout"].cast<UILayout *>();
+    map_layout_ = result["mapLayout"].cast<UILayout *>();
 
     int w, h;
     SDL_GetWindowSize(window(), &w, &h);
@@ -637,9 +762,9 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
     }
 
     {
-        tiles_ = new IndexedTileStorage(1000);
+        tiles_ = new IndexedTileStorage(10000);
         tiles_->set_dir(profile_->assets_dir());
-        tiles_->set_grid_pic_name(tiles_tex_->name());
+        tiles_->set_tex_name(tiles_tex_->name());
         if (!tiles_->LoadFromFile(fs_)) {
             LOG(ERROR) << "Can not laod tiles.";
             return -1;
@@ -660,11 +785,21 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
     }
 
     {
-        spirits_ = new AnimatedAvatarStorage(2000);
+        spirits_ = new AnimatedAvatarStorage(20000);
         spirits_->set_dir(profile_->assets_dir());
-        spirits_->set_grid_pic_name(spirits_tex_->name());
+        spirits_->set_tex_name(spirits_tex_->name());
         if (!spirits_->LoadFromFile(fs_)) {
             LOG(ERROR) << "Can not laod avatars.";
+            return -1;
+        }
+    }
+
+    {
+        maps_ = new FixedTerrainStorage(30000);
+        maps_->set_dir(profile_->assets_dir());
+        maps_->set_tex_name(tiles_->name());
+        if (!maps_->LoadFromFile(fs_)) {
+            LOG(ERROR) << "Can not laod terrains.";
             return -1;
         }
     }
@@ -732,11 +867,40 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
         spirit_ctrl_->Reset();
     }
 
+    {
+        map_ctrl_ = new MapController();
+        auto id = down_cast<UIFlatInputBox>(
+            map_layout_->FindComponentOrNull("map-id"));
+        map_ctrl_->set_map_id_ib(id);
+        auto name = down_cast<UIFlatInputBox>(
+            map_layout_->FindComponentOrNull("map-name"));
+        map_ctrl_->set_map_name_ib(name);
+        auto tile_w = down_cast<UIFlatInputBox>(
+            map_layout_->FindComponentOrNull("tile-w"));
+        map_ctrl_->set_tile_w_ib(tile_w);
+        auto tile_h = down_cast<UIFlatInputBox>(
+            map_layout_->FindComponentOrNull("tile-h"));
+        map_ctrl_->set_tile_h_ib(tile_h);
+        auto max_h_tiles = down_cast<UIFlatInputBox>(
+            map_layout_->FindComponentOrNull("max-h-tiles"));
+        map_ctrl_->set_max_h_tiles_ib(max_h_tiles);
+        auto max_v_tiles = down_cast<UIFlatInputBox>(
+            map_layout_->FindComponentOrNull("max-v-tiles"));
+        map_ctrl_->set_max_v_tiles_ib(max_v_tiles);
+        auto map_view = down_cast<UITerrainView>(
+            map_layout_->FindComponentOrNull("map-view"));
+        map_ctrl_->set_map_view(map_view);
+
+        map_view->set_tiles(tiles_);
+        map_view->set_tile_tex(tiles_tex_);
+
+        map_ctrl_->set_maps(maps_);
+        map_ctrl_->Reset();
+    }
+
     UIForm::main_menu()->UpdateRect();
     UIForm::status_bar()->UpdateRect();
-    right_layout_->UpdateRect();
-    tile_layout_->UpdateRect();
-    spirit_layout_->UpdateRect();
+    UpdateLayout();
     return UIForm::OnInit();
 }
 
@@ -799,6 +963,7 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
             break;
 
         case EDIT_MAP:
+            map_layout_->OnEvent(e, is_break);
             break;
 
         default:
@@ -810,8 +975,10 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
     delete raw_pic_ctrl_; raw_pic_ctrl_ = nullptr;
     delete spirit_ctrl_; spirit_ctrl_ = nullptr;
     delete tile_ctrl_; tile_ctrl_ = nullptr;
+    delete map_ctrl_; map_ctrl_ = nullptr;
     delete right_layout_; right_layout_ = nullptr;
     delete spirit_layout_; spirit_layout_ = nullptr;
+    delete map_layout_; map_layout_ = nullptr;
     delete factory_; factory_ = nullptr;
     delete styles_; styles_ = nullptr;
     delete raw_pics_; raw_pics_ = nullptr;
@@ -819,6 +986,7 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
     delete tiles_tex_; tiles_tex_ = nullptr;
     delete spirits_; spirits_ = nullptr;
     delete spirits_tex_; spirits_tex_ = nullptr;
+    delete maps_; maps_ = nullptr;
 }
 
 /*virtual*/ void EditorForm::OnAfterRender() {
@@ -834,6 +1002,7 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
             break;
 
         case EDIT_MAP:
+            map_layout_->OnRender(renderer());
             break;
 
         default:

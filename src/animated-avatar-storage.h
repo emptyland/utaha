@@ -6,7 +6,7 @@
 
 namespace utaha {
 
-class AnimatedAvatarStorage : public GenericStorage<AnimatedAvatar> {
+class AnimatedAvatarStorage : public GenericStorage<AnimatedAvatar, 10> {
 public:
     AnimatedAvatarStorage(int start_id);
     virtual ~AnimatedAvatarStorage();

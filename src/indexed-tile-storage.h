@@ -6,7 +6,7 @@
 
 namespace utaha {
 
-class IndexedTileStorage : public GenericStorage<IndexedTile> {
+class IndexedTileStorage : public GenericStorage<IndexedTile, 10> {
 public:
     IndexedTileStorage(int start_id);
     virtual ~IndexedTileStorage();

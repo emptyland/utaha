@@ -10,6 +10,7 @@
 #include "ui-flat-pic-view.h"
 #include "ui-pic-grid-selector.h"
 #include "ui-animated-avatar-view.h"
+#include "ui-terrain-view.h"
 #include "ui-layout.h"
 #include "lua-utils.h"
 #include "glog/logging.h"
@@ -143,6 +144,16 @@ UIComponentBuilder::BeginAnimatedAvatarView(const char *name) {
     return new UIAnimatedAvatarViewBuilder(component, factory_);
 }
 
+UITerrainViewBuilder *UIComponentBuilder::BeginTerrainView(const char *name) {
+    auto component = factory_->CreateTerrainView(name);
+    if (!component) {
+        LOG(ERROR) << "Can not create <UITerrainView>!";
+        return nullptr;
+    }
+    component->AddListenner(listenner_);
+    return new UITerrainViewBuilder(component, factory_);
+}
+
 UILayoutBuilder *UIComponentBuilder::BeginLayout() {
     auto layout = new UILayout(form_);
     return new UILayoutBuilder(layout);
@@ -172,6 +183,8 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
                              &UIComponentBuilder::BeginPicGridSelector)
                 .addFunction("beginAnimatedAvatarView",
                              &UIComponentBuilder::BeginAnimatedAvatarView)
+                .addFunction("beginTerrainView",
+                             &UIComponentBuilder::BeginTerrainView)
                 .addFunction("beginLayout", &UIComponentBuilder::BeginLayout)
             .endClass()
             .beginClass<UIFlatMenuGroupBuilder>("FlatMenuGroupBuilder")
@@ -261,6 +274,17 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
                 .addFunction("endAnimatedAvatarView",
                              &UIAnimatedAvatarViewBuilder::EndAnimatedAvatarView)
             .endClass()
+            .beginClass<UITerrainViewBuilder>("TerrainViewBuilder")
+                .addFunction("tileW", &UITerrainViewBuilder::LetTileW)
+                .addFunction("tileH", &UITerrainViewBuilder::LetTileH)
+                .addFunction("maxHTiles", &UITerrainViewBuilder::LetMaxHTiles)
+                .addFunction("maxVTiles", &UITerrainViewBuilder::LetMaxVTiles)
+                .addFunction("x", &UITerrainViewBuilder::LetX)
+                .addFunction("y", &UITerrainViewBuilder::LetY)
+                .addFunction("w", &UITerrainViewBuilder::LetW)
+                .addFunction("h", &UITerrainViewBuilder::LetH)
+                .addFunction("endTerrainView", &UITerrainViewBuilder::EndTerrainView)
+            .endClass()
             .beginClass<UILayoutBuilder>("LayoutBuilder")
                 .addFunction("paddingSize", &UILayoutBuilder::LetPaddingSize)
                 .addFunction("verticalAlignment",
@@ -291,6 +315,7 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
             .endClass()
             .deriveClass<UIAnimatedAvatarView, UIComponent>("AnimatedAvatarView")
             .endClass()
+            .deriveClass<UITerrainView, UIComponent>("TerrainView").endClass()
             .beginClass<UILayout>("Layout").endClass()
         .endNamespace();
 
@@ -694,6 +719,56 @@ UIAnimatedAvatarViewBuilder::LetAnimatedSpeed(int speed) {
 }
 
 UIAnimatedAvatarView *UIAnimatedAvatarViewBuilder::EndAnimatedAvatarView() {
+    auto result = component();
+    delete this;
+    return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// class UITerrainViewBuilder
+////////////////////////////////////////////////////////////////////////////////
+
+UITerrainViewBuilder *UITerrainViewBuilder::LetTileW(int w) {
+    component()->set_tile_w(w);
+    return this;
+}
+
+UITerrainViewBuilder *UITerrainViewBuilder::LetTileH(int h) {
+    component()->set_tile_h(h);
+    return this;
+}
+
+UITerrainViewBuilder *UITerrainViewBuilder::LetMaxHTiles(int n) {
+    component()->set_max_h_tiles(n);
+    return this;
+}
+
+UITerrainViewBuilder *UITerrainViewBuilder::LetMaxVTiles(int n) {
+    component()->set_max_v_tiles(n);
+    return this;
+}
+
+UITerrainViewBuilder *UITerrainViewBuilder::LetX(int x) {
+    component()->mutable_rect()->x = x;
+    return this;
+}
+
+UITerrainViewBuilder *UITerrainViewBuilder::LetY(int y) {
+    component()->mutable_rect()->y = y;
+    return this;
+}
+
+UITerrainViewBuilder *UITerrainViewBuilder::LetW(int w) {
+    component()->mutable_rect()->w = w;
+    return this;
+}
+
+UITerrainViewBuilder *UITerrainViewBuilder::LetH(int h) {
+    component()->mutable_rect()->h = h;
+    return this;
+}
+
+UITerrainView *UITerrainViewBuilder::EndTerrainView() {
     auto result = component();
     delete this;
     return result;

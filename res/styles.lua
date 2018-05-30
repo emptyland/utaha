@@ -77,3 +77,9 @@ style
     :setColor("AnimatedAvatarView.border.color", 0xffffffff)
     :setInt("AnimatedAvatarView.padding.size",  10)
 
+-- Terrain View Styles
+    :setFont("TerrainView.font", "font.small")
+    :setColor("TerrainView.font.color",   0xffffffff)
+    :setColor("TerrainView.border.color", 0xffffffff)
+    :setColor("TerrainView.grid.color",   0x00ff00ff)
+    :setInt("TerrainView.padding.size",   10)

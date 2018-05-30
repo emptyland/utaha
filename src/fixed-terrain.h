@@ -71,6 +71,9 @@ public:
         return actors_[i];
     }
 
+    int pixels_w() const { return tile_w_ * max_h_tiles_; }
+    int pixels_h() const { return tile_h_ * max_v_tiles_; }
+
     DISALLOW_IMPLICIT_CONSTRUCTORS(FixedTerrain);
 private:
     int id_ = 0;

@@ -23,6 +23,14 @@ local mainMenu = builder:beginFlatMenuGroup("main-menu")
         :addItem("Next Spirit", R.ID_SPIRIT_NEXT, nil)
         :addItem("Prev Spirit", R.ID_SPIRIT_PREV, nil)
     :endColumn()
+    :beginColumn("Map", 4)
+        :addItem("New Map", R.ID_MAP_NEW, nil)
+        :addItem("Commit Map", R.ID_MAP_COMMIT, nil)
+        :addItem("Delete Map", R.ID_MAP_DELETE, nil)
+        :addDiv()
+        :addItem("Next Map", R.ID_MAP_NEXT, nil)
+        :addItem("Prev Map", R.ID_MAP_PREV, nil)
+    :endColumn()
 :endMenuGroup()
 
 local statusBar = builder:beginFlatStatusBar("main-status-bar")
@@ -35,7 +43,10 @@ local statusBar = builder:beginFlatStatusBar("main-status-bar")
     :endGrid()
     :addGrid(120)
         :text("----") -- [2]
-    :endGrid()    
+    :endGrid()
+    :addGrid(240)
+        :text("----") -- [3]
+    :endGrid()  
 :endStatusBar()
 
 --------------------------------------------------------------------------------
@@ -180,10 +191,85 @@ local spiritLayout = builder:beginLayout()
     :endRow()
 :endLayout()
 
+--------------------------------------------------------------------------------
+
+local mapId = builder:beginFlatInputBox("map-id")
+    :text(0)
+    :maxInput(100)
+    :h(26)
+    :w(60)
+:endInputBox()
+
+local mapName = builder:beginFlatInputBox("map-name")
+    :text("[unnamed")
+    :maxInput(100)
+    :h(26)
+    :w(60)
+:endInputBox()
+
+local tileW = builder:beginFlatInputBox("tile-w")
+    :text(48)
+    :maxInput(100)
+    :h(26)
+    :w(60)
+:endInputBox()
+
+local tileH = builder:beginFlatInputBox("tile-h")
+    :text(48)
+    :maxInput(100)
+    :h(26)
+    :w(60)
+:endInputBox()
+
+local maxHTiles = builder:beginFlatInputBox("max-h-tiles")
+    :text(32)
+    :maxInput(100)
+    :h(26)
+    :w(60)
+:endInputBox()
+
+local maxVTiles = builder:beginFlatInputBox("max-v-tiles")
+    :text(32)
+    :maxInput(100)
+    :h(26)
+    :w(60)
+:endInputBox()
+
+local mapView = builder:beginTerrainView("map-view")
+    :w(800)
+    :h(500)
+:endTerrainView()
+
+local mapLayout = builder:beginLayout()
+    :paddingSize(1)
+    :verticalAlignment(alignment.ALIGN_LEFT_OR_TOP)
+    :horizontalAligment(alignment.ALIGN_LEFT_OR_TOP)
+    :beginRow(alignment.ALIGN_LEFT_OR_TOP)
+        :add(builder:flatLabel("l", "Map ID:"))
+        :add(mapId)
+        :add(builder:flatLabel("l", "Map Name:"))
+        :add(mapName)
+        :add(builder:flatLabel("l", "Tile W: "))
+        :add(tileW)
+        :add(builder:flatLabel("l", "Tile H: "))
+        :add(tileH)
+    :endRow()
+    :beginRow(alignment.ALIGN_LEFT_OR_TOP)
+        :add(builder:flatLabel("l", "Max H Tiles: "))
+        :add(maxHTiles)
+        :add(builder:flatLabel("l", "Max V Tiles: "))
+        :add(maxVTiles)
+    :endRow()
+    :beginRow(alignment.ALIGN_LEFT_OR_TOP)
+        :add(mapView)
+    :endRow()
+:endLayout()
+
 return {
     mainMenu     = mainMenu,
     statusBar    = statusBar,
     rightLayout  = rightLayout,
     tileLayout   = tileLayout,
     spiritLayout = spiritLayout,
+    mapLayout    = mapLayout,
 }

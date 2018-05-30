@@ -8,7 +8,7 @@ namespace utaha {
 
 class FileTextOutputStream;
 
-class FixedTerrainStorage : public GenericStorage<FixedTerrain> {
+class FixedTerrainStorage : public GenericStorage<FixedTerrain, 10> {
 public:
     FixedTerrainStorage(int start_id);
     virtual ~FixedTerrainStorage();

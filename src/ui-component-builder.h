@@ -24,6 +24,7 @@ class UIFlatStatusBarBuilder;
 class UIFlatStatusBarGridBuilder;
 class UIPicGridSelectorBuilder;
 class UIAnimatedAvatarViewBuilder;
+class UITerrainViewBuilder;
 class UILayoutBuilder;
 class UILayoutRowBuilder;
 class UIComponent;
@@ -38,6 +39,7 @@ class UIFlatStatusBarGrid;
 class UIFlatPicView;
 class UIPicGridSelector;
 class UIAnimatedAvatarView;
+class UITerrainView;
 class UILayout;
 class UILayoutRow;
 class UIForm;
@@ -60,6 +62,7 @@ public:
     UIFlatStatusBarBuilder *BeginFlatStatusBar(const char *name);
     UIPicGridSelectorBuilder *BeginPicGridSelector(const char *name);
     UIAnimatedAvatarViewBuilder *BeginAnimatedAvatarView(const char *name);
+    UITerrainViewBuilder *BeginTerrainView(const char *name);
     UILayoutBuilder *BeginLayout();
 
     static int BindTo(lua_State *L);
@@ -285,6 +288,27 @@ public:
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIAnimatedAvatarViewBuilder);
 }; // class UIAnimatedAvatarViewBuilder
+
+
+class UITerrainViewBuilder : public UIComponentBuilderBase<UITerrainView> {
+public:
+    inline UITerrainViewBuilder(UITerrainView *component,
+                                UIComponentFactory *factory)
+        : UIComponentBuilderBase(component, factory) {}
+    inline ~UITerrainViewBuilder() = default;
+
+    UITerrainViewBuilder *LetTileW(int w);
+    UITerrainViewBuilder *LetTileH(int h);
+    UITerrainViewBuilder *LetMaxHTiles(int n);
+    UITerrainViewBuilder *LetMaxVTiles(int n);
+    UITerrainViewBuilder *LetX(int x);
+    UITerrainViewBuilder *LetY(int y);
+    UITerrainViewBuilder *LetW(int w);
+    UITerrainViewBuilder *LetH(int h);
+    UITerrainView *EndTerrainView();
+
+    DISALLOW_IMPLICIT_CONSTRUCTORS(UITerrainViewBuilder);
+}; // class UITerrainViewBuilder
 
 class UILayoutBuilder {
 public:

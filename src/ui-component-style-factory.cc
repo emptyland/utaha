@@ -7,6 +7,7 @@
 #include "ui-flat-check-box.h"
 #include "ui-flat-status-bar.h"
 #include "ui-flat-pic-view.h"
+#include "ui-terrain-view.h"
 #include "ui-pic-grid-selector.h"
 #include "ui-animated-avatar-view.h"
 #include "ui-style-collection.h"
@@ -45,6 +46,8 @@ public:
 
     virtual UIAnimatedAvatarView *
     CreateAnimatedAvatarView(const std::string &name) override;
+
+    virtual UITerrainView *CreateTerrainView(const std::string &name) override;
     
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIComponentStyleFactory);
 private:
@@ -122,6 +125,12 @@ static const char ANIMATED_AVATAR_VIEW_BORDER_COLOR[]
     = "AnimatedAvatarView.border.color";
 static const char ANIMATED_AVATAR_VIEW_PADDING_SIZE[]
     = "AnimatedAvatarView.padding.size";
+
+static const char TERRAIN_VIEW_FONT[] = "TerrainView.font";
+static const char TERRAIN_VIEW_FONT_COLOR[] = "TerrainView.font.color";
+static const char TERRAIN_VIEW_BORDER_COLOR[] = "TerrainView.border.color";
+static const char TERRAIN_VIEW_GRID_COLOR[] = "TerrainView.grid.color";
+static const char TERRAIN_VIEW_PADDING_SIZE[] = "TerrainView.padding.size";
 
 UIComponentFactory *CreateUIComponentStyleFactory(UIStyleCollection *style) {
     return new UIComponentStyleFactory(style);
@@ -512,6 +521,44 @@ UIComponentStyleFactory::CreateAnimatedAvatarView(const std::string &name) {
         return nullptr;
     }
 
+    return component.release();
+}
+
+/*virtual*/ UITerrainView *
+UIComponentStyleFactory::CreateTerrainView(const std::string &name) {
+    bool ok = true;
+    TTF_Font *font = style_->FindFont(TERRAIN_VIEW_FONT, &ok);
+    if (!ok) {
+        LOG(ERROR) << "Can not find font: " << TERRAIN_VIEW_FONT;
+        return nullptr;
+    }
+
+    std::unique_ptr<UITerrainView>
+        component(new UITerrainView(font));
+    component->set_name(name);
+    component->set_id(NextId());
+
+    if (!style_->FindColor(TERRAIN_VIEW_FONT_COLOR,
+                           component->mutable_font_color())) {
+        LOG(ERROR) << "Can not find color: " << TERRAIN_VIEW_FONT_COLOR;
+        return nullptr;
+    }
+    if (!style_->FindColor(TERRAIN_VIEW_BORDER_COLOR,
+                           component->mutable_border_color())) {
+        LOG(ERROR) << "Can not find color: " << TERRAIN_VIEW_BORDER_COLOR;
+        return nullptr;
+    }
+    if (!style_->FindColor(TERRAIN_VIEW_GRID_COLOR,
+                           component->mutable_grid_color())) {
+        LOG(ERROR) << "Can not find color: " << TERRAIN_VIEW_GRID_COLOR;
+        return nullptr;
+    }
+    component->set_padding_size(style_->FindInt(TERRAIN_VIEW_PADDING_SIZE,
+                                                &ok));
+    if (!ok) {
+        LOG(ERROR) << "Can not find int value: " << TERRAIN_VIEW_PADDING_SIZE;
+        return nullptr;
+    }
     return component.release();
 }
 

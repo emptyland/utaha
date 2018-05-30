@@ -23,7 +23,7 @@ public:
     DISALLOW_IMPLICIT_CONSTRUCTORS(Storage);
 }; // class Storage
 
-template <class T, int ID_INC = 10>
+template <class T, int ID_INC>
 class GenericStorage : public Storage {
 public:
     GenericStorage(int start_id)

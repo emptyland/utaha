@@ -16,6 +16,7 @@ class UIFlatStatusBar;
 class UIFlatPicView;
 class UIPicGridSelector;
 class UIAnimatedAvatarView;
+class UITerrainView;
 class UIStyleCollection;
 
 class UIComponentFactory {
@@ -37,6 +38,8 @@ public:
 
     virtual UIAnimatedAvatarView *
     CreateAnimatedAvatarView(const std::string &name) = 0;
+
+    virtual UITerrainView *CreateTerrainView(const std::string &name) = 0;
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIComponentFactory);
 }; // class UIComponentFactory
