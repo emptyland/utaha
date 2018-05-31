@@ -39,12 +39,17 @@ UITerrainView::UITerrainView(TTF_Font *font)
     if (*is_break) {
         return result;
     }
-
     if (!focused()) {
         return 0;
     }
 
     //SDL_Rect view_rc = view_rect();
+    if (event->type == SDL_MOUSEBUTTONDOWN) {
+        if (mode_ == PLACE_MODE) {
+            return ProcessTileSelected(event, is_break);
+        }
+    }
+
     if (event->type == SDL_KEYDOWN) {
         switch (event->key.keysym.sym) {
             case SDLK_UP:
@@ -376,6 +381,32 @@ int UITerrainView::GetVRulerW() const {
             }
             return surface ? surface->w : 0;
         }
+    }
+    return 0;
+}
+
+int UITerrainView::ProcessTileSelected(SDL_Event *e, bool *is_break) {
+    SDL_Rect view_rc = view_rect();
+
+    if (!InRect(view_rc, e->button.x, e->button.y)) {
+        return 0;
+    }
+
+    int x = (e->button.x - view_rc.x) / tile_w_;
+    int y = (e->button.y - view_rc.y) / tile_h_;
+    x = view_port_x_ + x;
+    y = view_port_y_ + y;
+    if (x >= 0 && x < max_h_tiles_ &&
+        y >= 0 && y < max_v_tiles_) {
+        TerrainViewEvent e;
+        e.event = TerrainViewEvent::TILE_SELECTED;
+        e.tile.x = x;
+        e.tile.y = y;
+        int rv = ProcessCmdIfNeeded(cmd_id_, &e, is_break);
+        if (*is_break) {
+            return rv;
+        }
+        return 1;
     }
     return 0;
 }

@@ -15,8 +15,30 @@ class GridPicStorage;
 
 template<class T, int N=10> class GenericStorage;
 
+struct TerrainViewEvent {
+    enum Event {
+        LINKER_SELECTED,
+        ENTITY_SELECTED,
+        ACTOR_SELECTED,
+        TILE_SELECTED,
+    };
+    Event event;
+    union {
+        struct {
+            int x;
+            int y;
+            int id;
+        } tile;
+    };
+};
+
 class UITerrainView : public UIComponent {
 public:
+    enum Mode {
+        SELECT_MODE,
+        PLACE_MODE,
+    };
+
     UITerrainView(TTF_Font *font);
     virtual ~UITerrainView();
 
@@ -57,6 +79,7 @@ private:
     SDL_Surface *CreateVRulerSurface(int max_v_tiles, int tile_h) const;
     int GetHRulerH() const;
     int GetVRulerW() const;
+    int ProcessTileSelected(SDL_Event *e, bool *is_break);
 
     SDL_Texture *kMiss = nullptr;
 
@@ -69,6 +92,7 @@ private:
     SDL_Texture *v_ruler_ = nullptr;
     std::vector<SDL_Texture *> indexed_tex_;
     int cmd_id_ = 0;
+    Mode mode_ = PLACE_MODE;
     bool has_ruler_ = false;
     int view_port_x_ = 0;
     int view_port_y_ = 0;

@@ -513,9 +513,7 @@ public:
         return 0;
     }
 
-    void CommitMap() {
-
-    }
+    void CommitMap() {}
 
     void DeleteMap() {}
 
@@ -524,6 +522,13 @@ public:
     void PrevMap() {}
 
     void Reset() {}
+
+    int ProcessTerrainViewCmd(const TerrainViewEvent *e) {
+        if (e->event == TerrainViewEvent::TILE_SELECTED) {
+            raw_tiles_[e->tile.y * map_view_->max_h_tiles() + e->tile.x] = 0;
+        }
+        return 0;
+    }
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(MapController);
 private:
@@ -652,6 +657,10 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
         case EditorFormR::ID_MAP_PREV:
             map_ctrl_->PrevMap();
             break;
+
+        case EditorFormR::ID_TERRAIN_VIEW:
+            return map_ctrl_->ProcessTerrainViewCmd(
+                static_cast<TerrainViewEvent *>(param));
 
         default:
             break;
