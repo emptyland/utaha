@@ -79,7 +79,7 @@ style
 
 -- Terrain View Styles
     :setFont("TerrainView.font", "font.small")
-    :setColor("TerrainView.font.color",   0xffffffff)
+    :setColor("TerrainView.font.color",   0x00ff00ff)
     :setColor("TerrainView.border.color", 0xffffffff)
     :setColor("TerrainView.grid.color",   0x00ff00ff)
     :setInt("TerrainView.padding.size",   10)

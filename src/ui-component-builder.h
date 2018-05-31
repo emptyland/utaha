@@ -297,10 +297,15 @@ public:
         : UIComponentBuilderBase(component, factory) {}
     inline ~UITerrainViewBuilder() = default;
 
+    UITerrainViewBuilder *LetHasRuler(bool value);
+    UITerrainViewBuilder *LetCmdId(int id);
     UITerrainViewBuilder *LetTileW(int w);
     UITerrainViewBuilder *LetTileH(int h);
     UITerrainViewBuilder *LetMaxHTiles(int n);
     UITerrainViewBuilder *LetMaxVTiles(int n);
+    UITerrainViewBuilder *LetScrollingSpeed(int speed);
+    UITerrainViewBuilder *LetViewPortHTiles(int n);
+    UITerrainViewBuilder *LetViewPortVTiles(int n);
     UITerrainViewBuilder *LetX(int x);
     UITerrainViewBuilder *LetY(int y);
     UITerrainViewBuilder *LetW(int w);

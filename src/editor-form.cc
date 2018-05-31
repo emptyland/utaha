@@ -107,7 +107,8 @@ private:
     M(ID_MAP_NEXT,           320) \
     M(ID_MAP_PREV,           330) \
     M(ID_MAP_COMMIT,         340) \
-    M(ID_MAP_DELETE,         350)
+    M(ID_MAP_DELETE,         350) \
+    M(ID_TERRAIN_VIEW,      1000)
 
 struct EditorFormR {
     enum ID: int {
@@ -524,8 +525,6 @@ public:
 
     void Reset() {}
 
-
-
     DISALLOW_IMPLICIT_CONSTRUCTORS(MapController);
 private:
     UIFlatInputBox *map_id_ib_ = nullptr;
@@ -715,6 +714,7 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
         LOG(ERROR) << "Can not create form layout. " << e;
         return -1;
     }
+    delete builder;
 
     luabridge::LuaRef result = luabridge::LuaRef::fromStack(L, -1);
     if (!result.isTable()) {
@@ -772,7 +772,6 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
     }
 
     {
-        spirits_tex_ = new GridPicStorage();
         spirits_tex_ = new GridPicStorage();
         spirits_tex_->set_dir(profile_->assets_dir());
         spirits_tex_->set_name("avatars-tex");

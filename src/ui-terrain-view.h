@@ -28,7 +28,10 @@ public:
     DEF_PTR_PROP_RW_NOTNULL1(const GridPicStorage, tile_tex);
     DEF_VAL_PROP_RW(int, cmd_id);
 
+    DEF_VAL_PROP_RW(bool, has_ruler);
     DEF_VAL_PROP_RW(int, scrolling_speed);
+    DEF_VAL_PROP_RW(int, view_port_h_tiles);
+    DEF_VAL_PROP_RW(int, view_port_v_tiles);
 
     DEF_VAL_PROP_RW(int, tile_w);
     DEF_VAL_PROP_RW(int, tile_h);
@@ -47,23 +50,31 @@ public:
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(UITerrainView);
 private:
-    bool CreateSurface();
-    SDL_Surface *CreateOrGetMissionSurface();
+    int RenderRuler(int bx, int by, int vx, int vy, int vw, int vh,
+                    SDL_Renderer *renderer);
+    SDL_Texture *CreateOrGetMissionGrid(SDL_Renderer *renderer);
+    SDL_Surface *CreateHRulerSurface(int max_h_tiles, int tile_w) const;
+    SDL_Surface *CreateVRulerSurface(int max_v_tiles, int tile_h) const;
+    int GetHRulerH() const;
+    int GetVRulerW() const;
 
-    SDL_Surface *kMiss = nullptr;
+    SDL_Texture *kMiss = nullptr;
 
     TTF_Font *font_;
     SDL_Color font_color_ = {0, 0, 0, 0};
     SDL_Color border_color_ = {0, 0, 0, 0};
     SDL_Color grid_color_ = {0, 0, 0, 0};
     int padding_size_ = 10;
-    SDL_Surface *whole_ = nullptr;
-    SDL_Texture *texture_ = nullptr;
+    SDL_Texture *h_ruler_ = nullptr;
+    SDL_Texture *v_ruler_ = nullptr;
+    std::vector<SDL_Texture *> indexed_tex_;
     int cmd_id_ = 0;
-
+    bool has_ruler_ = false;
     int view_port_x_ = 0;
     int view_port_y_ = 0;
-    int scrolling_speed_ = 17;
+    int view_port_h_tiles_ = 16;
+    int view_port_v_tiles_ = 9;
+    int scrolling_speed_ = 1;
 
     const GenericStorage<IndexedTile> *tiles_ = nullptr;
     const GridPicStorage *tile_tex_ = nullptr;
@@ -71,16 +82,16 @@ private:
     int tile_h_ = 0;
     int max_h_tiles_ = 0;
     int max_v_tiles_ = 0;
-    const std::vector<int> *terrain_tiles_;
-    const std::vector<IndexedLinker> *terrain_linkers_;
+    const std::vector<int> *terrain_tiles_ = nullptr;
+    const std::vector<IndexedLinker> *terrain_linkers_ = nullptr;
 }; // class UITerrainView
 
 inline SDL_Rect UITerrainView::view_rect() const {
-    return {
-        rect().x + padding_size_,
-        rect().y + padding_size_,
-        rect().w - padding_size_ * 2,
-        rect().h - padding_size_ * 2,
+    return { // 垂直和水平标尺一样宽
+        rect().x + padding_size_ + GetVRulerW(),
+        rect().y + padding_size_ + GetHRulerH(),
+        rect().w - padding_size_ * 2 - GetVRulerW(),
+        rect().h - padding_size_ * 2 - GetHRulerH(),
     };
 }
 

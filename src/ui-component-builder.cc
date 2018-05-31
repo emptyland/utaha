@@ -275,15 +275,24 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
                              &UIAnimatedAvatarViewBuilder::EndAnimatedAvatarView)
             .endClass()
             .beginClass<UITerrainViewBuilder>("TerrainViewBuilder")
+                .addFunction("cmdId", &UITerrainViewBuilder::LetCmdId)
+                .addFunction("hasRuler", &UITerrainViewBuilder::LetHasRuler)
                 .addFunction("tileW", &UITerrainViewBuilder::LetTileW)
                 .addFunction("tileH", &UITerrainViewBuilder::LetTileH)
                 .addFunction("maxHTiles", &UITerrainViewBuilder::LetMaxHTiles)
                 .addFunction("maxVTiles", &UITerrainViewBuilder::LetMaxVTiles)
+                .addFunction("viewPortHTiles",
+                             &UITerrainViewBuilder::LetViewPortHTiles)
+                .addFunction("viewPortVTiles",
+                             &UITerrainViewBuilder::LetViewPortVTiles)
+                .addFunction("scrollingSpeed",
+                             &UITerrainViewBuilder::LetScrollingSpeed)
                 .addFunction("x", &UITerrainViewBuilder::LetX)
                 .addFunction("y", &UITerrainViewBuilder::LetY)
                 .addFunction("w", &UITerrainViewBuilder::LetW)
                 .addFunction("h", &UITerrainViewBuilder::LetH)
-                .addFunction("endTerrainView", &UITerrainViewBuilder::EndTerrainView)
+                .addFunction("endTerrainView",
+                             &UITerrainViewBuilder::EndTerrainView)
             .endClass()
             .beginClass<UILayoutBuilder>("LayoutBuilder")
                 .addFunction("paddingSize", &UILayoutBuilder::LetPaddingSize)
@@ -728,6 +737,16 @@ UIAnimatedAvatarView *UIAnimatedAvatarViewBuilder::EndAnimatedAvatarView() {
 // class UITerrainViewBuilder
 ////////////////////////////////////////////////////////////////////////////////
 
+UITerrainViewBuilder *UITerrainViewBuilder::LetHasRuler(bool value) {
+    component()->set_has_ruler(value);
+    return this;
+}
+
+UITerrainViewBuilder *UITerrainViewBuilder::LetCmdId(int id) {
+    component()->set_cmd_id(id);
+    return this;
+}
+
 UITerrainViewBuilder *UITerrainViewBuilder::LetTileW(int w) {
     component()->set_tile_w(w);
     return this;
@@ -735,6 +754,21 @@ UITerrainViewBuilder *UITerrainViewBuilder::LetTileW(int w) {
 
 UITerrainViewBuilder *UITerrainViewBuilder::LetTileH(int h) {
     component()->set_tile_h(h);
+    return this;
+}
+
+UITerrainViewBuilder *UITerrainViewBuilder::LetScrollingSpeed(int speed) {
+    component()->set_scrolling_speed(speed);
+    return this;
+}
+
+UITerrainViewBuilder *UITerrainViewBuilder::LetViewPortHTiles(int n) {
+    component()->set_view_port_h_tiles(n);
+    return this;
+}
+
+UITerrainViewBuilder *UITerrainViewBuilder::LetViewPortVTiles(int n) {
+    component()->set_view_port_v_tiles(n);
     return this;
 }
 
