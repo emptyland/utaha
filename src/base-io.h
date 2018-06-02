@@ -48,6 +48,23 @@ public:
 
     static inline std::string sprintf(const char *fmt, ...);
 
+    static std::u16string UTF8toUTF16(const std::string &input);
+
+    static inline std::wstring UTF8toUTF16W(const std::string &input) {
+        auto u16 = UTF8toUTF16(input);
+        return std::wstring(
+            reinterpret_cast<const wchar_t *>(u16.data()),
+            u16.size());
+    }
+
+    static std::string UTF16ToUTF8(const std::u16string &input);
+
+    static inline std::string UTF16WtoUTF8(const std::wstring &input) {
+        return UTF16ToUTF8(std::u16string(
+            reinterpret_cast<const char16_t *>(input.data()),
+            input.size()));
+    }
+
 }; // class Original
 
 class FileTextInputStream {
@@ -106,7 +123,11 @@ public:
     virtual bool is_hidden() = 0;
     virtual bool exist() = 0;
 
+#if defined(UTAHA_OS_WINDOWS)
+    std::string path() { return dir() + "\\" + name(); }
+#else
     std::string path() { return dir() + "/" + name(); }
+#endif
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(FileEntry);
 }; // class FileEntry

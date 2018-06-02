@@ -3,6 +3,7 @@
 #include "glog/logging.h"
 #include SDL_TTF_H
 #include <stdarg.h>
+#include <algorithm>
 
 namespace utaha {
 

@@ -25,7 +25,9 @@
     <ClInclude Include="..\src\base-io.h" />
     <ClInclude Include="..\src\base.h" />
     <ClInclude Include="..\src\datatype.h" />
+    <ClInclude Include="..\src\fixed-terrain-storage.h" />
     <ClInclude Include="..\src\fixed-terrain.h" />
+    <ClInclude Include="..\src\generic-storage.h" />
     <ClInclude Include="..\src\grid-pic-storage.h" />
     <ClInclude Include="..\src\indexed-spirit.h" />
     <ClInclude Include="..\src\indexed-tile-storage.h" />
@@ -52,10 +54,12 @@
     <ClInclude Include="..\src\ui-flat-menu.h" />
     <ClInclude Include="..\src\ui-flat-pic-view.h" />
     <ClInclude Include="..\src\ui-flat-status-bar.h" />
+    <ClInclude Include="..\src\ui-flat-text-box.h" />
     <ClInclude Include="..\src\ui-form.h" />
     <ClInclude Include="..\src\ui-layout.h" />
     <ClInclude Include="..\src\ui-pic-grid-selector.h" />
     <ClInclude Include="..\src\ui-style-collection.h" />
+    <ClInclude Include="..\src\ui-terrain-view.h" />
     <ClInclude Include="..\src\universal-profile.h" />
   </ItemGroup>
   <ItemGroup>
@@ -65,7 +69,13 @@
     <ClCompile Include="..\src\animated-avatar.cc" />
     <ClCompile Include="..\src\base-io-test.cc" />
     <ClCompile Include="..\src\base-io-windows.cc" />
+    <ClCompile Include="..\src\base-io.cc" />
+    <ClCompile Include="..\src\fixed-terrain-storage-test.cc" />
+    <ClCompile Include="..\src\fixed-terrain-storage.cc" />
+    <ClCompile Include="..\src\fixed-terrain-test.cc" />
     <ClCompile Include="..\src\fixed-terrain.cc" />
+    <ClCompile Include="..\src\generic-storage-test.cc" />
+    <ClCompile Include="..\src\generic-storage.cc" />
     <ClCompile Include="..\src\grid-pic-storage-test.cc" />
     <ClCompile Include="..\src\grid-pic-storage.cc" />
     <ClCompile Include="..\src\indexed-tile-storage-test.cc" />
@@ -96,11 +106,13 @@
     <ClCompile Include="..\src\ui-flat-menu.cc" />
     <ClCompile Include="..\src\ui-flat-pic-view.cc" />
     <ClCompile Include="..\src\ui-flat-status-bar.cc" />
+    <ClCompile Include="..\src\ui-flat-text-box.cc" />
     <ClCompile Include="..\src\ui-form.cc" />
     <ClCompile Include="..\src\ui-layout.cc" />
     <ClCompile Include="..\src\ui-pic-grid-selector.cc" />
     <ClCompile Include="..\src\ui-style-collection-test.cc" />
     <ClCompile Include="..\src\ui-style-collection.cc" />
+    <ClCompile Include="..\src\ui-terrain-view.cc" />
     <ClCompile Include="..\src\universal-profile.cc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -143,6 +143,7 @@ TEST(FixedTerrainStorageTest, StoreTest3) {
         linkers[i].to_id = 3300;
         linkers[i].to_x = 3;
         linkers[i].to_y = 4;
+        linkers[i].params = 0;
     }
     terrain->set_linkers(linkers);
 

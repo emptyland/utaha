@@ -127,6 +127,18 @@
     <ClInclude Include="..\src\universal-profile.h">
       <Filter>Extern</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\fixed-terrain-storage.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\generic-storage.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-flat-text-box.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-terrain-view.h">
+      <Filter>Extern</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\animated-avatar.cc">
@@ -256,6 +268,30 @@
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="..\src\base-io-test.cc">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\base-io.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\fixed-terrain-storage.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\fixed-terrain-test.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\generic-storage.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\generic-storage-test.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-text-box.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-terrain-view.cc">
+      <Filter>Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\fixed-terrain-storage-test.cc">
       <Filter>Tests</Filter>
     </ClCompile>
   </ItemGroup>

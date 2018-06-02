@@ -1,6 +1,7 @@
 #include "ui-form.h"
 #include "on-exit-scope.h"
 #include "universal-profile.h"
+#include "base-io.h"
 #include "glog/logging.h"
 #include SDL_H
 #include SDL_IMAGE_H
@@ -50,6 +51,7 @@ int CALLBACK WinMain(
     SDL_Quit();
     return result;
 }
+
 #else
 int main(int argc, char *argv[]) {
     FLAGS_alsologtostderr = 1;

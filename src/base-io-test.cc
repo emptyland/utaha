@@ -49,4 +49,17 @@ TEST(BaseIoTest, Sprintf) {
     EXPECT_EQ("100/" + large + "/111" , format);
 }
 
+#if defined(UTAHA_OS_WINDOWS) 
+TEST(BaseIoTest, UnicodeConverting) {
+    std::u16string k16(u"ºº×Ö£¡");
+    auto u8 = Original::UTF16ToUTF8(k16);
+    ASSERT_NE(0, u8.size());
+    ASSERT_EQ(9, u8.size());
+
+    auto u16 = Original::UTF8toUTF16(u8);
+    ASSERT_EQ(k16.size(), u16.size());
+    ASSERT_EQ(k16, u16);
+}
+#endif
+
 }

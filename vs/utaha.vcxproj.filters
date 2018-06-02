@@ -144,6 +144,18 @@
     <ClInclude Include="..\src\base-io.h">
       <Filter>Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\ui-flat-text-box.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui-terrain-view.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fixed-terrain-storage.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\generic-storage.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\editor-main.cc">
@@ -249,6 +261,21 @@
       <Filter>Resource</Filter>
     </ClCompile>
     <ClCompile Include="..\src\base-io-windows.cc">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-flat-text-box.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui-terrain-view.cc">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\fixed-terrain-storage.cc">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\generic-storage.cc">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\base-io.cc">
       <Filter>Base</Filter>
     </ClCompile>
   </ItemGroup>
