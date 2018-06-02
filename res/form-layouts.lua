@@ -267,6 +267,13 @@ local mapLayout = builder:beginLayout()
     :beginRow(alignment.ALIGN_LEFT_OR_TOP)
         :add(mapView)
     :endRow()
+    :beginRow(alignment.ALIGN_LEFT_OR_TOP)
+        :add(builder:beginFlatTextBox("picked-tile-detail")
+             :w(240)
+             :h(120)
+             :endTextBox())
+        :add(builder:flatPicView("picked-tile"))
+    :endRow()
 :endLayout()
 
 return {

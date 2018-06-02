@@ -14,6 +14,7 @@ class UIFlatLabel;
 class UIFlatCheckBox;
 class UIFlatStatusBar;
 class UIFlatPicView;
+class UIFlatTextBox;
 class UIPicGridSelector;
 class UIAnimatedAvatarView;
 class UITerrainView;
@@ -32,6 +33,7 @@ public:
     virtual UIFlatCheckBox *CreateFlatCheckBox(const std::string &name) = 0;
     virtual UIFlatStatusBar *CreateFlatStatusBar(const std::string &name) = 0;
     virtual UIFlatPicView *CreateFlatPicView(const std::string &name) = 0;
+    virtual UIFlatTextBox *CreateFlatTextBox(const std::string &name) = 0;
 
     virtual UIPicGridSelector *
     CreatePicGridSelector(const std::string &name) = 0;

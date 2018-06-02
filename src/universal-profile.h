@@ -21,6 +21,8 @@ public:
     DEF_VAL_PROP_RW(std::string, raw_pic_load_file);
     DEF_VAL_PROP_RW(std::string, editor_styles_file);
     DEF_VAL_PROP_RW(std::string, editor_layout_file);
+    DEF_VAL_PROP_RW(int, editor_window_w);
+    DEF_VAL_PROP_RW(int, editor_window_h)
 
     void LoadFromFile(const char *file, std::string *err);
 
@@ -42,6 +44,8 @@ private:
     std::string raw_pic_load_file_ = "res/raw-pic-load.lua";
     std::string editor_styles_file_ = "res/styles.lua";
     std::string editor_layout_file_ = "res/form-layouts.lua";
+    int editor_window_w_ = 1024;
+    int editor_window_h_ = 800;
     ////////////////////////////////////////////////////////////////////////////
 }; // class UniversalProfile
 

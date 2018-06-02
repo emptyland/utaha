@@ -8,6 +8,7 @@
 #include "ui-flat-status-bar.h"
 #include "ui-flat-label.h"
 #include "ui-flat-pic-view.h"
+#include "ui-flat-text-box.h"
 #include "ui-pic-grid-selector.h"
 #include "ui-animated-avatar-view.h"
 #include "ui-terrain-view.h"
@@ -122,6 +123,16 @@ UIComponentBuilder::BeginFlatStatusBar(const char *name) {
     return new UIFlatStatusBarBuilder(component, factory_);
 }
 
+UIFlatTextBoxBuilder *UIComponentBuilder::BeginFlatTextBox(const char *name) {
+    auto component = factory_->CreateFlatTextBox(name);
+    if (!component) {
+        LOG(ERROR) << "Can not create <UIFlatTextBox>!";
+        return nullptr;
+    }
+    component->AddListenner(listenner_);
+    return new UIFlatTextBoxBuilder(component, factory_);
+}
+
 UIPicGridSelectorBuilder *
 UIComponentBuilder::BeginPicGridSelector(const char *name) {
     auto component = factory_->CreatePicGridSelector(name);
@@ -179,6 +190,8 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
                              &UIComponentBuilder::BeginFlatCheckBox)
                 .addFunction("beginFlatStatusBar",
                              &UIComponentBuilder::BeginFlatStatusBar)
+                .addFunction("beginFlatTextBox",
+                             &UIComponentBuilder::BeginFlatTextBox)
                 .addFunction("beginPicGridSelector",
                              &UIComponentBuilder::BeginPicGridSelector)
                 .addFunction("beginAnimatedAvatarView",
@@ -255,6 +268,13 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
                 .addFunction("bgColor", &UIFlatStatusBarGridBuilder::LetBgColor)
                 .addFunction("endGrid", &UIFlatStatusBarGridBuilder::EndGrid)
             .endClass()
+            .beginClass<UIFlatTextBoxBuilder>("FlatTextBoxBuilder")
+                .addFunction("x", &UIFlatTextBoxBuilder::LetX)
+                .addFunction("y", &UIFlatTextBoxBuilder::LetY)
+                .addFunction("w", &UIFlatTextBoxBuilder::LetW)
+                .addFunction("h", &UIFlatTextBoxBuilder::LetH)
+                .addFunction("endTextBox", &UIFlatTextBoxBuilder::EndTextBox)
+            .endClass()
             .beginClass<UIPicGridSelectorBuilder>("PicGridSelectorBuilder")
                 .addFunction("cmdId", &UIPicGridSelectorBuilder::LetCmdId)
                 .addFunction("gridSizeW",
@@ -325,6 +345,7 @@ UILayoutBuilder *UIComponentBuilder::BeginLayout() {
             .deriveClass<UIAnimatedAvatarView, UIComponent>("AnimatedAvatarView")
             .endClass()
             .deriveClass<UITerrainView, UIComponent>("TerrainView").endClass()
+            .deriveClass<UIFlatTextBox, UIComponent>("FlatTextBox").endClass()
             .beginClass<UILayout>("Layout").endClass()
         .endNamespace();
 
@@ -671,6 +692,36 @@ UIFlatStatusBarBuilder *UIFlatStatusBarBuilder::LetH(int h) {
 }
 
 UIFlatStatusBar *UIFlatStatusBarBuilder::EndStatusBar() {
+    auto result = component();
+    delete this;
+    return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// class UIFlatTextBoxBuilder
+////////////////////////////////////////////////////////////////////////////////
+
+UIFlatTextBoxBuilder *UIFlatTextBoxBuilder::LetX(int x) {
+    component()->mutable_rect()->x = x;
+    return this;
+}
+
+UIFlatTextBoxBuilder *UIFlatTextBoxBuilder::LetY(int y) {
+    component()->mutable_rect()->y = y;
+    return this;
+}
+
+UIFlatTextBoxBuilder *UIFlatTextBoxBuilder::LetW(int w) {
+    component()->mutable_rect()->w = w;
+    return this;
+}
+
+UIFlatTextBoxBuilder *UIFlatTextBoxBuilder::LetH(int h) {
+    component()->mutable_rect()->h = h;
+    return this;
+}
+
+UIFlatTextBox *UIFlatTextBoxBuilder::EndTextBox() {
     auto result = component();
     delete this;
     return result;

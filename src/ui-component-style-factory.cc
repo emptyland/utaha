@@ -7,6 +7,7 @@
 #include "ui-flat-check-box.h"
 #include "ui-flat-status-bar.h"
 #include "ui-flat-pic-view.h"
+#include "ui-flat-text-box.h"
 #include "ui-terrain-view.h"
 #include "ui-pic-grid-selector.h"
 #include "ui-animated-avatar-view.h"
@@ -40,6 +41,8 @@ public:
     CreateFlatStatusBar(const std::string &name) override;
 
     virtual UIFlatPicView *CreateFlatPicView(const std::string &name) override;
+
+    virtual UIFlatTextBox *CreateFlatTextBox(const std::string &name) override;
 
     virtual UIPicGridSelector *
     CreatePicGridSelector(const std::string &name) override;
@@ -110,6 +113,11 @@ static const char FLAT_STATUS_BAR_FONT_COLOR[]   = "FlatStatusBar.font.color";
 static const char FLAT_STATUS_BAR_BG_COLOR[]     = "FlatStatusBar.bg.color";
 static const char FLAT_STATUS_BAR_BORDER_COLOR[] = "FlatStatusBar.border.color";
 static const char FLAT_STATUS_BAR_PADDING_SIZE[] = "FlatStatusBar.padding.size";
+
+const static char FLAT_TEXT_BOX_FONT[] = "FlatTextBox.font";
+const static char FLAT_TEXT_BOX_FONT_COLOR[] = "FlatTextBox.font.color";
+const static char FLAT_TEXT_BOX_PADDING_SIZE[] = "FlatTextBox.padding.size";
+const static char FLAT_TEXT_BOX_BORDER_COLOR[] = "FlatTextBox.border.color";
 
 static const char FLAT_PIC_VIEW_BORDER_COLOR[]   = "FlatPicView.border.color";
 static const char FLAT_PIC_VIEW_PADDING_SIZE[]   = "FlatPicView.padding.size";
@@ -463,6 +471,38 @@ UIComponentStyleFactory::CreateFlatPicView(const std::string &name) {
                                                 &ok));
     if (!ok) {
         LOG(ERROR) << "Can not find int value: " << FLAT_PIC_VIEW_PADDING_SIZE;
+        return nullptr;
+    }
+    return component.release();
+}
+
+/*virtual*/ UIFlatTextBox *
+UIComponentStyleFactory::CreateFlatTextBox(const std::string &name) {
+    bool ok = true;
+    TTF_Font *font = style_->FindFont(FLAT_TEXT_BOX_FONT, &ok);
+    if (!ok) {
+        LOG(ERROR) << "Can not find font: " << FLAT_TEXT_BOX_FONT;
+        return nullptr;
+    }
+
+    std::unique_ptr<UIFlatTextBox> component(new UIFlatTextBox(font));
+    component->set_name(name);
+    component->set_id(NextId());
+
+    if (!style_->FindColor(FLAT_TEXT_BOX_FONT_COLOR,
+                           component->mutable_font_color())) {
+        LOG(ERROR) << "Can not find color: " << FLAT_TEXT_BOX_FONT_COLOR;
+        return nullptr;
+    }
+    if (!style_->FindColor(FLAT_TEXT_BOX_BORDER_COLOR,
+                           component->mutable_border_color())) {
+        LOG(ERROR) << "Can not find color: " << FLAT_TEXT_BOX_BORDER_COLOR;
+        return nullptr;
+    }
+    component->set_padding_size(style_->FindInt(FLAT_TEXT_BOX_PADDING_SIZE,
+                                                &ok));
+    if (!ok) {
+        LOG(ERROR) << "Can not find int value: " << FLAT_TEXT_BOX_PADDING_SIZE;
         return nullptr;
     }
     return component.release();

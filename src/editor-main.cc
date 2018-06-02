@@ -40,7 +40,8 @@ int CALLBACK WinMain(
     }
 
     std::unique_ptr<utaha::UIForm> form(utaha::CreateEditorForm(&profile));
-    if (!form->OpenWindow("Utaha-Editor", 800, 600)) {
+    if (!form->OpenWindow("Utaha-Editor", profile.editor_window_w(),
+                          profile.editor_window_h())) {
         return -1;
     }
     auto result = form->Run();
@@ -68,7 +69,8 @@ int main(int argc, char *argv[]) {
     }
 
     std::unique_ptr<utaha::UIForm> form(utaha::CreateEditorForm(&profile));
-    if (!form->OpenWindow("Utaha-Editor", 1024, 768)) {
+    if (!form->OpenWindow("Utaha-Editor", profile.editor_window_w(),
+                          profile.editor_window_h())) {
         return -1;
     }
     auto result = form->Run();

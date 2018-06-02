@@ -67,6 +67,12 @@ style
     :setColor("FlatPicView.border.color", 0xffffffff)
     :setInt("FlatPicView.padding.size",   10)
 
+-- Flat Text Box Styles
+    :setFont("FlatTextBox.font",          "font.small")
+    :setColor("FlatTextBox.font.color",   0xffffffff)
+    :setColor("FlatTextBox.border.color", 0xffffffff)
+    :setInt("FlatTextBox.padding.size",   10)
+
 -- Pic Grid Selector Styles
     :setColor("PicGridSelector.grid.color",     0x00ff00ff)
     :setColor("PicGridSelector.selected.color", 0x80ff008f)

@@ -22,6 +22,7 @@ class UIFlatLabelBuilder;
 class UIFlatCheckBoxBuilder;
 class UIFlatStatusBarBuilder;
 class UIFlatStatusBarGridBuilder;
+class UIFlatTextBoxBuilder;
 class UIPicGridSelectorBuilder;
 class UIAnimatedAvatarViewBuilder;
 class UITerrainViewBuilder;
@@ -37,6 +38,7 @@ class UIFlatCheckBox;
 class UIFlatStatusBar;
 class UIFlatStatusBarGrid;
 class UIFlatPicView;
+class UIFlatTextBox;
 class UIPicGridSelector;
 class UIAnimatedAvatarView;
 class UITerrainView;
@@ -60,6 +62,7 @@ public:
     UIFlatPicView *LetFlatPicView(const char *name);
     UIFlatCheckBoxBuilder *BeginFlatCheckBox(const char *name);
     UIFlatStatusBarBuilder *BeginFlatStatusBar(const char *name);
+    UIFlatTextBoxBuilder *BeginFlatTextBox(const char *name);
     UIPicGridSelectorBuilder *BeginPicGridSelector(const char *name);
     UIAnimatedAvatarViewBuilder *BeginAnimatedAvatarView(const char *name);
     UITerrainViewBuilder *BeginTerrainView(const char *name);
@@ -253,6 +256,23 @@ private:
     UIFlatStatusBarGrid *grid_;
     UIFlatStatusBarBuilder *builder_;
 }; // class UIFlatStatusBarGridBuilder;
+
+
+class UIFlatTextBoxBuilder : public UIComponentBuilderBase<UIFlatTextBox>{
+public:
+    inline UIFlatTextBoxBuilder(UIFlatTextBox *component,
+                                UIComponentFactory *factory)
+        : UIComponentBuilderBase(component, factory) {}
+    inline ~UIFlatTextBoxBuilder() = default;
+
+    UIFlatTextBoxBuilder *LetX(int x);
+    UIFlatTextBoxBuilder *LetY(int y);
+    UIFlatTextBoxBuilder *LetW(int w);
+    UIFlatTextBoxBuilder *LetH(int h);
+    UIFlatTextBox *EndTextBox();
+
+    DISALLOW_IMPLICIT_CONSTRUCTORS(UIFlatTextBoxBuilder);
+}; // class UIFlatTextBoxBuilder
 
 
 class UIPicGridSelectorBuilder :

@@ -74,6 +74,12 @@ int UniversalProfile::ApplyProfiles(lua_State *L) {
         if (!editor["layoutFile"].isNil()) {
             editor_layout_file_ = editor["layoutFile"].cast<std::string>();
         }
+        if (!editor["windowW"].isNil()) {
+            editor_window_w_ = editor["windowW"].cast<int>();
+        }
+        if (!editor["windowH"].isNil()) {
+            editor_window_h_ = editor["windowH"].cast<int>();
+        }
     }
     return 0;
 }

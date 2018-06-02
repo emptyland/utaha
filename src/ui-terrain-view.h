@@ -21,6 +21,7 @@ struct TerrainViewEvent {
         ENTITY_SELECTED,
         ACTOR_SELECTED,
         TILE_SELECTED,
+        MOUSE_MOVED,
     };
     Event event;
     union {
@@ -29,6 +30,10 @@ struct TerrainViewEvent {
             int y;
             int id;
         } tile;
+        struct {
+            int x;
+            int y;
+        } mouse;
     };
 };
 
