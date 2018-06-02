@@ -502,7 +502,7 @@ public:
         }
 
         raw_tiles_.clear();
-        raw_tiles_.resize(max_h_tiles * max_v_tiles, 1070);
+        raw_tiles_.resize(max_h_tiles * max_v_tiles, 10010);
 
         map_view_->set_tile_w(tile_w);
         map_view_->set_tile_h(tile_h);
