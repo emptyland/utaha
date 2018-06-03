@@ -71,7 +71,7 @@ style
     :setFont("FlatTextBox.font",          "font.normal")
     :setColor("FlatTextBox.font.color",   0xffffffff)
     :setColor("FlatTextBox.border.color", 0xffffffff)
-    :setInt("FlatTextBox.padding.size",   10)
+    :setInt("FlatTextBox.padding.size",   2)
 
 -- Pic Grid Selector Styles
     :setColor("PicGridSelector.grid.color",     0x00ff00ff)

@@ -116,7 +116,8 @@ bool UIForm::OpenWindow(const char *title, int w, int h) {
         return false;
     }
 
-    renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED);
+    renderer_ = SDL_CreateRenderer(window_, -1,  SDL_RENDERER_ACCELERATED|
+                                   SDL_RENDERER_PRESENTVSYNC);
     if (!renderer_) {
         LOG(ERROR) << "Can not create renderer! " << SDL_GetError();
         return false;

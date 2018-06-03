@@ -465,6 +465,12 @@ const Direction SpiritController::kDirectionMap[MAX_DIR] = {
 
 class MapController {
 public:
+    enum Mode {
+        PICKED,
+        PLACED,
+        ERASE,
+    };
+
     MapController() {}
     ~MapController() {}
 
@@ -477,6 +483,7 @@ public:
     DEF_PTR_PROP_RW_NOTNULL2(UIFlatTextBox, tile_detail);
     DEF_PTR_PROP_RW_NOTNULL2(UITerrainView, map_view);
     DEF_PTR_PROP_RW_NOTNULL2(FixedTerrainStorage, maps);
+    DEF_PTR_PROP_RW_NOTNULL2(UIFlatPicView, picked_grid);
 
     int NewMap(std::string *err) {
         int tile_w = tile_w_ib_->GetInt();
@@ -504,7 +511,7 @@ public:
         }
 
         raw_tiles_.clear();
-        raw_tiles_.resize(max_h_tiles * max_v_tiles, 10010);
+        raw_tiles_.resize(max_h_tiles * max_v_tiles, 0);
 
         map_view_->set_tile_w(tile_w);
         map_view_->set_tile_h(tile_h);
@@ -512,10 +519,28 @@ public:
         map_view_->set_max_v_tiles(max_v_tiles);
         map_view_->set_terrain_tiles(&raw_tiles_);
         map_view_->InvalidateWhole();
+
+        map_name_ib_->SetText("[unnamed]");
         return 0;
     }
 
-    void CommitMap() {}
+    void CommitMap() {
+        std::unique_ptr<FixedTerrain> terrain(new FixedTerrain());
+        terrain->set_id(map_id_ib_->GetInt());
+        terrain->set_name(map_name_ib_->text());
+        terrain->set_tile_w(tile_w_ib_->GetInt());
+        terrain->set_tile_h(tile_h_ib_->GetInt());
+        terrain->set_max_h_tiles(max_h_tiles_ib_->GetInt());
+        terrain->set_max_v_tiles(max_v_tiles_ib_->GetInt());
+        int *tiles = new int[raw_tiles_.size()];
+        ::memcpy(tiles, &raw_tiles_[0], raw_tiles_.size() * sizeof(int));
+        terrain->set_tiles(tiles);
+        bool ok = true;
+        maps_->Put(terrain.get(), &ok);
+
+        map_id_ib_->SetInt(terrain->id());
+        terrain.release();
+    }
 
     void DeleteMap() {}
 
@@ -524,17 +549,78 @@ public:
     void PrevMap() {}
 
     void Reset() {
-        tile_detail_->SetLinesSize(3);
-        tile_detail_->SetLine(0, "ok");
-        tile_detail_->SetLine(1, "name: ok");
-        tile_detail_->SetLine(2, "id: 100");
+        map_view_->tiles()->GetAllIdentifiers(&tile_ids_);
+        current_tile_p_ = 0;
+        RefreshCurrentTile();
     }
 
     int ProcessTerrainViewCmd(const TerrainViewEvent *e) {
         if (e->event == TerrainViewEvent::TILE_SELECTED) {
-            raw_tiles_[e->tile.y * map_view_->max_h_tiles() + e->tile.x] = 0;
+            if (mode_ == PLACED) {
+                if (tile_) {
+                    raw_tiles_[e->tile.y * map_view_->max_h_tiles() + e->tile.x] = tile_->id();
+                }
+            } else if (mode_ == ERASE) {
+                raw_tiles_[e->tile.y * map_view_->max_h_tiles() + e->tile.x] = 0;
+            }
         }
         return 0;
+    }
+
+    void RefreshCurrentTile() {
+        tile_detail_->SetLinesSize(4);
+
+        if (tile_ids_.empty()) {
+            tile_detail_->SetFormatLine(3, "Empty Tiles");
+            return;
+        }
+
+        int tile_id = tile_ids_[current_tile_p_];
+        const IndexedTile * tile = map_view_->tiles()->FindOrNull(tile_id);
+        if (!tile) {
+            tile_detail_->SetFormatLine(3, "Tile: %d not found", tile_id);
+            return;
+        }
+        tile_detail_->SetFormatLine(0, "Name: %s", tile->name().c_str());
+        tile_detail_->SetFormatLine(1, "ID: %d", tile->id());
+        tile_detail_->SetFormatLine(2, "|W %s|F %s|B %s|M %s|",
+            tile->walk_pass() ? "Y" : "N",
+            tile->fly_pass() ? "Y" : "N",
+            tile->bullet_pass() ? "Y" : "N",
+            tile->magic_pass() ? "Y" : "N");
+        tile_ = tile;
+
+        SDL_Surface *selected_grid =
+            map_view_->tile_tex()->FindOrNullGrid(tile->tex_id());
+        if (!selected_grid) {
+            tile_detail_->SetFormatLine(3, "Tile texture: %d not found.", tile->tex_id());
+            return;
+        }
+        picked_grid_->SetPic(selected_grid, false);
+    }
+
+    void NextSelectedTile() {
+        if (tile_ids_.empty()) {
+            return;
+        }
+
+        ++current_tile_p_;
+        if (current_tile_p_ >= tile_ids_.size()) {
+            current_tile_p_ = 0;
+        }
+        RefreshCurrentTile();
+    }
+
+    void PrevSelectedTile() {
+        if (tile_ids_.empty()) {
+            return;
+        }
+
+        --current_tile_p_;
+        if (current_tile_p_ < 0) {
+            current_tile_p_ = static_cast<int>(tile_ids_.size() - 1);
+        }
+        RefreshCurrentTile();
     }
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(MapController);
@@ -548,7 +634,12 @@ private:
     UIFlatTextBox *tile_detail_ = nullptr;
     UITerrainView *map_view_ = nullptr;
     FixedTerrainStorage *maps_ = nullptr;
+    UIFlatPicView *picked_grid_ = nullptr;
+    const IndexedTile *tile_ = nullptr;
     std::vector<int> raw_tiles_;
+    std::vector<int> tile_ids_;
+    int current_tile_p_ = 0;
+    Mode mode_ = PLACED;
 }; // class MapController
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -657,6 +748,10 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
                 LOG(ERROR) << "Can not new map: " << err;
             }
         } break;
+
+        case EditorFormR::ID_MAP_COMMIT:
+            map_ctrl_->CommitMap();
+            break;
 
         case EditorFormR::ID_MAP_NEXT:
             map_ctrl_->NextMap();
@@ -909,6 +1004,9 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
         auto tile_detail = down_cast<UIFlatTextBox>(
             map_layout_->FindComponentOrNull("picked-tile-detail"));
         map_ctrl_->set_tile_detail(tile_detail);
+        auto picked_tile = down_cast<UIFlatPicView>(
+            map_layout_->FindComponentOrNull("picked-tile"));
+        map_ctrl_->set_picked_grid(picked_tile);
 
         map_view->set_tiles(tiles_);
         map_view->set_tile_tex(tiles_tex_);
@@ -962,6 +1060,15 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
                 }
                 if (e->key.keysym.sym == SDLK_DOWN) {
                     spirit_ctrl_->NextSpirit();
+                }
+            }
+            if (map_ctrl_->tile_detail()->focused() ||
+                map_ctrl_->picked_grid()->focused()) {
+                if (e->key.keysym.sym == SDLK_UP) {
+                    map_ctrl_->PrevSelectedTile();
+                }
+                if (e->key.keysym.sym == SDLK_DOWN) {
+                    map_ctrl_->NextSelectedTile();
                 }
             }
             break;
