@@ -5,6 +5,7 @@
 #include "ui-component.h"
 #include "glog/logging.h"
 #include <vector>
+#include <memory>
 
 typedef struct _TTF_Font TTF_Font;
 
@@ -80,21 +81,22 @@ private:
     int RenderRuler(int bx, int by, int vx, int vy, int vw, int vh,
                     SDL_Renderer *renderer);
     SDL_Texture *CreateOrGetMissionGrid(SDL_Renderer *renderer);
-    SDL_Surface *CreateHRulerSurface(int max_h_tiles, int tile_w) const;
-    SDL_Surface *CreateVRulerSurface(int max_v_tiles, int tile_h) const;
+    int ShiftRuler(std::vector<SDL_Texture *> *ruler, int n);
     int GetHRulerH() const;
     int GetVRulerW() const;
     int ProcessTileSelected(SDL_Event *e, bool *is_break);
 
     SDL_Texture *kMiss = nullptr;
+    mutable int kMaxHRulerH = 0;
+    mutable int kMaxVRulerW = 0;
 
     TTF_Font *font_;
     SDL_Color font_color_ = {0, 0, 0, 0};
     SDL_Color border_color_ = {0, 0, 0, 0};
     SDL_Color grid_color_ = {0, 0, 0, 0};
     int padding_size_ = 10;
-    SDL_Texture *h_ruler_ = nullptr;
-    SDL_Texture *v_ruler_ = nullptr;
+    std::vector<SDL_Texture *> h_ruler_;
+    std::vector<SDL_Texture *> v_ruler_;
     std::vector<SDL_Texture *> indexed_tex_;
     int cmd_id_ = 0;
     Mode mode_ = PLACE_MODE;

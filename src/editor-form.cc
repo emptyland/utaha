@@ -4,6 +4,7 @@
 #include "ui-flat-menu.h"
 #include "ui-flat-input-box.h"
 #include "ui-flat-check-box.h"
+#include "ui-flat-text-box.h"
 #include "ui-pic-grid-selector.h"
 #include "ui-flat-pic-view.h"
 #include "ui-layout.h"
@@ -473,6 +474,7 @@ public:
     DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, tile_h_ib);
     DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, max_h_tiles_ib);
     DEF_PTR_PROP_RW_NOTNULL2(UIFlatInputBox, max_v_tiles_ib);
+    DEF_PTR_PROP_RW_NOTNULL2(UIFlatTextBox, tile_detail);
     DEF_PTR_PROP_RW_NOTNULL2(UITerrainView, map_view);
     DEF_PTR_PROP_RW_NOTNULL2(FixedTerrainStorage, maps);
 
@@ -521,7 +523,12 @@ public:
 
     void PrevMap() {}
 
-    void Reset() {}
+    void Reset() {
+        tile_detail_->SetLinesSize(3);
+        tile_detail_->SetLine(0, "ok");
+        tile_detail_->SetLine(1, "name: ok");
+        tile_detail_->SetLine(2, "id: 100");
+    }
 
     int ProcessTerrainViewCmd(const TerrainViewEvent *e) {
         if (e->event == TerrainViewEvent::TILE_SELECTED) {
@@ -538,6 +545,7 @@ private:
     UIFlatInputBox *tile_h_ib_ = nullptr;
     UIFlatInputBox *max_h_tiles_ib_ = nullptr;
     UIFlatInputBox *max_v_tiles_ib_ = nullptr;
+    UIFlatTextBox *tile_detail_ = nullptr;
     UITerrainView *map_view_ = nullptr;
     FixedTerrainStorage *maps_ = nullptr;
     std::vector<int> raw_tiles_;
@@ -898,6 +906,9 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
         auto map_view = down_cast<UITerrainView>(
             map_layout_->FindComponentOrNull("map-view"));
         map_ctrl_->set_map_view(map_view);
+        auto tile_detail = down_cast<UIFlatTextBox>(
+            map_layout_->FindComponentOrNull("picked-tile-detail"));
+        map_ctrl_->set_tile_detail(tile_detail);
 
         map_view->set_tiles(tiles_);
         map_view->set_tile_tex(tiles_tex_);

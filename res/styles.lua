@@ -68,7 +68,7 @@ style
     :setInt("FlatPicView.padding.size",   10)
 
 -- Flat Text Box Styles
-    :setFont("FlatTextBox.font",          "font.small")
+    :setFont("FlatTextBox.font",          "font.normal")
     :setColor("FlatTextBox.font.color",   0xffffffff)
     :setColor("FlatTextBox.border.color", 0xffffffff)
     :setInt("FlatTextBox.padding.size",   10)

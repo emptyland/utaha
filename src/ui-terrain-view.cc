@@ -5,6 +5,7 @@
 #include "fixed-terrain.h"
 #include "base-io.h"
 #include SDL_TTF_H
+#include <algorithm>
 
 namespace utaha {
 
@@ -16,13 +17,11 @@ UITerrainView::UITerrainView(TTF_Font *font)
     for (auto tex : indexed_tex_) {
         SDL_DestroyTexture(tex);
     }
-    if (h_ruler_) {
-        SDL_DestroyTexture(h_ruler_);
-        h_ruler_ = nullptr;
+    for (auto tex : h_ruler_) {
+        SDL_DestroyTexture(tex);
     }
-    if (v_ruler_) {
-        SDL_DestroyTexture(v_ruler_);
-        v_ruler_ = nullptr;
+    for (auto tex : v_ruler_) {
+        SDL_DestroyTexture(tex);
     }
     if (kMiss) {
         SDL_DestroyTexture(kMiss);
@@ -43,7 +42,6 @@ UITerrainView::UITerrainView(TTF_Font *font)
         return 0;
     }
 
-    //SDL_Rect view_rc = view_rect();
     if (event->type == SDL_MOUSEBUTTONDOWN) {
         if (mode_ == PLACE_MODE) {
             return ProcessTileSelected(event, is_break);
@@ -55,37 +53,45 @@ UITerrainView::UITerrainView(TTF_Font *font)
             case SDLK_UP:
             case SDLK_w:
                 if (view_port_y_ >= 0) {
+                    auto old = view_port_y_;
                     view_port_y_ -= scrolling_speed_;
                     if (view_port_y_ < 0) {
                         view_port_y_ = 0;
                     }
+                    ShiftRuler(&v_ruler_, view_port_y_ - old);
                 }
                 break;
             case SDLK_DOWN:
             case SDLK_s:
                 if (view_port_y_ >= 0) {
+                    auto old = view_port_y_;
                     view_port_y_ += scrolling_speed_;
                     if (view_port_y_ + view_port_v_tiles_ > max_v_tiles_) {
                         view_port_y_ = max_v_tiles_ - view_port_v_tiles_;
                     }
+                    ShiftRuler(&v_ruler_, view_port_y_ - old);
                 }
                 break;
             case SDLK_LEFT:
             case SDLK_a:
                 if (view_port_x_ >= 0) {
+                    auto old = view_port_x_;
                     view_port_x_ -= scrolling_speed_;
                     if (view_port_x_ < 0) {
                         view_port_x_ = 0;
                     }
+                    ShiftRuler(&h_ruler_, view_port_x_ - old);
                 }
                 break;
             case SDLK_RIGHT:
             case SDLK_d:
                 if (view_port_x_ >= 0) {
+                    auto old = view_port_x_;
                     view_port_x_ += scrolling_speed_;
                     if (view_port_x_ + view_port_h_tiles_ > max_h_tiles_) {
                         view_port_x_ = max_h_tiles_ - view_port_h_tiles_;
                     }
+                    ShiftRuler(&h_ruler_, view_port_x_ - old);
                 }
                 break;
         }
@@ -195,14 +201,18 @@ bool UITerrainView::InvalidateWhole() {
         SDL_DestroyTexture(tex);
     }
     indexed_tex_.clear();
-    if (h_ruler_) {
-        SDL_DestroyTexture(h_ruler_);
-        h_ruler_ = nullptr;
+    for (auto tex : h_ruler_) {
+        SDL_DestroyTexture(tex);
     }
-    if (v_ruler_) {
-        SDL_DestroyTexture(v_ruler_);
-        v_ruler_ = nullptr;
+    h_ruler_.clear();
+    h_ruler_.resize(std::min(max_h_tiles_, view_port_h_tiles_), nullptr);
+    kMaxHRulerH = 0;
+    for (auto tex : v_ruler_) {
+        SDL_DestroyTexture(tex);
     }
+    v_ruler_.clear();
+    v_ruler_.resize(std::min(max_v_tiles_, view_port_v_tiles_), nullptr);
+    kMaxVRulerW = 0;
 
     view_port_x_ = (max_h_tiles_ - view_port_h_tiles_) / 2;
     view_port_y_ = (max_v_tiles_ - view_port_v_tiles_) / 2;
@@ -212,33 +222,41 @@ bool UITerrainView::InvalidateWhole() {
 
 int UITerrainView::RenderRuler(int bx, int by, int vx, int vy, int vw, int vh,
                                SDL_Renderer *renderer) {
-    if (!h_ruler_) {
-        SDL_Surface *surface = CreateHRulerSurface(max_h_tiles_, tile_w_);
-        h_ruler_ = SDL_CreateTextureFromSurface(renderer, surface);
-        SDL_FreeSurface(surface);
-    }
-    SDL_Rect rs = {bx * tile_w_, 0, vw * tile_w_, GetHRulerH()};
-    SDL_Rect rd = {
-        rect().x + padding_size_ + GetVRulerW() + vx * tile_w_,
-        rect().y + padding_size_,
-        rs.w,
-        rs.h
-    };
-    SDL_RenderCopy(renderer, h_ruler_, &rs, &rd);
+    for (int i = 0; i < h_ruler_.size(); ++i) {
+        if (!h_ruler_[i]) {
+            SDL_Surface *item = TTF_RenderUTF8_Blended(font_,
+                Original::sprintf("%d", bx + i).c_str(), font_color_);
+            h_ruler_[i] = SDL_CreateTextureFromSurface(renderer, item);
+        }
 
-    if (!v_ruler_) {
-        SDL_Surface *surface = CreateVRulerSurface(max_v_tiles_, tile_h_);
-        v_ruler_ = SDL_CreateTextureFromSurface(renderer, surface);
-        SDL_FreeSurface(surface);
+        int w = 0, h = 0;
+        SDL_QueryTexture(h_ruler_[i], nullptr, nullptr, &w, &h);
+        SDL_Rect rd = {
+            rect().x + padding_size_ + GetVRulerW() + (i + vx) * tile_w_ + (tile_w_ - w) / 2,
+            rect().y + padding_size_,
+            w,
+            h
+        };
+        SDL_RenderCopy(renderer, h_ruler_[i], nullptr, &rd);
     }
-    rs = {0, by * tile_h_, GetVRulerW(), vh * tile_h_};
-    rd = {
-        rect().x + padding_size_,
-        rect().y + padding_size_ + GetHRulerH() + vy * tile_h_,
-        rs.w,
-        rs.h,
-    };
-    SDL_RenderCopy(renderer, v_ruler_, &rs, &rd);
+
+    for (int i = 0; i < v_ruler_.size(); ++i) {
+        if (!v_ruler_[i]) {
+            SDL_Surface *item = TTF_RenderUTF8_Blended(font_,
+                Original::sprintf("%d", by + i).c_str(), font_color_);
+            v_ruler_[i] = SDL_CreateTextureFromSurface(renderer, item);
+        }
+
+        int w = 0, h = 0;
+        SDL_QueryTexture(v_ruler_[i], nullptr, nullptr, &w, &h);
+        SDL_Rect rd = {
+            rect().x + padding_size_,
+            rect().y + padding_size_ + GetHRulerH() + (i + vy) * tile_h_ + (tile_h_ - h) / 2,
+            w,
+            h
+        };
+        SDL_RenderCopy(renderer, v_ruler_[i], nullptr, &rd);
+    }
     return 0;
 }
 
@@ -252,137 +270,79 @@ SDL_Texture *UITerrainView::CreateOrGetMissionGrid(SDL_Renderer *renderer) {
         LOG(ERROR) << "Can not create surface. " << SDL_GetError();
         return nullptr;
     }
-    SDL_LockSurface(miss);
-    Uint32 *pixels = static_cast<Uint32 *>(miss->pixels);
-    for (int i = 0; i < miss->w * miss->h; ++i) {
-        pixels[i] = SDL_MapRGBA(miss->format, 0xff, 0, 0, 0xff);
-    }
-    SDL_UnlockSurface(miss);
+    SDL_FillRect(miss, nullptr, SDL_MapRGBA(miss->format, 0xff, 0, 0, 0xff));
     kMiss = SDL_CreateTextureFromSurface(renderer, miss);
     SDL_FreeSurface(miss);
     return kMiss;
 }
 
-SDL_Surface *UITerrainView::CreateHRulerSurface(int max_h_tiles,
-                                                int tile_w) const {
-    DCHECK_GT(max_h_tiles, 0);
-    DCHECK_GT(tile_w, 0);
+int UITerrainView::ShiftRuler(std::vector<SDL_Texture *> *ruler, int n) {
+    if (n < 0) {
+        if (-n >= ruler->size()) {
+            for (int i = 0; i < ruler->size(); ++i) {
+                SDL_DestroyTexture(ruler->at(i));
+                ruler->at(i) = nullptr;
+            }
+        } else {
+            for (int i = ruler->size() + n; i < ruler->size(); ++i) {
+                SDL_DestroyTexture(ruler->at(i));
+            }
+            ::memmove(&ruler->at(-n), &ruler->at(0),
+                      (ruler->size() + n) * sizeof(SDL_Texture *));
+            for (int i = 0; i < -n; ++i) {
+                ruler->at(i) = nullptr;
+            }
+        }
+    } if (n > 0) {
+        if (n >= ruler->size()) {
+            for (int i = 0; i < ruler->size(); ++i) {
+                SDL_DestroyTexture(ruler->at(i));
+                ruler->at(i) = nullptr;
+            }
+        } else {
+            for (int i = 0; i < n; ++i) {
+                SDL_DestroyTexture(ruler->at(i));
+                ruler->at(i) = nullptr;
+            }
+            ::memmove(&ruler->at(0), &ruler->at(n),
+                (ruler->size() - n) * sizeof(SDL_Texture *));
+            for (int i = ruler->size() - n; i < ruler->size(); ++i) {
+                ruler->at(i) = nullptr;
+            }
 
-    std::unique_ptr<SDL_Surface *[]> numbers(new SDL_Surface *[max_h_tiles]);
-    memset(numbers.get(), 0, sizeof(SDL_Surface *) * max_h_tiles);
-    SDL_Surface *ruler = nullptr;
-    int h = 0;
-    for (int i = 0; i < max_h_tiles; ++i) {
-        auto txt = Original::sprintf("%d", i);
-        numbers[i] = TTF_RenderUTF8_Blended(font_, txt.c_str(), font_color_);
-        if (!numbers[i]) {
-            LOG(ERROR) << "Can not render TTF." << SDL_GetError();
-            goto clean;
-        }
-        if (numbers[i]->h > h) {
-            h = numbers[i]->h;
         }
     }
-    ruler = SDL_CreateRGBSurfaceWithFormat(0, tile_w * max_h_tiles, h, 32,
-                                           SDL_PIXELFORMAT_RGBA8888);
-    if (!ruler) {
-        LOG(ERROR) << "Can not create surface." << SDL_GetError();
-        goto clean;
-    }
-    for (int i = 0; i < max_h_tiles; ++i) {
-        SDL_Rect dst = {
-            i * tile_w + (tile_w - numbers[i]->w) / 2,
-            0,
-            numbers[i]->w,
-            numbers[i]->h,
-        };
-        SDL_UpperBlit(numbers[i], nullptr, ruler, &dst);
-    }
-clean:
-    for (int i = 0; i < max_h_tiles; ++i) {
-        SDL_FreeSurface(numbers[i]);
-    }
-    return ruler;
-}
-
-SDL_Surface *UITerrainView::CreateVRulerSurface(int max_v_tiles,
-                                                int tile_h) const {
-    DCHECK_GT(max_v_tiles, 0);
-    DCHECK_GT(tile_h, 0);
-
-    std::unique_ptr<SDL_Surface *[]> numbers(new SDL_Surface *[max_v_tiles]);
-    memset(numbers.get(), 0, sizeof(SDL_Surface *) * max_v_tiles);
-    SDL_Surface *ruler = nullptr;
-    int w = 0;
-    for (int i = 0; i < max_v_tiles; ++i) {
-        auto txt = Original::sprintf("%d", i);
-        numbers[i] = TTF_RenderUTF8_Blended(font_, txt.c_str(), font_color_);
-        if (!numbers[i]) {
-            LOG(ERROR) << "Can not render TTF." << SDL_GetError();
-            goto clean;
-        }
-        if (numbers[i]->w > w) {
-            w = numbers[i]->w;
-        }
-    }
-    ruler = SDL_CreateRGBSurfaceWithFormat(0, w, max_v_tiles * tile_h, 32,
-                                           SDL_PIXELFORMAT_RGBA8888);
-    if (!ruler) {
-        LOG(ERROR) << "Can not create surface." << SDL_GetError();
-        goto clean;
-    }
-    for (int i = 0; i < max_v_tiles; ++i) {
-        SDL_Rect dst = {
-            0,
-            i * tile_h + (tile_h - numbers[i]->h) / 2,
-            numbers[i]->w,
-            numbers[i]->h,
-        };
-        SDL_UpperBlit(numbers[i], nullptr, ruler, &dst);
-    }
-clean:
-    for (int i = 0; i < max_v_tiles; ++i) {
-        SDL_FreeSurface(numbers[i]);
-    }
-    return ruler;
+    return 0;
 }
 
 int UITerrainView::GetHRulerH() const {
-    if (has_ruler_) {
-        if (v_ruler_) {
-            int w = 0, h = 0;
-            SDL_QueryTexture(h_ruler_, nullptr, nullptr, &w, &h);
-            return h;
-        } else {
-            SDL_Surface *surface = nullptr;
-            if (max_h_tiles_ == 0 || tile_w_ == 0) {
-                surface = CreateHRulerSurface(view_port_h_tiles_, tile_w_);
-            } else {
-                surface = CreateHRulerSurface(max_h_tiles_, tile_w_);
-            }
-            return surface ? surface->h : 0;
-        }
+    if (kMaxHRulerH) {
+        return kMaxHRulerH;
     }
-    return 0;
+    SDL_Surface *max_ruler_item = TTF_RenderText_Blended(font_, 
+        Original::sprintf("%d", max_h_tiles_).c_str(), font_color_);
+    if (!max_ruler_item) {
+        LOG(ERROR) << "Can not create surface." << SDL_GetError();
+        return 0;
+    }
+    kMaxHRulerH = max_ruler_item->h;
+    SDL_FreeSurface(max_ruler_item);
+    return kMaxHRulerH;
 }
 
 int UITerrainView::GetVRulerW() const {
-    if (has_ruler_) {
-        if (h_ruler_) {
-            int w = 0, h = 0;
-            SDL_QueryTexture(v_ruler_, nullptr, nullptr, &w, &h);
-            return w;
-        } else {
-            SDL_Surface *surface = nullptr;
-            if (max_v_tiles_ == 0 || tile_h_ == 0) {
-                surface = CreateVRulerSurface(view_port_v_tiles_, tile_h_);
-            } else {
-                surface = CreateVRulerSurface(max_v_tiles_, tile_h_);
-            }
-            return surface ? surface->w : 0;
-        }
+    if (kMaxVRulerW) {
+        return kMaxVRulerW;
     }
-    return 0;
+    SDL_Surface *max_ruler_item = TTF_RenderText_Blended(font_,
+        Original::sprintf("%d", max_v_tiles_).c_str(), font_color_);
+    if (!max_ruler_item) {
+        LOG(ERROR) << "Can not create surface." << SDL_GetError();
+        return 0;
+    }
+    kMaxVRulerW = max_ruler_item->w;
+    SDL_FreeSurface(max_ruler_item);
+    return kMaxVRulerW;
 }
 
 int UITerrainView::ProcessTileSelected(SDL_Event *e, bool *is_break) {
