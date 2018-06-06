@@ -3,6 +3,7 @@
 
 #include "generic-storage.h"
 #include "fixed-terrain.h"
+#include <set>
 
 namespace utaha {
 
@@ -16,6 +17,9 @@ public:
     virtual bool LoadFromFile(Original *fs) override;
     virtual bool StoreToFile(Original *fs) const override;
     virtual std::string name() const override;
+
+    bool StoreSpecifiedToFile(const std::set<int> &dirty_ids,
+                              Original *fs) const;
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(FixedTerrainStorage);
 private:

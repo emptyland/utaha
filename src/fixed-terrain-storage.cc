@@ -92,6 +92,44 @@ FixedTerrainStorage::FixedTerrainStorage(int start_id)
     return "terrain";
 }
 
+bool
+FixedTerrainStorage::StoreSpecifiedToFile(const std::set<int> &dirty,
+                                          Original *fs) const {
+    if (dirty.empty() || entities_.empty()) {
+        return true;
+    }
+
+    std::string file = Original::sprintf("%s/%s.metadata", dir().c_str(),
+                                         name().c_str());
+
+    std::unique_ptr<FileTextOutputStream> fx(fs->OpenTextFileWr(file));
+    fx->Printf("%s\t%d\n", tex_name().c_str(), start_id());
+    for (const auto &pair : entities_) {
+        fx->Printf("%d\n", pair.first);
+    }
+    fx.reset();
+
+    for (int id : dirty) {
+        auto iter = entities_.find(id);
+        if (iter == entities_.end()) {
+            LOG(ERROR) << "Specified dirty id: " << id
+                       << " not found, ignore store.";
+            continue;
+        }
+
+        if (!StoreMetadata(iter->second, fs)) {
+            return false;
+        }
+        if (!StoreMap(iter->second, fs)) {
+            return false;
+        }
+        if (!StoreOthers(iter->second, fs)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 bool FixedTerrainStorage::StoreMetadata(const FixedTerrain *terrain,
                                         Original *fs) const {
     std::string file = Original::sprintf("%s/%s-%d.metadata", dir().c_str(),

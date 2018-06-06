@@ -232,7 +232,8 @@ int UITerrainView::RenderRuler(int bx, int by, int vx, int vy, int vw, int vh,
         int w = 0, h = 0;
         SDL_QueryTexture(h_ruler_[i], nullptr, nullptr, &w, &h);
         SDL_Rect rd = {
-            rect().x + padding_size_ + GetVRulerW() + (i + vx) * tile_w_ + (tile_w_ - w) / 2,
+            rect().x + padding_size_ + GetVRulerW() + (i + vx) * tile_w_
+                     + (tile_w_ - w) / 2,
             rect().y + padding_size_,
             w,
             h
@@ -251,7 +252,8 @@ int UITerrainView::RenderRuler(int bx, int by, int vx, int vy, int vw, int vh,
         SDL_QueryTexture(v_ruler_[i], nullptr, nullptr, &w, &h);
         SDL_Rect rd = {
             rect().x + padding_size_,
-            rect().y + padding_size_ + GetHRulerH() + (i + vy) * tile_h_ + (tile_h_ - h) / 2,
+            rect().y + padding_size_ + GetHRulerH() + (i + vy) * tile_h_
+                     + (tile_h_ - h) / 2,
             w,
             h
         };
@@ -284,7 +286,8 @@ int UITerrainView::ShiftRuler(std::vector<SDL_Texture *> *ruler, int n) {
                 ruler->at(i) = nullptr;
             }
         } else {
-            for (int i = ruler->size() + n; i < ruler->size(); ++i) {
+            for (int i = static_cast<int>(ruler->size()) + n; i < ruler->size();
+                 ++i) {
                 SDL_DestroyTexture(ruler->at(i));
             }
             ::memmove(&ruler->at(-n), &ruler->at(0),
@@ -306,7 +309,8 @@ int UITerrainView::ShiftRuler(std::vector<SDL_Texture *> *ruler, int n) {
             }
             ::memmove(&ruler->at(0), &ruler->at(n),
                 (ruler->size() - n) * sizeof(SDL_Texture *));
-            for (int i = ruler->size() - n; i < ruler->size(); ++i) {
+            for (int i = static_cast<int>(ruler->size()) - n; i < ruler->size();
+                 ++i) {
                 ruler->at(i) = nullptr;
             }
 

@@ -56,6 +56,9 @@ public:
     inline Grid *mutable_grid(int index);
     inline const Grid &grid(int index) const;
 
+    inline void SetGridText(int index, const std::string &text,
+                            const SDL_Color &bg_color);
+
     DISALLOW_IMPLICIT_CONSTRUCTORS(UIFlatStatusBar);
 private:
     int UpdateGridsTexture(SDL_Renderer *renderer);
@@ -87,6 +90,12 @@ inline const UIFlatStatusBarGrid &UIFlatStatusBar::grid(int index) const {
     DCHECK_GE(index, 0);
     DCHECK_LT(index, grids_.size());
     return *grids_.at(index);
+}
+
+inline void UIFlatStatusBar::SetGridText(int index, const std::string &text,
+                                         const SDL_Color &bg_color) {
+    mutable_grid(index)->set_bg_color(bg_color);
+    mutable_grid(index)->set_text(text);
 }
 
 } // namespace utaha

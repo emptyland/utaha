@@ -26,6 +26,8 @@
 #include "base-io.h"
 #include "script-executor.h"
 #include "glog/logging.h"
+#include <stdarg.h>
+#include <set>
 
 namespace utaha {
 
@@ -53,6 +55,9 @@ public:
     virtual void OnEvent(SDL_Event *e, bool *is_break) override;
     virtual void OnAfterRender() override;
     virtual void OnQuit() override;
+
+    void PrintInfo(const char *fmt, ...);
+    void PrintError(const char *fmt, ...);
 
     DISALLOW_IMPLICIT_CONSTRUCTORS(EditorForm);
 private:
@@ -116,6 +121,10 @@ struct EditorFormR {
         DEFINE_CMD_ID(LUA_DEF_CONST_ENUM)
     };
 };
+
+static const int kSbMessageIdx = 3;
+static const SDL_Color kSbInfoColor = {0, 0x7b, 0xff, 0xff};
+static const SDL_Color kSbErrorColor = {0xff, 0x00, 0x00, 0xff};
 
 ////////////////////////////////////////////////////////////////////////////////
 // class RawPicController
@@ -484,6 +493,7 @@ public:
     DEF_PTR_PROP_RW_NOTNULL2(UITerrainView, map_view);
     DEF_PTR_PROP_RW_NOTNULL2(FixedTerrainStorage, maps);
     DEF_PTR_PROP_RW_NOTNULL2(UIFlatPicView, picked_grid);
+    DEF_VAL_GETTER(std::set<int>, dirty_map);
 
     int NewMap(std::string *err) {
         int tile_w = tile_w_ib_->GetInt();
@@ -520,6 +530,7 @@ public:
         map_view_->set_terrain_tiles(&raw_tiles_);
         map_view_->InvalidateWhole();
 
+        map_id_ib_->SetInt(0);
         map_name_ib_->SetText("[unnamed]");
         return 0;
     }
@@ -535,23 +546,78 @@ public:
         int *tiles = new int[raw_tiles_.size()];
         ::memcpy(tiles, &raw_tiles_[0], raw_tiles_.size() * sizeof(int));
         terrain->set_tiles(tiles);
+        bool is_new = terrain->id() == 0;
         bool ok = true;
         maps_->Put(terrain.get(), &ok);
 
         map_id_ib_->SetInt(terrain->id());
+        if (is_new) {
+            map_ids_.push_back(terrain->id());
+            current_map_p_ = static_cast<int>(map_ids_.size() - 1);
+        }
+        dirty_map_.insert(terrain->id());
         terrain.release();
     }
 
     void DeleteMap() {}
 
-    void NextMap() {}
+    void NextMap() {
+        ++current_map_p_;
+        if (current_map_p_ >= map_ids_.size()) {
+            current_map_p_ = 0;
+        }
+        RefreshCurrentMap();
+    }
 
-    void PrevMap() {}
+    void PrevMap() {
+        --current_map_p_;
+        if (current_map_p_ < 0) {
+            current_map_p_ = static_cast<int>(map_ids_.size() - 1);
+        }
+        RefreshCurrentMap();
+    }
 
     void Reset() {
         map_view_->tiles()->GetAllIdentifiers(&tile_ids_);
         current_tile_p_ = 0;
         RefreshCurrentTile();
+
+        maps_->GetAllIdentifiers(&map_ids_);
+        current_map_p_ = 0;
+        RefreshCurrentMap();
+
+        //dirty_map_.clear();
+    }
+
+    void RefreshCurrentMap() {
+        if (map_ids_.empty()) {
+            return;
+        }
+
+        auto terrain = maps_->FindOrNull(map_ids_[current_map_p_]);
+        if (!terrain) {
+            LOG(ERROR) << "Can not find map: " << map_ids_[current_map_p_];
+            return;
+        }
+
+        map_id_ib_->SetInt(terrain->id());
+        map_name_ib_->SetText(terrain->name());
+        tile_w_ib_->SetInt(terrain->tile_w());
+        tile_h_ib_->SetInt(terrain->tile_h());
+        max_h_tiles_ib_->SetInt(terrain->max_h_tiles());
+        max_v_tiles_ib_->SetInt(terrain->max_v_tiles());
+
+        raw_tiles_.clear();
+        raw_tiles_.resize(terrain->max_h_tiles() * terrain->max_v_tiles(), 0);
+        memcpy(&raw_tiles_[0], terrain->tiles(),
+               terrain->max_h_tiles() * terrain->max_v_tiles() * sizeof(int));
+
+        map_view_->set_tile_w(terrain->tile_w());
+        map_view_->set_tile_h(terrain->tile_h());
+        map_view_->set_max_h_tiles(terrain->max_h_tiles());
+        map_view_->set_max_v_tiles(terrain->max_v_tiles());
+        map_view_->set_terrain_tiles(&raw_tiles_);
+        map_view_->InvalidateWhole();
     }
 
     int ProcessTerrainViewCmd(const TerrainViewEvent *e) {
@@ -639,6 +705,9 @@ private:
     std::vector<int> raw_tiles_;
     std::vector<int> tile_ids_;
     int current_tile_p_ = 0;
+    std::vector<int> map_ids_;
+    int current_map_p_ = 0;
+    std::set<int> dirty_map_;
     Mode mode_ = PLACED;
 }; // class MapController
 
@@ -693,9 +762,10 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
             if (!spirits_->StoreToFile(fs_)) {
                 LOG(ERROR) << "Store spirits fail!";
             }
-            if (!maps_->StoreToFile(fs_)) {
+            if (!maps_->StoreSpecifiedToFile(map_ctrl_->dirty_map(), fs_)) {
                 LOG(ERROR) << "Store maps fail!";
             }
+            PrintInfo("Save OK!");
             break;
 
         case EditorFormR::ID_TILE_NEXT:
@@ -712,7 +782,7 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
 
         case EditorFormR::ID_TILE_COMMIT:
             if (!raw_pic_ctrl_->selector()->is_selected()) {
-                LOG(ERROR) << "Raw pic grid has not selected!";
+                PrintError("Raw pic grid has not selected!");
                 break;
             }
             tile_ctrl_->CommitTile(raw_pic_ctrl_->CurrentFile(),
@@ -745,7 +815,7 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
             std::string err;
             map_ctrl_->NewMap(&err);
             if (!err.empty()) {
-                LOG(ERROR) << "Can not new map: " << err;
+                PrintError("New map error: %s", err.c_str());
             }
         } break;
 
@@ -1113,6 +1183,22 @@ EditorForm::EditorForm(const UniversalProfile *profile, Original *fs)
     delete spirits_; spirits_ = nullptr;
     delete spirits_tex_; spirits_tex_ = nullptr;
     delete maps_; maps_ = nullptr;
+}
+
+void EditorForm::PrintInfo(const char *fmt, ...) {
+    va_list ap;
+    va_start(ap, fmt);
+    auto info = Original::vsprintf(fmt, ap);
+    va_end(ap);
+    status_bar()->SetGridText(kSbMessageIdx, info, kSbInfoColor);
+}
+
+void EditorForm::PrintError(const char *fmt, ...) {
+    va_list ap;
+    va_start(ap, fmt);
+    auto info = Original::vsprintf(fmt, ap);
+    va_end(ap);
+    status_bar()->SetGridText(kSbMessageIdx, info, kSbErrorColor);
 }
 
 /*virtual*/ void EditorForm::OnAfterRender() {
